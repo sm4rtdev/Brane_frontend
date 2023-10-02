@@ -1,0 +1,113 @@
+@use "../../../../styles/variables" as *;
+
+#wishlist-page {
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: calc((var(--unit) * 100 - 64px));
+
+    & > .title {
+      padding: 1.5rem 2rem;
+      background-color: $black;
+      width: 100%;
+      border-radius: 16px;
+
+      display: none;
+      justify-content: center;
+      align-items: center;
+
+      margin-bottom: 2rem;
+
+      h1 {
+        margin-right: auto;
+        color: $white;
+        @extend .text-lg;
+      }
+    }
+
+    .add-list-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 20rem;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+    }
+
+    .no-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      min-height: calc((var(--unit) * 50 - 44px));
+
+      p {
+        @extend .text-sm;
+        color: $gray;
+        text-align: center;
+        width: 100%;
+      }
+
+      .action-button {
+        margin-top: 3rem;
+        max-width: 20rem;
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+      min-height: calc(var(--unit) * 50);
+
+      width: 100%;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    &.vertical {
+      gap: 0;
+    }
+
+    @media screen and (min-width: $tablet-sm) {
+      & > .title {
+        display: flex;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media screen and (min-width: $tablet-md) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media screen and (min-width: $tablet-lg) {
+      .grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    @media screen and (min-width: $desktop-sm) {
+      .grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+    @media screen and (min-width: $desktop-md) {
+      .grid {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+    @media screen and (min-width: $desktop-lg) {
+      .grid {
+        grid-template-columns: repeat(8, 1fr);
+      }
+    }
+  }
+}

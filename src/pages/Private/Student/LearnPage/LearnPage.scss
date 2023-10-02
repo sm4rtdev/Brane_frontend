@@ -1,0 +1,113 @@
+@use "../../../../styles/variables" as *;
+
+#learn-page .main {
+  .title {
+    padding: 1.5rem 2rem;
+    background-color: $black;
+    width: 100%;
+    border-radius: 16px;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 2rem;
+
+    h1 {
+      margin-right: auto;
+      color: $white;
+      @extend .text-lg;
+    }
+  }
+
+  .lessons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .lesson {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 50rem;
+
+      h2 {
+        margin-bottom: 0.5rem;
+
+        @extend .text;
+        color: $gray;
+        font-weight: 500;
+        text-align: left;
+        width: 100%;
+      }
+
+      .lesson-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        text-decoration: none;
+        color: black;
+        width: 100%;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+
+        .left {
+          margin-right: 1rem;
+          width: 30%;
+
+          aspect-ratio: 16 / 9;
+          border-radius: 0.5rem;
+          overflow: hidden;
+          flex-shrink: 0;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        .middle {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          width: 100%;
+
+          strong {
+            @extend .text-sm;
+
+            font-weight: 500;
+            color: $black;
+            margin-bottom: 0.25rem;
+          }
+
+          span {
+            @extend .text-xs;
+            color: $gray;
+          }
+        }
+
+        .right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .title {
+      display: flex;
+    }
+  }
+}

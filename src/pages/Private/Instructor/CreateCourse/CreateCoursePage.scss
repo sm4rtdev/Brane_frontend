@@ -1,0 +1,104 @@
+@use "../../../../styles/variables" as *;
+
+#create-course {
+  .status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $cool-gray;
+
+    .block {
+      padding: 1rem;
+
+      &.current {
+        border-bottom: 6px solid $yellow;
+      }
+
+      p {
+        @extend .text;
+        color: $white;
+        font-weight: 400;
+        text-align: center;
+        padding: 0 1rem;
+      }
+    }
+  }
+
+  .main {
+    h1 {
+      @extend .display-xs;
+      color: $black;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      border-bottom: 1px dashed $shadow;
+    }
+
+    .media-creation {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 40rem;
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .media {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: $gray;
+        margin-bottom: 1rem;
+        cursor: pointer;
+
+        aspect-ratio: 16 / 9;
+
+        width: 100%;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        svg {
+          height: 2rem;
+          color: $dark-gray;
+          width: 2rem;
+        }
+      }
+
+      .action-button {
+        width: max-content;
+        padding: 0 2rem;
+
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+          color: $white;
+          fill: $white;
+          margin-left: 0.5rem;
+        }
+      }
+
+      .small-button {
+        width: max-content;
+        padding: 0 1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+
+        svg {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+}

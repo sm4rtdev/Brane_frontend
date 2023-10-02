@@ -1,0 +1,662 @@
+@use "../../../../styles/variables" as *;
+
+#lesson-page .main {
+  align-items: flex-start;
+
+  .inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    .player {
+      width: 100%;
+      max-width: 40rem;
+      margin: 0 auto;
+
+      aspect-ratio: 16 / 9;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      background-color: $yellow;
+
+      margin-bottom: 1.75rem;
+      border-radius: 1rem;
+      overflow: hidden;
+
+      video {
+        width: 100%;
+
+        aspect-ratio: 16 / 9;
+      }
+
+      svg {
+        height: 100%;
+        color: $black;
+        fill: $black;
+      }
+    }
+
+    .offline-msg {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 1.75rem;
+
+      width: 100%;
+      padding: 1rem;
+      background-color: $dark-gray;
+      border-radius: 1rem;
+
+      p {
+        @extend .text-sm;
+        color: $white;
+      }
+
+      svg {
+        height: 1rem;
+        width: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0.25rem;
+        fill: $white;
+      }
+    }
+
+    .buttons-bar {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      justify-items: center;
+      gap: 1rem;
+      width: 100%;
+      margin-bottom: 2rem;
+
+      .action-button {
+        width: max-content;
+        padding: 0 2rem;
+      }
+    }
+
+    h1 {
+      @extend .text-lg;
+      font-weight: 600;
+      color: $black;
+      width: 100%;
+      margin-bottom: 1.75rem;
+    }
+
+    h2 {
+      @extend .text-md;
+      font-weight: 600;
+      color: $black;
+
+      margin-bottom: 1rem;
+    }
+
+    & > .action-button {
+      max-width: 20rem;
+      margin-right: auto;
+      margin-bottom: 2rem;
+    }
+
+    .tabulation {
+      margin-bottom: 2rem;
+
+      .content {
+        .no-data {
+          padding: 2.4375rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        .description {
+          @extend .text-sm;
+
+          width: 100%;
+          color: $gray;
+          margin-bottom: 2rem;
+          min-height: 6rem;
+        }
+        .additional-resources {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          min-height: 6rem;
+
+          .links {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1rem;
+
+            .link {
+              padding: 0.25rem 1rem;
+              width: 100%;
+              display: flex;
+              justify-content: flex-start;
+              align-items: flex-start;
+
+              svg {
+                width: 1.25rem;
+                height: 1.25rem;
+                color: $black;
+                margin-right: 0.5rem;
+                flex-shrink: 0;
+              }
+
+              a {
+                color: $dark-gray;
+                word-break: break-all;
+                @extend .text-sm;
+              }
+            }
+          }
+        }
+
+        .reviews {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          min-height: 6rem;
+
+          .inner-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            max-height: 40rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            padding-right: 0.5rem;
+
+            &::-webkit-scrollbar {
+              width: 8px;
+              background-color: $shadow;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: $dark-shadow;
+            }
+
+            .review {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              align-items: flex-start;
+              flex-shrink: 0;
+
+              margin-bottom: 1.25rem;
+
+              .name {
+                text-decoration: none;
+                color: $black;
+                @extend .text;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+              }
+
+              .gray {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 0.75rem;
+
+                .stars {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  margin-right: 1rem;
+
+                  svg {
+                    height: 1rem;
+                    fill: $yellow;
+                  }
+                }
+
+                span {
+                  @extend .text-xs;
+                  color: $gray;
+                }
+              }
+
+              p {
+                @extend .text-sm;
+              }
+            }
+
+            .no-data {
+              width: 100%;
+              text-align: center;
+              color: $gray;
+              @extend .text;
+              padding: 2rem;
+            }
+          }
+        }
+      }
+    }
+
+    .instructor-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      text-decoration: none;
+
+      margin-bottom: 2rem;
+
+      padding: 1rem 0;
+      border-bottom: 1px solid $shadow;
+      border-top: 1px solid $shadow;
+
+      .avatar {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: $rounded;
+        overflow: hidden;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        background-color: $light-gray-2;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 100%;
+          height: 100%;
+
+          object-fit: cover;
+        }
+
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+          color: $middle-gray;
+        }
+      }
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding-right: 0.5rem;
+        width: calc(100% - 2.5rem - 0.75rem - 7.5rem);
+
+        .name {
+          @extend .text-sm;
+
+          width: 100%;
+          color: $black;
+          font-weight: 500;
+          margin-bottom: 0.125rem;
+          max-width: 20rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        span {
+          @extend .text-xs;
+          width: 100%;
+          max-width: 20rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: $gray;
+        }
+      }
+
+      .button {
+        margin-left: auto;
+        padding: 0.5rem 1.25rem;
+        width: 120px;
+        border-radius: 8px;
+        border: none;
+        background-color: $yellow;
+        cursor: pointer;
+        text-decoration: none;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        @extend .text-sm;
+
+        color: $white;
+        font-weight: 400;
+
+        &:hover {
+          background-color: $yellow-2;
+        }
+      }
+    }
+
+    .comments-section {
+      margin-bottom: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      .container {
+        width: 100%;
+        min-height: 14rem;
+        max-height: 22rem;
+        padding-right: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        overflow-y: scroll;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $dark-shadow;
+        }
+
+        .no-comments {
+          margin: 4rem 0;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          @extend .text;
+          color: $gray;
+        }
+
+        .comment {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          margin-bottom: 1rem;
+
+          a {
+            text-decoration: none;
+            @extend .text;
+            color: $black;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+          }
+
+          span {
+            @extend .text-xs;
+            color: $light-gray-2;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            @extend .text-sm;
+            color: $black;
+          }
+        }
+      }
+
+      .add-new-comment {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        border-top: 1px dashed $shadow;
+        padding: 1rem 0;
+
+        .dynamic-input {
+          margin-bottom: 1rem;
+        }
+
+        .action-button {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .content-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    margin-bottom: 2rem;
+
+    .report-section {
+      display: none;
+    }
+
+    h2 {
+      width: 100%;
+      padding: 1.5rem 0 1rem;
+
+      border-top: 1px solid $shadow;
+      margin-bottom: 1rem;
+
+      @extend .text-lg;
+      color: $black;
+      font-weight: 600;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      .lesson {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100fr 4rem;
+        text-decoration: none;
+
+        &.current p {
+          font-weight: 700;
+        }
+
+        &:last-child .check-area::after {
+          display: none;
+        }
+
+        &:hover p {
+          font-weight: 700;
+        }
+
+        p {
+          width: 100%;
+          margin-bottom: 2.5rem;
+          @extend .text-sm;
+          color: $black;
+          font-weight: 400;
+        }
+
+        .check-area {
+          width: 100%;
+          height: 100%;
+
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          position: relative;
+          top: -0.5625rem;
+
+          &:after {
+            content: "";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: absolute;
+            height: 100%;
+            width: 4px;
+            background-color: $dark-shadow;
+          }
+
+          .check {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: $rounded;
+            background-color: $white;
+            border: 2px solid $yellow;
+            height: 2.25rem;
+            width: 2.25rem;
+            position: relative;
+            z-index: 2;
+
+            svg {
+              height: 1.5rem;
+              color: $white;
+
+              path {
+                stroke-width: 64;
+              }
+            }
+
+            &.completed {
+              background-color: $yellow;
+
+              svg {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .report-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    strong {
+      margin-bottom: 1rem;
+
+      @extend .text-sm;
+      font-weight: 600;
+      color: $black;
+    }
+
+    .report-button {
+      padding: 0 1rem;
+      height: $btn-height;
+
+      border: none;
+      border-radius: 8px;
+      border-left: 8px solid $dark-gray;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      cursor: pointer;
+      background-color: $shadow;
+
+      @extend .text-sm;
+      color: $black;
+
+      margin-bottom: 2rem;
+
+      svg {
+        margin-left: 0.5rem;
+        height: 1.75rem;
+        color: $black;
+      }
+
+      &:hover {
+        background-color: $dark-shadow;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .comments-section .add-new-comment {
+      flex-direction: row;
+      align-items: flex-end;
+
+      .dynamic-input {
+        margin-bottom: 0;
+        margin-right: 1rem;
+      }
+      .action-button {
+        height: 40px;
+        max-width: 14rem;
+      }
+    }
+
+    .inner-container .buttons-bar {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (min-width: $desktop-sm) {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    column-gap: 1rem;
+
+    .inner-container {
+      width: 100%;
+
+      .player {
+        width: 100%;
+        max-width: 100%;
+      }
+      .report-section {
+        display: none;
+      }
+    }
+
+    .content-list {
+      width: 100%;
+      padding: 2rem;
+      background-color: $light-shadow;
+      border-radius: 1rem;
+      height: 100%;
+
+      .report-section {
+        display: flex;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+      }
+
+      .list .lesson .check-area .check {
+        background-color: $grayish;
+
+        svg {
+          color: $grayish;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+@use "../../styles/variables" as *;
+
+#msg-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    position: absolute;
+    top: 4rem;
+    right: 0;
+    z-index: 200;
+    background-color: $white;
+    padding: 1rem;
+    box-shadow: $box-shadow;
+    border-radius: 0 0 0.5rem 0.5rem;
+    width: min-content;
+    width: 18rem;
+
+    strong {
+      @extend .text;
+
+      display: flex;
+      width: 100%;
+      color: $black;
+      margin-bottom: 0.25rem;
+    }
+
+    span {
+      @extend .text-sm;
+
+      width: 100%;
+      color: $dark-gray;
+      margin-bottom: 0.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid $light-gray;
+    }
+
+    .tabulation {
+      .tabs .tab {
+        &:nth-child(2) {
+          margin-left: 1rem;
+        }
+      }
+      .content .link {
+        @extend .text-sm;
+        color: $gray;
+        text-align: right;
+        margin-left: auto;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0.25rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@use "../../../styles/variables" as *;
+
+#policy-terms .main {
+  h1 {
+    @extend .display-xs;
+    color: $black;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px dashed $shadow;
+  }
+
+  .core {
+    width: 100%;
+    text-align: justify;
+    text-justify: auto;
+    color: $black;
+    white-space: pre-line;
+    width: 100%;
+    margin-bottom: 4rem;
+  }
+
+  .content {
+    width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 auto;
+
+    p {
+      @extend .text-sm;
+      color: $black;
+      width: 100%;
+      text-align: justify;
+      margin-bottom: 0.5em;
+
+      &:last-child {
+        margin-bottom: 4rem;
+      }
+    }
+
+    h2 {
+      @extend .text-md;
+      color: $black;
+      margin: 1.5rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    h3 {
+      @extend .text;
+      color: $black;
+      margin: 2rem;
+      width: 100%;
+      text-align: left;
+      padding-left: 2rem;
+    }
+  }
+}

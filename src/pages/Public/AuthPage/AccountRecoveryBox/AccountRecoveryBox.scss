@@ -1,0 +1,85 @@
+@use "../../../../styles/variables" as *;
+
+#account-recovery-box {
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    width: 100%;
+    margin-bottom: 1rem;
+
+    .go-back {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      position: absolute;
+      left: -1.25rem;
+
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      border-radius: $rounded;
+      background-color: transparent;
+      cursor: pointer;
+      @include transition(background-color);
+
+      margin-right: 1rem;
+
+      svg {
+        color: $dark-gray;
+        height: 1.5rem;
+        transform: rotateZ(180deg);
+      }
+
+      &:hover {
+        transition: none;
+        background-color: $shadow;
+      }
+
+      &:active {
+        transition: none;
+        background-color: $dark-shadow;
+      }
+    }
+
+    strong {
+      @extend .text-lg;
+
+      padding: 0 1rem;
+      width: 100%;
+      text-align: center;
+      color: $yellow;
+    }
+  }
+
+  .illustration {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2rem 0;
+
+    svg {
+      height: 10rem;
+    }
+  }
+
+  & > p {
+    @extend .text-sm;
+
+    width: 100%;
+    text-align: center;
+    color: $dark-gray;
+    margin-bottom: 2rem;
+  }
+
+  .form .action-button {
+    margin-top: 1rem;
+  }
+}

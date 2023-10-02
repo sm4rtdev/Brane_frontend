@@ -1,0 +1,230 @@
+@use "../../../../styles/variables" as *;
+
+.instructor-course-lessons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    padding-bottom: 2rem;
+    border-bottom: 1px dashed $shadow;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    .lesson-aggregator {
+      width: 100%;
+      max-width: 44rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      & > strong {
+        @extend .text;
+        color: $dark-gray;
+        text-align: left;
+        font-weight: 700;
+        width: 100%;
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      & > .action-button {
+        width: max-content;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+        border: none;
+        background-color: $red;
+        padding: 0 2rem;
+        height: 40px;
+        cursor: pointer;
+      }
+
+      .inner-container {
+        padding: 2rem;
+        background-color: $dark-gray;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+
+        .dynamic-input {
+          label {
+            color: $white;
+          }
+
+          input,
+          textarea {
+            background-color: $white;
+            border-color: transparent;
+
+            box-shadow: $box-shadow;
+          }
+        }
+
+        .basic-stuff {
+          width: 100%;
+          margin-bottom: 1rem;
+          border-bottom: 1px dashed $white;
+        }
+
+        .additional-resources {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 2rem;
+
+          h3 {
+            @extend .text;
+            color: $white;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+          }
+
+          .links {
+            width: 100%;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 3rem;
+
+            .link {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              width: 100%;
+              padding: 0 0.5rem;
+              min-height: 2rem;
+
+              p {
+                width: max-content;
+                text-align: left;
+                @extend .text-sm;
+                color: $white;
+                flex-shrink: 0;
+
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-right: 0.5rem;
+
+                svg {
+                  height: 1rem;
+                  width: 1rem;
+                  fill: $white;
+                  margin-right: 0.25rem;
+                }
+              }
+
+              a {
+                text-align: left;
+                @extend .text-sm;
+                color: $white;
+                text-decoration: underline;
+                word-break: break-all;
+              }
+
+              .small-button {
+                height: 2rem;
+                width: 2rem;
+                margin-left: auto;
+
+                svg {
+                  color: $white;
+                  height: 1.25rem;
+                  width: 1.25rem;
+                }
+              }
+            }
+
+            .no-items {
+              margin-top: 1.5rem;
+              @extend .text-sm;
+              color: $white;
+            }
+          }
+
+          .action-button {
+            width: max-content;
+            padding: 0 2rem;
+          }
+        }
+
+        .media-creation h2 {
+          @extend .text-md;
+          color: $white;
+          font-weight: 700;
+          margin-bottom: 2rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        .final {
+          margin-top: 2rem;
+          padding: 0 4rem !important;
+
+          .spinner-of-doom svg {
+            margin-left: 0 !important;
+          }
+        }
+      }
+    }
+
+    & > h2 {
+      @extend .text-md;
+      color: $dark-gray;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    & > .action-button {
+      width: max-content;
+      padding: 0 2rem;
+    }
+
+    &.final .action-button {
+      padding: 0 4rem;
+    }
+
+    .individual {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0.5rem;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      strong {
+        @extend .text;
+        color: $dark-gray;
+        margin-right: 0.5rem;
+      }
+
+      p {
+        @extend .text;
+        color: $dark-gray;
+      }
+    }
+  }
+}

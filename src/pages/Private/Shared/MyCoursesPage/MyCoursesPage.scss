@@ -1,0 +1,215 @@
+@use "../../../../styles/variables" as *;
+
+#my-courses-page {
+  .main {
+    margin-bottom: 4rem;
+
+    & > .title {
+      padding: 1.5rem 2rem;
+      background-color: $black;
+      width: 100%;
+      border-radius: 16px;
+
+      display: none;
+      justify-content: center;
+      align-items: center;
+
+      margin-bottom: 2rem;
+
+      h1 {
+        margin-right: auto;
+        color: $white;
+        @extend .text-lg;
+      }
+    }
+  }
+
+  .filters {
+    width: 100%;
+    display: none;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .dynamic-input {
+      max-width: 20rem;
+    }
+  }
+
+  .tabulation {
+    min-height: calc(var(--unit) * 70);
+    position: relative;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      .courses {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        justify-items: center;
+
+        .course-card {
+          margin-bottom: 1rem;
+        }
+      }
+
+      .company {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+
+        h2 {
+          @extend .text;
+          color: $yellow;
+          padding-left: 1rem;
+          color: #ffb200;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          width: 100%;
+          text-align: left;
+        }
+
+        h3 {
+          @extend .text-md;
+          color: $black;
+          padding-left: 1rem;
+          color: $black;
+          font-weight: 700;
+          padding: 0 0 1rem;
+          border-bottom: 1px dashed $shadow;
+          width: 100%;
+          text-align: left;
+          margin-bottom: 2rem;
+        }
+
+        .users {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 2rem;
+
+          .user-card {
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid $shadow;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            width: 100%;
+
+            .data {
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              align-items: flex-start;
+              width: 100%;
+
+              p {
+                margin-bottom: 0.25rem;
+                @extend .text-sm;
+                color: $dark-gray;
+
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+
+                span {
+                  margin-right: 0.5rem;
+                }
+
+                strong {
+                  @extend .text-sm;
+                  color: black;
+                  display: flex;
+                  font-weight: 600;
+                  word-break: break-all;
+                }
+
+                &:last-of-type {
+                  margin-bottom: 0;
+                  margin-top: 1rem;
+                }
+              }
+            }
+
+            .action {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-shrink: 0;
+              margin-left: 1rem;
+
+              .action-button {
+                width: max-content;
+                padding: 0 2rem;
+                height: 40px;
+              }
+            }
+          }
+        }
+      }
+
+      .spinner-of-doom {
+        width: 100%;
+      }
+    }
+
+    .standalone {
+      position: absolute;
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .main .title,
+    .filters {
+      display: flex;
+    }
+
+    .tabulation .content .courses {
+      grid-template-columns: repeat(2, 1fr);
+
+      &.downloads {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  }
+  @media screen and (min-width: $tablet-lg) {
+    .tabulation .content .courses {
+      grid-template-columns: repeat(3, 1fr);
+
+      &.downloads {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+  @media screen and (min-width: $desktop-sm) {
+    .tabulation .content .courses {
+      grid-template-columns: repeat(4, 1fr);
+
+      &.downloads {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+  @media screen and (min-width: $desktop-lg) {
+    .tabulation .content .courses {
+      grid-template-columns: repeat(5, 1fr);
+
+      &.downloads {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+}

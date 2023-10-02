@@ -1,0 +1,163 @@
+@use "../../../../styles/variables" as *;
+
+#role-selection-page {
+  position: relative;
+  overflow: hidden;
+
+  .animation {
+    height: 100%;
+    width: 100%;
+    min-height: calc(var(--unit) * 100);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $yellow;
+    animation: vanish 0.3s 2s ease-in-out forwards;
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 6rem;
+      height: 6rem;
+      animation: appear 1s ease-in-out forwards;
+
+      svg {
+        width: 100%;
+        height: 100%;
+
+        path {
+          fill: $white;
+        }
+      }
+
+      @keyframes appear {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    }
+
+    .circle {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid $white;
+      border-radius: $rounded;
+      position: absolute;
+      animation: enlarge 1s 0.2s ease-in-out forwards;
+      opacity: 0;
+
+      @keyframes enlarge {
+        0% {
+          transform: scale(0.75);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1.25);
+          opacity: 1;
+        }
+      }
+    }
+
+    @keyframes vanish {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+
+  .main {
+    height: 100%;
+    width: 100%;
+    min-height: calc(var(--unit) * 100);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $cool-gray;
+    margin-bottom: 0;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      border: 1px solid $light-gray;
+      border-radius: $rounded;
+    }
+    &::before {
+      height: 6rem;
+      width: 6rem;
+      top: -3rem;
+      left: -3rem;
+    }
+    &::after {
+      height: 10rem;
+      width: 10rem;
+      bottom: -2rem;
+      right: -2rem;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 5rem;
+      height: 5rem;
+      margin-bottom: 2rem;
+      margin-top: -5rem;
+
+      svg {
+        width: 100%;
+        height: 100%;
+
+        path {
+          fill: $white;
+        }
+      }
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      strong {
+        @extend .text-lg;
+        font-weight: 600;
+        color: $white;
+        margin-bottom: 2rem;
+        text-align: center;
+        width: 100%;
+      }
+
+      .selection {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        width: 100%;
+        justify-items: center;
+
+        .action-button {
+          max-width: 20rem;
+        }
+      }
+    }
+  }
+}

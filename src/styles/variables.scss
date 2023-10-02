@@ -1,0 +1,137 @@
+// Colors
+
+$white: #fff;
+$light-yellow: #ffbe21;
+$yellow: #ffb200;
+$yellow-2: #eca500;
+$yellow-3: #dd9b00;
+$dark-yellow: #5a3f00;
+$google-blue: #1a73e8;
+$facebook-blue: #2374f2;
+$shadow-blue: #1a73e820;
+$black: #0f0e0e;
+$cool-gray: #272727;
+$light-gray: #c7ccd6;
+$light-gray-2: #acb0b9;
+$gray: #7b7e85;
+$middle-gray: #585858;
+$dark-gray: #383838;
+$grayish: #efefef;
+$red: #ed2626;
+
+$white-shadow: #ffffff20;
+$white-shadow-2: #ffffff30;
+$light-shadow: #0f0e0e10;
+$shadow: #0f0e0e20;
+$dark-shadow: #0f0e0e30;
+
+// Variables
+
+$btn-height: 2.75rem;
+$rounded: 9999999999px;
+$max-mobile: 428px;
+$box-shadow: 0 0 8px $shadow;
+
+// Screens
+
+$tablet-sm: 744px;
+$tablet-md: 834px;
+$tablet-lg: 1024px;
+
+$desktop-sm: 1280px;
+$desktop-md: 1440px;
+$desktop-lg: 1728px;
+
+// Mixins
+@mixin transition($property) {
+  transition: #{$property} 0.3s ease-in-out;
+}
+@mixin transitions($property-1, $property-2, $property-3: "") {
+  transition-property: #{$property-1}, #{$property-2}, #{$property-3};
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+// Animations
+
+@keyframes spin {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// Text
+
+.text-xx {
+  font-size: 10px;
+  line-height: 14px;
+}
+.text-xs {
+  font-size: 12px;
+  line-height: 16px;
+}
+.text-sm {
+  font-size: 14px;
+  line-height: 18px;
+}
+.text {
+  font-size: 16px;
+  line-height: 20px;
+}
+.text-md {
+  font-size: 18px;
+  line-height: 22px;
+}
+.text-lg {
+  font-size: 20px;
+  line-height: 24px;
+}
+.display-xs {
+  font-size: 24px;
+  line-height: 28px;
+}
+.display-sm {
+  font-size: 28px;
+  line-height: 32px;
+}
+.display {
+  font-size: 30px;
+  line-height: 34px;
+}
+.display-md {
+  font-size: 32px;
+  line-height: 36px;
+}
+.display-lg {
+  font-size: 48px;
+  line-height: 52px;
+}
+
+.black-action {
+  background-color: $black;
+  color: $white;
+  @include transition(opacity);
+
+  &:hover {
+    background-color: $black;
+    transition: none;
+    opacity: 0.9;
+  }
+
+  &:active {
+    background-color: $black;
+    transition: none;
+    opacity: 0.8;
+  }
+}

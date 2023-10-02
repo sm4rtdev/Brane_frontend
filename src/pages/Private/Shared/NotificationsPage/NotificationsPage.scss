@@ -1,0 +1,42 @@
+@use "../../../../styles/variables" as *;
+
+#notifications-page .main {
+  margin-bottom: 4rem;
+
+  & > .title {
+    padding: 1.5rem 2rem;
+    background-color: $black;
+    width: 100%;
+    border-radius: 16px;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 2rem;
+
+    h1 {
+      margin-right: auto;
+      color: $white;
+      @extend .text-lg;
+    }
+  }
+
+  h3 {
+    width: 100%;
+    @extend .text;
+    color: $black;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .no-data {
+    margin: 5rem 0 3rem;
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .title {
+      display: flex;
+    }
+  }
+}

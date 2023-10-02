@@ -1,0 +1,161 @@
+@use "../../styles/variables" as *;
+
+#options-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  background-color: $dark-shadow;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 110;
+  width: 100%;
+  min-height: calc(var(--unit) * 100);
+  opacity: 0;
+  animation: appear 0.3s ease-in-out forwards;
+
+  & > .container {
+    width: 100%;
+    max-height: calc(var(--unit) * 80);
+    background-color: $white;
+    padding: 2rem 1rem;
+    border-radius: 1rem 1rem 0 0;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: $shadow;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $dark-shadow;
+    }
+
+    & > strong {
+      width: 100%;
+      text-align: center;
+      @extend .text;
+      margin-bottom: 2rem;
+    }
+
+    & > .action-button {
+      height: 32px;
+      max-width: max-content;
+      padding: 0 2rem;
+      @extend .text-sm;
+      margin-bottom: 1rem;
+      flex-shrink: 0;
+    }
+
+    .link {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      @extend .text-sm;
+      color: $black;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      @include transition(background-color);
+
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: $black;
+        color: $black;
+      }
+
+      p {
+        width: calc(100% - 1.25rem - 1.25rem);
+        text-align: left;
+        padding: 0 1rem;
+      }
+
+      &:hover {
+        transition: none;
+        background-color: $shadow;
+      }
+    }
+
+    .logout {
+      svg {
+        fill: $red;
+        color: $red;
+      }
+
+      p {
+        width: calc(100% - 1.25rem);
+        color: $red;
+        font-weight: 700;
+      }
+    }
+
+    .slider {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 1rem;
+
+      p {
+        @extend .text-sm;
+
+        color: $black;
+        margin: 0;
+        margin-right: 1rem;
+      }
+
+      button {
+        flex-shrink: 0;
+        border: none;
+        border-radius: $rounded;
+        width: 3rem;
+        height: 1.5rem;
+        background-color: $light-gray;
+        position: relative;
+        cursor: pointer;
+        @include transition(background-color);
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          display: flex;
+          height: 1.75rem;
+          width: 1.75rem;
+          border-radius: $rounded;
+          background-color: $dark-gray;
+          @include transitions(background-color, transform);
+        }
+      }
+
+      &.checked button {
+        background-color: $dark-gray;
+
+        &::after {
+          background-color: $yellow;
+          transform: translateX(calc(100% - 4px));
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    display: none;
+  }
+}

@@ -1,0 +1,622 @@
+@use "../../../../styles/variables" as *;
+
+#course-page .main {
+  .info-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    max-width: 26rem;
+
+    .course-image {
+      width: 100%;
+      max-width: 26rem;
+
+      aspect-ratio: 16 / 9;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      background-color: $yellow;
+
+      margin: 0 auto;
+      margin-bottom: 1.75rem;
+      border-radius: 1rem;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+
+      svg {
+        height: 100%;
+        width: 100%;
+        color: $black;
+      }
+    }
+
+    .vertical {
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      h2 {
+        display: none;
+        @extend .text;
+        color: $black;
+        text-align: center;
+
+        margin-bottom: 1rem;
+      }
+
+      .price {
+        @extend .text-sm;
+        color: $gray;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 1rem 0;
+
+        strong {
+          margin-top: 0.5rem;
+          @extend .display-sm;
+          color: $black;
+        }
+      }
+
+      .message {
+        @extend .text;
+        color: $black;
+        font-weight: 600;
+
+        margin: 3rem 0;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+
+        .action-button {
+          margin-bottom: 0.5rem;
+
+          svg {
+            height: 1.5rem;
+            width: 1.5rem;
+            fill: $white;
+            margin-left: -1.5rem;
+            margin-right: 0.5rem;
+          }
+
+          &.wish-course-normal {
+            margin-bottom: 0;
+            background-color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    .title {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      width: 100%;
+
+      h1 {
+        @extend .text-lg;
+        color: $black;
+        width: calc(100% - 40px);
+        text-align: left;
+
+        margin-bottom: 1rem;
+      }
+
+      .small-button {
+        margin-top: -0.75rem;
+      }
+    }
+
+    .short-description {
+      @extend .text-sm;
+
+      width: 100%;
+      text-align: left;
+      color: $gray;
+      margin-bottom: 2rem;
+      line-height: 18px;
+      white-space: pre-line;
+      text-align: justify;
+      text-justify: auto;
+    }
+
+    .instructor {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      text-decoration: none;
+
+      width: 100%;
+      margin-bottom: 2rem;
+
+      &:hover .right strong {
+        transition: none;
+        color: $yellow;
+      }
+
+      .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 2.25rem;
+        width: 2.25rem;
+        margin-right: 0.75rem;
+        overflow: hidden;
+        border-radius: $rounded;
+        background-color: $light-gray;
+
+        img {
+          height: 100%;
+        }
+
+        svg {
+          height: 50%;
+          color: $light-gray-2;
+        }
+      }
+
+      .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: calc(100% - 2.25rem - 0.75rem);
+
+        strong {
+          @extend .text;
+          margin-bottom: 0.25rem;
+          @include transition(color);
+          width: 100%;
+          max-width: 20rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          color: $black;
+        }
+
+        p {
+          @extend .text-xs;
+
+          width: 100%;
+          color: $gray;
+          max-width: 20rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .technical-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      max-width: 30rem;
+      row-gap: 0.5rem;
+
+      margin-bottom: 2rem;
+
+      .detail {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        svg {
+          height: 1rem;
+          margin-right: 0.5rem;
+          fill: $gray;
+        }
+
+        span {
+          @extend .text-sm;
+
+          color: $gray;
+        }
+      }
+    }
+
+    .tabulation .content {
+      h2 {
+        @extend .text-lg;
+        color: $black;
+
+        margin-bottom: 1rem;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        margin-bottom: 1rem;
+
+        li {
+          @extend .text-sm;
+
+          color: $gray;
+          position: relative;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          margin-bottom: 0.5rem;
+
+          svg {
+            height: 1rem;
+            color: $yellow;
+            margin-top: 0.0625rem;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+
+            path {
+              stroke-width: 64;
+            }
+          }
+        }
+      }
+
+      .projects {
+        background-color: $black;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 1rem;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        margin-bottom: 1rem;
+
+        .el {
+          width: 5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          margin-right: 1rem;
+
+          img {
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 0.25rem;
+          }
+
+          span {
+            color: $white;
+            font-size: 12px;
+          }
+        }
+      }
+
+      .requirements svg {
+        margin-top: 0.3125rem;
+        height: 0.5rem;
+        fill: $gray;
+      }
+
+      .description {
+        @extend .text-sm;
+        color: $gray;
+        white-space: pre-line;
+        // margin-bottom: 1rem;
+        text-align: justify;
+        text-justify: auto;
+        margin-bottom: 1rem;
+      }
+
+      .summary svg {
+        fill: $gray;
+      }
+
+      .lessons {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        width: 100%;
+        min-height: 12rem;
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          z-index: 5;
+          width: 100%;
+          height: 12rem;
+          background: linear-gradient(to top, $white 10%, transparent);
+        }
+
+        .lesson {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 0.5rem;
+          width: 100%;
+          position: relative;
+
+          .locked {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 2rem;
+            width: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: $rounded;
+
+            background-color: $shadow;
+
+            svg {
+              height: 1rem;
+
+              fill: $black;
+            }
+          }
+
+          .lesson-miniature {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 3rem;
+            width: 3rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-right: 1rem;
+
+            img {
+              width: 100%;
+              height: 100%;
+
+              object-fit: cover;
+            }
+
+            svg {
+              height: 80%;
+              width: 80%;
+              color: $gray;
+            }
+          }
+
+          .group {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: calc(100% - (48px + 16px) - (32px + 16px));
+            overflow: hidden;
+
+            strong {
+              width: 100%;
+
+              @extend .text-sm;
+              color: $black;
+              font-weight: bold;
+
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            span {
+              @extend .text-xs;
+              color: $gray;
+            }
+          }
+        }
+      }
+
+      .final {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        margin-bottom: 4rem;
+
+        width: 100%;
+
+        strong {
+          @extend .text;
+          color: $black;
+
+          margin-bottom: 1rem;
+        }
+
+        .action-button {
+          width: max-content;
+          padding: 0 3rem;
+        }
+      }
+    }
+
+    .related-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding-top: 1.75rem;
+      margin-bottom: 1rem;
+
+      border-top: 1px solid $light-gray;
+
+      h2 {
+        @extend .text-lg;
+        color: $black;
+
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .buy-now {
+    width: 60%;
+
+    background-color: $white;
+    position: fixed;
+    bottom: 5rem;
+
+    max-width: 16rem;
+    border-radius: 0 $rounded $rounded 0;
+
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 0px 8px $shadow;
+
+    padding: 0.5rem 1rem;
+    padding-right: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      @extend .text;
+
+      font-weight: bold;
+
+      margin-right: 1rem;
+    }
+
+    .action-button {
+      color: $black;
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .container {
+      padding: 0 2rem;
+    }
+
+    .info-card {
+      max-width: 100%;
+      flex-direction: row;
+      margin-bottom: 2rem;
+      padding: 0 2rem;
+
+      .course-image {
+        margin-bottom: 0;
+      }
+
+      .vertical {
+        display: flex;
+        margin-left: 2rem;
+        max-width: 20rem;
+
+        .buttons .action-button.wish {
+          display: none;
+        }
+      }
+    }
+
+    .buy-now.company {
+      left: 72px;
+    }
+  }
+
+  @media screen and (min-width: $tablet-md) {
+    .container {
+      padding: 0 1rem;
+    }
+
+    .info-card {
+      padding: 0 1rem;
+
+      .course-image {
+        margin: 0;
+        margin-right: 2rem;
+      }
+
+      .vertical {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-lg) {
+    flex-direction: row;
+    align-items: flex-start;
+
+    .info-card {
+      flex-direction: column;
+      padding: 1rem;
+      border: 1px solid $shadow;
+      background-color: $white;
+      border-radius: 2rem;
+      margin-right: 1rem;
+      max-width: 20rem;
+      position: sticky;
+      top: 2rem;
+
+      .course-image {
+        margin-bottom: 1rem;
+        margin-right: 0;
+      }
+
+      .vertical {
+        margin-left: 0;
+
+        h2 {
+          display: flex;
+        }
+
+        .buttons .action-button.wish-course-normal {
+          display: flex;
+        }
+      }
+    }
+
+    .buy-now {
+      display: none;
+    }
+
+    .container {
+      padding-top: 2rem;
+      padding-left: 1rem;
+
+      .title {
+        h1 {
+          width: 100%;
+        }
+        .small-button {
+          display: none;
+        }
+      }
+    }
+  }
+}

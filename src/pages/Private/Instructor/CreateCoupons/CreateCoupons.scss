@@ -1,0 +1,193 @@
+@use "../../../../styles/variables" as *;
+
+#create-coupons .main {
+  h1 {
+    @extend .display-xs;
+    color: $black;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px dashed $shadow;
+  }
+
+  h2 {
+    @extend .text;
+    color: $yellow;
+    padding-left: 1rem;
+    color: #ffb200;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .my-coupons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    .coupon {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 2fr 7fr 1fr;
+      gap: 1rem;
+
+      padding: 1rem;
+      border-radius: 1rem;
+      background-color: $white;
+      box-shadow: $box-shadow;
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 1rem;
+        border-left: 1px dashed $dark-shadow;
+
+        .small-button {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+
+        strong {
+          @extend .text;
+          font-weight: 700;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          @extend .text-sm;
+          margin-bottom: 1rem;
+          word-break: break-all;
+        }
+      }
+
+      .value {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        padding-right: 1rem;
+        border-right: 1px dashed $dark-shadow;
+
+        span {
+          width: 100%;
+          text-align: center;
+          @extend .text-xs;
+          margin-bottom: 0.5rem;
+        }
+        strong {
+          width: 100%;
+          text-align: center;
+          @extend .text-lg;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .edit-coupon-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    .inputs-section,
+    .change-courses {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .change-courses {
+      margin-bottom: 1rem;
+
+      .current,
+      .add {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 6rem;
+
+        & > strong {
+          @extend .text;
+          color: $yellow;
+          padding-left: 1rem;
+          color: #ffb200;
+          font-weight: 700;
+          margin-bottom: 2rem;
+          width: 100%;
+          text-align: left;
+        }
+
+        .option {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+          padding: 0.25rem 1rem;
+          border-radius: 8px;
+          border: 1px solid $shadow;
+
+          strong {
+            @extend .text-sm;
+            width: 100%;
+            font-weight: 600;
+            color: $black;
+          }
+
+          .small-button {
+            flex-shrink: 0;
+          }
+        }
+      }
+
+      .current {
+        margin-bottom: 1.5rem;
+      }
+
+      .no-data {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+    }
+
+    .action-button {
+      max-width: max-content;
+      padding: 0 6rem;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (min-width: $tablet-lg) {
+    .my-coupons,
+    .edit-coupon-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .edit-coupon-section .action-button {
+      grid-column: 1/3;
+    }
+  }
+}

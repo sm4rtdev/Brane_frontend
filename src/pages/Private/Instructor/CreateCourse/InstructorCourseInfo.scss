@@ -1,0 +1,220 @@
+@use "../../../../styles/variables" as *;
+
+.instructor-course-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed $shadow;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.action {
+      padding-bottom: 3rem;
+    }
+
+    h2 {
+      @extend .text-md;
+      color: $dark-gray;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    h3 {
+      padding-left: 1rem;
+      @extend .text;
+      color: $yellow;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dynamic-input {
+      margin-bottom: 0.25rem;
+    }
+
+    #demo-simple-select {
+      margin-bottom: 0.25rem;
+
+      .MuiOutlinedInput-notchedOutline {
+        border: 1px solid $dark-shadow !important;
+      }
+    }
+
+    .hint {
+      padding: 0 1rem;
+      @extend .text-sm;
+      color: $dark-gray;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    .list-items {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 1rem;
+      width: 100%;
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        width: 100%;
+        padding: 0 1rem;
+        margin-bottom: 0.75rem;
+
+        & > svg {
+          height: 0.75rem;
+          width: 0.75rem;
+          fill: $dark-gray;
+          margin-right: 1rem;
+          margin-top: 0.25rem;
+        }
+
+        p {
+          @extend .text-sm;
+          color: $dark-gray;
+          width: calc(100% - 40px - 28px - 16px);
+          word-wrap: break-word;
+        }
+
+        .small-button {
+          width: 2rem;
+          height: 2rem;
+
+          svg {
+            height: 1.25rem;
+            width: 1.25rem;
+          }
+        }
+
+        .no-items {
+          color: $light-gray;
+        }
+      }
+
+      .no-items {
+        @extend .text-sm;
+        color: $gray;
+        width: 100%;
+        text-align: center;
+        padding: 1rem 1rem 0.375rem;
+      }
+    }
+
+    .aggregator {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      margin-bottom: 1rem;
+      width: 100%;
+
+      .action-button {
+        margin-top: 1rem;
+        height: 2.5rem;
+        max-width: 10rem;
+        margin-bottom: 2rem;
+      }
+      .hint {
+        margin-bottom: 0;
+      }
+    }
+
+    .categories {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      width: 100%;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+
+      .cat {
+        padding: 0.5rem 1rem;
+        color: $dark-gray;
+        border: none;
+        border-radius: $rounded;
+        background-color: $white;
+        @extend .text-sm;
+        font-weight: 500;
+        cursor: pointer;
+        margin: 0.25rem;
+        width: max-content;
+        @include transition(background-color);
+
+        &.selected,
+        &:hover {
+          transition: none;
+          background-color: $yellow;
+        }
+      }
+    }
+
+    .price-section {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+      justify-items: center;
+      margin-bottom: 0.5rem;
+
+      .dynamic-input {
+        max-width: 16rem;
+      }
+
+      @media screen and (min-width: $tablet-sm) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media screen and (min-width: $desktop-sm) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .action-button.max {
+      max-width: 16rem;
+    }
+  }
+
+  .final {
+    width: max-content;
+    padding: 0 4rem;
+
+    .spinner-of-doom {
+      flex-shrink: 0;
+      height: 2rem;
+      width: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    &.request {
+      margin-top: 1rem;
+      background-color: $google-blue;
+    }
+  }
+
+  .red {
+    background-color: $red;
+  }
+}

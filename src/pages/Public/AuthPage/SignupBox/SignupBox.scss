@@ -1,0 +1,18 @@
+@use "../../../../styles/variables" as *;
+
+#signup-box {
+  .not-first-time {
+    @extend .text-sm;
+
+    color: $dark-gray;
+    margin-bottom: 2rem;
+  }
+
+  .conditions {
+    @extend .text-sm;
+
+    width: 100%;
+    text-align: center;
+    color: $gray;
+  }
+}

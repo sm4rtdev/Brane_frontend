@@ -1,0 +1,161 @@
+@use "../../styles/variables" as *;
+
+#wishlist-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 300;
+
+  width: 100%;
+  min-height: calc(var(--unit) * 100);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $shadow;
+  opacity: 0;
+  cursor: pointer;
+  padding: 1rem;
+
+  @include transition(opacity);
+
+  &.visible {
+    opacity: 1;
+  }
+
+  .modal {
+    cursor: default;
+    background-color: $white;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 12rem;
+    max-width: 20rem;
+
+    strong {
+      @extend .text;
+
+      color: $black;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 1rem;
+
+      .lists-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        max-height: 14.25rem;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+
+        border-bottom: 1px dashed $shadow;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+          width: 8px;
+          background-color: $shadow;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $dark-shadow;
+        }
+
+        .list {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 0.25rem;
+
+          &:last-of-type {
+            margin-bottom: 1rem;
+          }
+
+          input[type="radio"] {
+            display: none;
+
+            &:checked + label::before {
+              background-color: $yellow;
+            }
+          }
+
+          label {
+            @extend .text-sm;
+
+            position: relative;
+            cursor: pointer;
+            color: $black;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem;
+            padding-left: 2rem;
+            border-radius: 8px;
+
+            &::before {
+              content: "";
+              position: absolute;
+              left: 0.5rem;
+              width: 0.75rem;
+              height: 0.75rem;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border: 2px solid $yellow;
+              border-radius: $rounded;
+            }
+
+            &:hover {
+              background-color: $shadow;
+            }
+          }
+        }
+      }
+    }
+
+    .add-list-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      margin-bottom: 1rem;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .action-button {
+        height: 38px;
+        width: max-content;
+        padding: 0 1rem;
+        margin-right: 0.75rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        @extend .text-sm;
+        font-weight: 500;
+      }
+    }
+  }
+}

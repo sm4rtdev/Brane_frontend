@@ -1,0 +1,87 @@
+@use "../../styles/variables" as *;
+
+#public-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+
+  nav {
+    display: none;
+  }
+
+  .access {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .action-button {
+      @extend .text-sm;
+
+      height: 2.25rem;
+      width: max-content;
+      padding: 0 0.75rem;
+      font-weight: 500;
+
+      &:first-of-type {
+        color: $black;
+        background-color: transparent;
+        margin-right: 0.25rem;
+
+        &:hover {
+          background-color: $shadow;
+        }
+      }
+
+      &:last-of-type {
+        background-color: $black;
+        color: $white;
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    padding: 0 2rem;
+
+    .access .action-button:first-of-type {
+      margin-right: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+    }
+  }
+  @media screen and (min-width: $tablet-md) {
+    padding: 0 3rem;
+  }
+  @media screen and (min-width: $tablet-lg) {
+    .logo {
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+
+    padding: 0 4rem;
+
+    nav a {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+  @media screen and (min-width: $desktop-sm) {
+    nav {
+      margin-right: -12rem;
+
+      a {
+        margin: 0 0.75rem;
+      }
+    }
+  }
+  @media screen and (min-width: $desktop-md) {
+    nav a {
+      margin: 0 1rem;
+    }
+  }
+}

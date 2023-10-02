@@ -1,0 +1,56 @@
+@use "../../styles/variables" as *;
+
+#categories-home {
+  width: 100%;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
+  & > strong {
+    margin-bottom: 1rem;
+    font-size: 20px;
+  }
+
+  &.search {
+    padding: 0;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      height: 0;
+    }
+
+    width: 100%;
+
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .btn-cat {
+      background-color: $white;
+      border: 1px solid $black;
+      border-radius: $rounded;
+      padding: 0.5rem 1rem;
+      color: $black;
+      margin-right: 1rem;
+      min-width: max-content;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      text-decoration: none;
+
+      &:hover {
+        transition: none;
+        background-color: $black;
+        color: $white;
+      }
+    }
+  }
+}

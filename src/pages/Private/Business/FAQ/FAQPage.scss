@@ -1,0 +1,149 @@
+@use "../../../../styles/variables" as *;
+
+#business-faq-page .main {
+  h1 {
+    @extend .display-xs;
+    color: $black;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px dashed $shadow;
+  }
+
+  h2 {
+    @extend .text-md;
+    color: $dark-gray;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    width: 100%;
+    text-align: left;
+    padding-left: 2rem;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    .faq-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      margin-right: auto;
+      margin-bottom: 3rem;
+
+      .faq-dropdown {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        &.open .title {
+          box-shadow: none;
+          background-color: $yellow;
+          border-radius: 1rem 1rem 0 0;
+
+          svg {
+            transform: rotateZ(-90deg);
+          }
+        }
+
+        .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          padding: 0.75rem 2rem;
+          border-radius: $rounded;
+          box-shadow: $box-shadow;
+          cursor: pointer;
+          @include transitions(box-shadow, background-color);
+
+          strong {
+            @extend .text;
+            color: $dark-gray;
+            font-weight: 600;
+          }
+
+          svg {
+            height: 1.5rem;
+            width: 1.5rem;
+            @include transition(transform);
+            transform: rotateZ(90deg);
+            color: $dark-gray;
+          }
+
+          &:hover {
+            box-shadow: none;
+            transition: none;
+            background-color: $yellow;
+          }
+        }
+
+        .desc {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background-color: $yellow;
+          padding: 1rem 2rem 2rem;
+          border-radius: 0 0 1rem 1rem;
+
+          p {
+            @extend .text;
+            color: $dark-gray;
+            text-align: left;
+          }
+        }
+      }
+    }
+
+    .image-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      svg {
+        max-width: 26rem;
+        height: max-content;
+        position: sticky;
+        top: 4rem;
+      }
+    }
+
+    .questions {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      .form {
+        width: 100%;
+      }
+    }
+  }
+
+  @media screen and (min-width: $desktop-sm) {
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      .image-container {
+        grid-row: 1 / 3;
+        grid-column: 2;
+      }
+    }
+  }
+}

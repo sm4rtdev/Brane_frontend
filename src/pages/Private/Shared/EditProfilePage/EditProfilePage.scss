@@ -1,0 +1,57 @@
+@use "../../../../styles/variables" as *;
+
+#edit-profile-page .main {
+  margin-bottom: 4rem;
+
+  form {
+    width: 100%;
+    max-width: 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    h2 {
+      @extend .text-lg;
+      color: $dark-gray;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      width: 100%;
+      text-align: center;
+
+      &.separator {
+        margin: 1rem 0;
+      }
+    }
+
+    .action-button {
+      margin-top: 1rem;
+      max-width: 12rem;
+    }
+
+    .only {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      padding-top: 1rem;
+      border-top: 1px dashed $shadow;
+      margin-top: 1rem;
+
+      .dynamic-input {
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    .explanatory {
+      @extend .text-sm;
+      padding: 0 1rem;
+      color: $dark-gray;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: left;
+    }
+  }
+}

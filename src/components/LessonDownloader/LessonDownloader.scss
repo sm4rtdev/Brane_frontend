@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.lesson-downloader {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  width: 100%;
+  padding: 0.25rem 0;
+
+  border-bottom: 1px solid $shadow;
+  margin-bottom: 0.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .title {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    margin-bottom: 0.25rem;
+
+    @extend .text-sm;
+    color: $dark-gray;
+  }
+
+  .size {
+    @extend .text-xs;
+    color: $black;
+    margin-bottom: 0.5rem;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    padding-right: 1rem;
+    padding-bottom: 0.25rem;
+
+    .small-button {
+      height: 2rem;
+      width: max-content;
+      padding: 0 1rem;
+      flex-shrink: 0;
+
+      svg {
+        height: 1.25rem;
+        margin-right: 0.25rem;
+      }
+
+      p {
+        @extend .text-sm;
+        color: $black;
+      }
+    }
+
+    .status {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .spinner-of-doom {
+        width: 2rem !important;
+        margin-left: 0 !important;
+      }
+
+      p {
+        width: 100%;
+        @extend .text-sm;
+        color: $dark-gray;
+      }
+    }
+  }
+}

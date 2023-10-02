@@ -1,0 +1,129 @@
+@use "../../../styles/variables" as *;
+
+#contact-page {
+  .banner {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    max-height: 20rem;
+    overflow: hidden;
+    background-color: $yellow;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: "";
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      border: 1px solid $dark-gray;
+      position: absolute;
+    }
+    &::before {
+      top: -2rem;
+      left: -2rem;
+    }
+    &::after {
+      bottom: -2rem;
+      right: -2rem;
+    }
+
+    & > svg {
+      position: absolute;
+      top: 0;
+      left: 10%;
+
+      height: 50%;
+
+      &:nth-child(2) {
+        top: initial;
+        left: initial;
+        bottom: 0;
+        right: 10%;
+      }
+    }
+
+    .fancy-container {
+      position: relative;
+      z-index: 1;
+      height: 20rem;
+      align-items: flex-end;
+
+      img {
+        width: max-content;
+        height: 80%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .main {
+    h1 {
+      @extend .display-xs;
+      color: $black;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .social {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 2rem;
+
+      button {
+        @extend .text-sm;
+        width: 16rem;
+        text-align: center;
+        color: $black;
+        background-color: transparent;
+        border: 1px solid $light-gray-2;
+        padding: 0.75rem 2rem;
+        border-radius: $rounded;
+        cursor: pointer;
+        font-weight: 600;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 1rem 0.5rem;
+
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+          margin: 0 0.5rem;
+        }
+
+        &:hover {
+          background-color: $dark-shadow;
+        }
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 30rem;
+
+      .action-button {
+        width: max-content;
+        padding: 0 4rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-lg) {
+    .main .social {
+      flex-direction: row;
+    }
+  }
+}

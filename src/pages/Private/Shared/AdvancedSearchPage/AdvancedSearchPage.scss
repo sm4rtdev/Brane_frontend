@@ -1,0 +1,190 @@
+@use "../../../../styles/variables" as *;
+
+#advanced-search-page .main {
+  .no-results {
+    margin-top: 3rem;
+
+    @extend .text-sm;
+    color: $gray;
+    font-weight: 500;
+  }
+
+  h2 {
+    width: 100%;
+    @extend .text-md;
+    color: $black;
+    margin-bottom: 1rem;
+
+    &:first-of-type {
+      margin-top: 0.25rem;
+    }
+  }
+
+  .popular {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    .carousel {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      position: relative;
+
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        width: 2rem;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      &::after {
+        top: 0;
+        right: 0;
+        background: linear-gradient(to right, transparent, $white);
+      }
+      &::before {
+        top: 0;
+        left: 0;
+        background: linear-gradient(to right, $white, transparent);
+      }
+
+      & > .small-button {
+        display: none;
+        position: absolute;
+        z-index: 40;
+
+        &.move-left {
+          left: 0;
+
+          svg {
+            transform: rotateZ(180deg);
+          }
+        }
+
+        &.move-right {
+          right: 0;
+        }
+      }
+
+      & > .container {
+        width: min-content;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-rows: 1fr;
+
+        padding: 0 2rem;
+
+        padding-bottom: 1.5rem;
+
+        overflow-x: scroll;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          height: 0;
+        }
+
+        .course-card {
+          margin-right: 1rem;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .filterable {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 1rem;
+    width: 100%;
+
+    .filter {
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      width: 100%;
+      background-color: $white;
+      box-shadow: $box-shadow;
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      max-width: 30rem;
+      height: max-content;
+
+      h2 {
+        margin-bottom: 2rem;
+      }
+
+      h3 {
+        width: 100%;
+        @extend .text-sm;
+        color: $black;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-left: 0.5rem;
+      }
+
+      .slider {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+      }
+    }
+
+    .list {
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .popular .carousel {
+      padding: 0 2rem;
+
+      &::after {
+        right: 2rem;
+      }
+      &::before {
+        left: 2rem;
+      }
+
+      .small-button {
+        display: flex;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-md) {
+    .filterable {
+      grid-template-columns: minmax(16rem, 1fr) 2fr;
+
+      .filter {
+        display: flex;
+      }
+    }
+  }
+  @media screen and (min-width: $tablet-lg) {
+    .filterable .filter {
+      padding: 1.5rem 2rem;
+    }
+  }
+}

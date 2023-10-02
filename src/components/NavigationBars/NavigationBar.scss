@@ -1,0 +1,135 @@
+@use "../../styles/variables" as *;
+
+.navigation-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  height: 3.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: $black;
+    border-radius: 1rem 1rem 0 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0 1rem;
+    margin: 0 auto;
+
+    a {
+      height: 100%;
+      width: 100%;
+
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      @include transition(background-color);
+
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+        fill: $white;
+        color: $white;
+
+        margin-bottom: 0.25rem;
+      }
+
+      span {
+        @extend .text-xx;
+
+        color: $white;
+      }
+
+      &:nth-child(1) {
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+      }
+
+      &:hover {
+        transition: none;
+        background-color: $white-shadow;
+      }
+
+      &:active {
+        transition: none;
+        background-color: $white-shadow-2;
+      }
+    }
+  }
+
+  &.business .container {
+    background-color: $yellow;
+
+    a {
+      svg {
+        fill: $black;
+        color: $black;
+      }
+
+      span {
+        color: $black;
+        font-weight: 500;
+      }
+    }
+  }
+
+  &.student .container a {
+    svg {
+      height: 1rem;
+      width: 1rem;
+    }
+
+    &:nth-child(3) {
+      svg {
+        height: 2.25rem;
+        width: 2.25rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    position: static;
+    height: 100%;
+    width: 100%;
+
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 4.5rem;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0;
+      border-radius: 0;
+      padding-top: 4rem;
+
+      a {
+        height: max-content;
+        padding: 1rem 0;
+      }
+    }
+
+    &.student {
+      display: none;
+    }
+  }
+}

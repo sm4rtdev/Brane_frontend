@@ -1,0 +1,493 @@
+@use "./variables" as *;
+
+.continue-with-google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  width: 100%;
+  height: $btn-height;
+}
+
+#g_a11y_announcement {
+  display: none !important;
+}
+
+.continue-with-facebook,
+.continue-with-apple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  width: 100%;
+  height: $btn-height;
+
+  background-color: $facebook-blue;
+  border: none;
+  border-radius: $rounded;
+  box-shadow: 0 2px 10px $shadow;
+  cursor: pointer;
+  position: relative;
+  outline: 2px solid transparent;
+  @include transitions(box-shadow, outline-color);
+
+  &:hover {
+    box-shadow: 0 2px 10px $dark-shadow;
+  }
+  &:active {
+    transition: none;
+    outline-color: $dark-shadow;
+  }
+
+  p {
+    @extend .text;
+
+    color: $white;
+    font-weight: 500;
+  }
+
+  svg {
+    height: 30px;
+    width: 30px;
+    fill: $white;
+    margin-right: 0.5rem;
+  }
+}
+
+.continue-with-apple {
+  background-color: $black;
+}
+
+.action-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+
+  width: 100%;
+  height: $btn-height;
+  border: none;
+  border-radius: $rounded;
+
+  background-color: $yellow;
+  cursor: pointer;
+
+  @extend .text;
+  font-weight: bold;
+  color: $white;
+  @include transition(background-color);
+
+  &:hover {
+    transition: none;
+    background-color: $yellow-2;
+  }
+
+  &:active {
+    transition: none;
+    background-color: $yellow-3;
+  }
+
+  &.black {
+    @extend .black-action;
+  }
+
+  &.border {
+    border: 1px solid $black;
+    color: $black;
+
+    &.white {
+      background-color: $white;
+      @include transition(opacity);
+
+      &:hover {
+        transition: none;
+        background-color: $shadow !important;
+      }
+
+      &:active {
+        transition: none;
+        background-color: $dark-shadow !important;
+      }
+    }
+  }
+
+  &:disabled {
+    background-color: $gray;
+
+    &:hover {
+      transition: none;
+      background-color: $gray;
+    }
+
+    &:active {
+      transition: none;
+      background-color: $gray;
+    }
+  }
+
+  &.content {
+    width: max-content;
+    padding: 0 2rem;
+    margin: 0 auto;
+  }
+}
+
+.small-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: $black;
+
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: $rounded;
+  background-color: transparent;
+  cursor: pointer;
+  @include transition(background-color);
+
+  svg {
+    fill: $black;
+    height: 1.5rem;
+  }
+
+  &:hover {
+    transition: none;
+    background-color: $shadow;
+  }
+
+  &:active {
+    transition: none;
+    background-color: $dark-shadow;
+  }
+}
+
+.tabulation {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .tabs {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid $light-gray;
+
+    .tab {
+      padding-bottom: 0.75rem;
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      position: relative;
+
+      button {
+        padding: 0.5rem 1.75rem;
+        background-color: transparent;
+        cursor: pointer;
+        @extend .text-sm;
+        font-weight: 500;
+      }
+
+      &::after {
+        content: "";
+        display: flex;
+        position: absolute;
+        bottom: -2.5px;
+        background-color: transparent;
+        width: 40%;
+        height: 5px;
+        border-radius: 2.5px;
+        @include transition(background-color);
+      }
+
+      &.selected::after {
+        transition: none;
+        background-color: $yellow;
+      }
+
+      &.black.selected::after {
+        transition: none;
+        background-color: $black;
+      }
+
+      &.bubble {
+        button {
+          border: 1px solid $black;
+          color: $black;
+          border-radius: $rounded;
+          @include transitions(background-color, color);
+
+          &:hover {
+            transition: none;
+            background-color: $black;
+            color: $white;
+          }
+        }
+
+        &.yellow {
+          button {
+            @include transitions(border-color, background-color);
+            border: 1px solid $black;
+            background-color: transparent;
+            color: $black;
+
+            &:hover {
+              transition: none;
+              background-color: $yellow;
+              border-color: $yellow;
+              color: $white;
+            }
+          }
+
+          &.selected button {
+            transition: none;
+            background-color: $yellow;
+            border-color: $yellow;
+            color: $white;
+          }
+        }
+
+        &.selected {
+          transition: none;
+          border-color: $black;
+
+          button {
+            background-color: $black;
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
+.no-data {
+  @extend .text-sm;
+  padding: 4rem 1rem;
+  color: $gray;
+  width: 100%;
+  text-align: center;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+
+    margin-bottom: 3rem;
+
+    @media screen and (min-width: $tablet-sm) {
+      padding: 1.25rem 2rem;
+      margin-bottom: 0;
+    }
+    @media screen and (min-width: $tablet-md) {
+      padding: 1.5rem 3rem;
+    }
+    @media screen and (min-width: $tablet-lg) {
+      padding: 2rem 4rem;
+    }
+  }
+
+  &.post-payment .main {
+    strong {
+      @extend .text-lg;
+      width: 100%;
+      text-align: center;
+      color: $yellow;
+      font-weight: 700;
+      margin: 4rem 0 1rem;
+    }
+
+    p {
+      @extend .text-sm;
+      width: 100%;
+      text-align: center;
+      color: $black;
+      margin-bottom: 2rem;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 30rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-button {
+      max-width: 20rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.page-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 4rem;
+  width: 100%;
+  position: relative;
+  z-index: 100;
+  background-color: $white;
+  padding: 0 1rem;
+
+  .logo {
+    height: 2rem;
+    width: 2rem;
+    text-decoration: none;
+    color: $black;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      height: 100%;
+      width: 100%;
+
+      path {
+        @include transition(fill);
+      }
+    }
+
+    &:hover svg path {
+      transition: none;
+      fill: $yellow;
+    }
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a,
+    button {
+      @extend .text-sm;
+
+      font-weight: 500;
+      color: $dark-gray;
+      padding: 0.25rem;
+      margin: 0 0.25rem;
+      text-decoration: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      border-bottom: 2px solid transparent;
+
+      @include transition(border-bottom-color);
+
+      &:hover {
+        transition: none;
+        border-bottom-color: $dark-gray;
+      }
+    }
+  }
+}
+
+.fancy-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    @include transition(opacity);
+  }
+
+  &.loaded {
+    animation: none;
+
+    img {
+      opacity: 1;
+    }
+  }
+
+  animation: loading 2s ease-in-out infinite alternate;
+
+  &.no-effect {
+    animation: none;
+  }
+
+  @keyframes loading {
+    0% {
+      background-image: $light-gray;
+    }
+    100% {
+      background-color: $light-gray-2;
+    }
+  }
+}
+
+.section-title-box {
+  padding: 1.5rem 2rem;
+  background-color: $black;
+  width: 100%;
+  border-radius: 16px;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 2rem;
+
+  h1 {
+    margin-right: auto;
+    color: $white;
+    @extend .text-lg;
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    display: flex;
+  }
+}
+
+.supra-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  @media screen and (min-width: $tablet-sm) {
+    display: grid;
+    grid-template-columns: 72px calc(100% - 72px);
+  }
+}

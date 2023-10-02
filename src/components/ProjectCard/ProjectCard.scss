@@ -1,0 +1,16 @@
+@use "../../styles/variables" as *;
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  img {
+    margin-bottom: 0.25rem;
+  }
+
+  strong {
+    @extend .text-sm;
+  }
+}

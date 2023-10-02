@@ -1,0 +1,36 @@
+@use "../../../../styles/variables" as *;
+
+#login-box {
+  h2 {
+    @extend .display-xs;
+
+    color: $yellow;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .below {
+    @extend .text;
+
+    width: 100%;
+    text-align: center;
+    color: $dark-gray;
+    margin-bottom: 2rem;
+  }
+
+  form .recover-password {
+    @extend .text-sm;
+
+    text-align: left;
+    margin-right: auto;
+    padding-left: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .first-time {
+    @extend .text-sm;
+
+    color: $dark-gray;
+  }
+}

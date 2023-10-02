@@ -1,0 +1,241 @@
+@use "../../../../styles/variables" as *;
+
+#search-page .main {
+  .results {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    min-height: 10rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px dashed $shadow;
+
+    .result {
+      width: 100%;
+      max-width: 46rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    & > h2 {
+      padding-top: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .no-results {
+      margin: 3rem 0 5rem;
+      @extend .text-sm;
+      color: $gray;
+      font-weight: 500;
+    }
+  }
+
+  .instructions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 4rem 0 6rem;
+    width: 100%;
+
+    svg {
+      height: 4rem;
+      width: 4rem;
+      margin-bottom: 1rem;
+
+      g path {
+        fill: $dark-shadow;
+      }
+    }
+
+    p {
+      width: 100%;
+      text-align: center;
+      @extend .text-sm;
+      color: $gray;
+    }
+  }
+
+  h2 {
+    width: 100%;
+    margin-bottom: 1.5rem;
+
+    @extend .text-md;
+    color: $black;
+    font-weight: 600;
+  }
+
+  h3 {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+
+    @extend .text;
+    color: $gray;
+    font-weight: 500;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 10rem;
+    margin-bottom: 2rem;
+
+    .card {
+      text-decoration: none;
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      svg {
+        flex-shrink: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .category-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: $black;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid $black;
+
+      @include transitions(color, background-color, border-color);
+
+      p {
+        @extend .text;
+        font-weight: 500;
+
+        width: calc(100% - 20px);
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        transition: none;
+        background-color: $yellow;
+        color: $white;
+        border-color: $yellow;
+      }
+
+      &:active {
+        transition: none;
+        background-color: $yellow-2;
+        color: $white;
+        border-color: $yellow-2;
+      }
+    }
+
+    .instructor-card {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      color: $black;
+      padding: 0.5rem 1rem;
+      padding-left: 0.5rem;
+
+      @include transition(background-color);
+
+      .profile-picture {
+        height: 2.75rem;
+        width: 2.75rem;
+        overflow: hidden;
+        border-radius: $rounded;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        background-color: $light-gray;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-shrink: 0;
+
+        width: calc(100% - 60px - 20px);
+
+        strong {
+          @extend .text-sm;
+          color: $black;
+          font-weight: 600;
+
+          max-width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        span {
+          @extend .text-xs;
+          color: $gray;
+
+          max-width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &:hover {
+        transition: none;
+        background-color: $shadow;
+      }
+      &:active {
+        transition: none;
+        background-color: $dark-shadow;
+      }
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+    justify-items: center;
+
+    .section {
+      width: 100%;
+      max-width: 30rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+
+  @media screen and (min-width: $tablet-md) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}

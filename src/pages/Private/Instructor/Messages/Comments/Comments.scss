@@ -1,0 +1,266 @@
+@use "../../../../../styles/variables" as *;
+
+#comments-page {
+  width: 100%;
+
+  h1 {
+    @extend .display-xs;
+    color: $black;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px dashed $shadow;
+  }
+
+  h2 {
+    @extend .text;
+    color: $yellow;
+    padding-left: 1rem;
+    color: #ffb200;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .courses {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-items: center;
+
+    @media screen and (min-width: $tablet-sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (min-width: $tablet-lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (min-width: $desktop-sm) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .general {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+
+    .player {
+      width: 100%;
+      max-width: 40rem;
+      margin: 0 auto;
+
+      aspect-ratio: 16 / 9;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      background-color: $yellow;
+
+      margin-bottom: 1.75rem;
+      border-radius: 1rem;
+      overflow: hidden;
+
+      video {
+        width: 100%;
+
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    .comments-section {
+      margin-bottom: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      h2 {
+        @extend .text-md;
+        font-weight: 600;
+        color: $black;
+
+        margin-bottom: 2rem;
+      }
+
+      .container {
+        width: 100%;
+        min-height: 14rem;
+        max-height: 22rem;
+        padding-right: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        overflow-y: scroll;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $dark-shadow;
+        }
+
+        .no-comments {
+          margin: 4rem 0;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          @extend .text;
+          color: $gray;
+        }
+
+        .comment {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          margin-bottom: 1rem;
+
+          a {
+            text-decoration: none;
+            @extend .text;
+            color: $black;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+          }
+
+          span {
+            @extend .text-xs;
+            color: $light-gray-2;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            @extend .text-sm;
+            color: $black;
+          }
+        }
+      }
+
+      .add-new-comment {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        border-top: 1px dashed $shadow;
+        padding: 1rem 0;
+
+        .dynamic-input {
+          margin-bottom: 1rem;
+        }
+
+        .action-button {
+          margin-bottom: 0;
+          max-width: 20rem;
+        }
+      }
+    }
+  }
+
+  .lessons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-bottom: 2rem;
+    border-bottom: 1px dashed $shadow;
+
+    .lesson {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      cursor: pointer;
+
+      h2 {
+        margin-bottom: 0.5rem;
+
+        @extend .text;
+        color: $gray;
+        font-weight: 500;
+        text-align: left;
+        width: 100%;
+      }
+
+      .lesson-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        text-decoration: none;
+        color: black;
+        width: 100%;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+
+        .left {
+          margin-right: 1rem;
+          width: 30%;
+
+          aspect-ratio: 16 / 9;
+          border-radius: 0.5rem;
+          overflow: hidden;
+          flex-shrink: 0;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        .middle {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          width: 100%;
+
+          strong {
+            @extend .text-sm;
+
+            font-weight: 500;
+            color: $black;
+            margin-bottom: 0.25rem;
+          }
+
+          span {
+            @extend .text-xs;
+            color: $gray;
+          }
+        }
+
+        .right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

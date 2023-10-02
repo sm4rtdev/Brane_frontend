@@ -1,0 +1,27 @@
+@use "../../styles/variables" as *;
+
+.page-transition {
+  width: 100%;
+  min-height: calc(var(--unit) * 100);
+  opacity: 0;
+  position: relative;
+
+  &.margin {
+    margin-bottom: 8rem;
+  }
+
+  &.instructor {
+    margin-bottom: 0;
+  }
+
+  &.full-opacity {
+    @include transition(opacity);
+    opacity: 1;
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    &.margin {
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+@use "../../styles/variables" as *;
+
+$height: 2.5rem;
+$icon-size: 1.25rem;
+
+.dynamic-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  margin-bottom: 1rem;
+
+  label {
+    @extend .text-sm;
+
+    padding-left: 0.5rem;
+    color: $gray;
+    margin-bottom: 0.25rem;
+  }
+
+  input,
+  textarea {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: $height;
+
+    @extend .text-sm;
+    padding: 0.5rem;
+    padding-left: calc($icon-size + 1.5rem);
+    border: 1px solid $light-gray;
+    border-radius: $rounded;
+    background-color: transparent;
+    outline: 2px solid transparent;
+    @include transitions(border-color, outline-color);
+
+    &::placeholder {
+      @extend .text-sm;
+
+      color: $dark-gray;
+    }
+
+    &:focus {
+      transition: none;
+      outline-color: $yellow;
+      border-color: transparent;
+    }
+  }
+
+  textarea {
+    height: 10rem;
+    border-radius: 16px;
+    resize: vertical;
+  }
+
+  &.no-icon input,
+  textarea {
+    padding-left: 1rem;
+  }
+
+  svg {
+    height: $icon-size;
+    width: $icon-size;
+
+    fill: $light-gray;
+    color: $light-gray;
+
+    position: absolute;
+    z-index: -1;
+    bottom: calc(($height / 2) - ($icon-size/ 2));
+    left: 1rem;
+  }
+
+  &.price {
+    &::before {
+      content: "USD";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2rem;
+      height: $height;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: $yellow;
+      @extend .text;
+      font-weight: 700;
+      color: $dark-gray;
+      padding: 0 1rem;
+      padding-left: 1.5rem;
+      border-radius: 999px 0 0 999px;
+    }
+
+    input {
+      padding-left: 5.5rem;
+      font-weight: 700;
+      @extend .text;
+    }
+  }
+}

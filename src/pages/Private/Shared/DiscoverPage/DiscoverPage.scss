@@ -1,0 +1,296 @@
+@use "../../../../styles/variables" as *;
+
+#discover-page {
+  width: 100%;
+
+  .catalogue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    width: 100%;
+
+    h1 {
+      @extend .display-xs;
+      color: $black;
+      font-weight: 700;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      border-bottom: 1px dashed $shadow;
+    }
+  }
+
+  .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    aspect-ratio: 64 / 27;
+
+    background-color: $black;
+
+    img {
+      height: 100%;
+      width: auto;
+    }
+  }
+
+  .main {
+    padding: 0;
+    min-height: 28rem;
+
+    .padding {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      padding: 0 1rem;
+
+      &:first-of-type {
+        padding-top: 1rem;
+      }
+    }
+
+    & > .category {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      h3 {
+        @extend .text-md;
+        color: $black;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+      }
+
+      .carousel {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        position: relative;
+
+        &::after,
+        &::before {
+          content: "";
+          position: absolute;
+          z-index: 1;
+          width: 2rem;
+          height: 100%;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        &::after {
+          top: 0;
+          right: 0;
+          background: linear-gradient(to right, transparent, $white);
+        }
+        &::before {
+          top: 0;
+          left: 0;
+          background: linear-gradient(to right, $white, transparent);
+        }
+
+        & > .small-button {
+          display: none;
+          position: absolute;
+          z-index: 40;
+
+          &.move-left {
+            left: 0;
+
+            svg {
+              transform: rotateZ(180deg);
+            }
+          }
+
+          &.move-right {
+            right: 0;
+          }
+        }
+
+        & > .container {
+          width: min-content;
+          display: grid;
+          grid-auto-flow: column;
+          grid-template-rows: 1fr;
+
+          padding: 0 2rem;
+
+          padding-bottom: 1.5rem;
+
+          overflow-x: scroll;
+          scrollbar-width: none;
+
+          &::-webkit-scrollbar {
+            height: 0;
+          }
+
+          .course-card {
+            margin-right: 1rem;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .help {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 0.75rem;
+      position: relative;
+      background-color: $yellow;
+      border-radius: 1rem;
+      height: 16rem;
+
+      svg {
+        width: 100%;
+        height: 100%;
+
+        display: none;
+      }
+
+      .content {
+        width: 80%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: absolute;
+
+        strong {
+          @extend .display-xs;
+          color: $white;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        p {
+          @extend .text-sm;
+          color: $black;
+          font-weight: 500;
+          margin-bottom: 1rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        .action-button {
+          max-width: 16rem;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .banner {
+      aspect-ratio: 4 / 1;
+    }
+
+    .main {
+      .help {
+        height: 14rem;
+        margin-top: 2rem;
+      }
+      .padding {
+        padding: 0 2rem;
+
+        &:first-of-type {
+          padding-top: 1.25rem;
+        }
+      }
+
+      & > .category {
+        h3 {
+          padding-left: 2rem;
+        }
+
+        .carousel {
+          padding: 0 2rem;
+
+          &::after {
+            right: 2rem;
+          }
+          &::before {
+            left: 2rem;
+          }
+
+          .small-button {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (min-width: $tablet-md) {
+    .main {
+      .help {
+        svg {
+          display: block;
+        }
+
+        .content {
+          max-width: 23.75rem;
+        }
+      }
+      .padding {
+        padding: 0 3rem;
+
+        &:first-of-type {
+          padding-top: 1.5rem;
+        }
+      }
+      & > .category {
+        h3 {
+          padding-left: 3rem;
+        }
+        padding: 0 1rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-lg) {
+    .banner {
+      aspect-ratio: 5 / 1;
+    }
+
+    .main {
+      .padding {
+        padding: 0 4rem;
+
+        &:first-of-type {
+          padding-top: 2rem;
+        }
+      }
+
+      & > .category {
+        h3 {
+          padding-left: 4rem;
+        }
+        padding: 0 2rem;
+      }
+    }
+  }
+  @media screen and (min-width: $desktop-md) {
+    .banner {
+      aspect-ratio: 6 / 1;
+    }
+  }
+}

@@ -1,0 +1,140 @@
+@use "../../../../styles/variables" as *;
+
+#cart-page {
+  .main {
+    max-width: 56rem;
+    margin: 0 auto;
+
+    .block {
+      padding: 1.5rem 2rem;
+      background-color: $black;
+      width: 100%;
+      border-radius: 16px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      margin-bottom: 1rem;
+
+      h1 {
+        margin-right: auto;
+        color: $white;
+        @extend .text-lg;
+        margin-bottom: 1rem;
+      }
+
+      .action-button {
+        max-width: 14rem;
+
+        svg {
+          margin-left: 0.5rem;
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+      }
+
+      span {
+        margin-right: auto;
+        font-weight: 500;
+        color: $white;
+        @extend .text;
+      }
+
+      strong {
+        font-weight: 600;
+        color: $white;
+        @extend .text-md;
+      }
+    }
+
+    .shopping-list {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 4rem;
+
+      margin: 2rem 0;
+
+      h2 {
+        font-size: 20px;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .discount-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+
+      padding: 1rem;
+      margin-bottom: 2rem;
+
+      .button {
+        background-color: transparent;
+        border: none;
+
+        @extend .text-sm;
+        padding: 0.5rem 1rem;
+        border-radius: $rounded;
+        width: 15.75rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        @include transition(background-color);
+
+        &:hover {
+          transition: none;
+          background-color: $shadow;
+          font-weight: 600;
+        }
+      }
+
+      .coupon-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        max-width: 18rem;
+      }
+    }
+
+    .remember {
+      @extend .text-sm;
+      color: $gray;
+      text-align: center;
+      width: 100%;
+      padding: 1rem;
+      max-width: 42rem;
+    }
+
+    & > .action-button {
+      width: 100%;
+      max-width: 16rem;
+      margin: 0 auto;
+      margin-top: 1rem;
+      margin-bottom: 4rem;
+
+      color: $black;
+
+      &:disabled {
+        color: $white;
+      }
+    }
+  }
+
+  @media screen and (min-width: $tablet-sm) {
+    .main .block {
+      flex-direction: row;
+
+      h1 {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
