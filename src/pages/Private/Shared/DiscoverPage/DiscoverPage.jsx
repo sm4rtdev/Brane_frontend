@@ -6,6 +6,7 @@ import "./DiscoverPage.scss";
 
 import { BGNeedHelp } from "../../../../assets/images";
 import BannerHomeStudent from "../../../../assets/images/banner-home-student.jpg";
+import BannerHomeStudentEN from "../../../../assets/images/banner-home-studentEN.jpg";
 
 import PageTransition from "../../../../components/PageTransition/PageTransition";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
@@ -16,8 +17,10 @@ import Carousel from "./Carousel";
 import { getAllCourses } from "../../../../api/getAllCourses";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const DiscoverPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const [courses, setCourses] = useState(null);
 
@@ -55,11 +58,13 @@ const DiscoverPage = () => {
 
         {userData.company ? (
           <div className="catalogue">
-            <h1>Catálogo de Cursos</h1>
+            <h1>{dictionary.discoverPage[0][language]}</h1>
           </div>
         ) : (
           <div className="banner">
-            <FancyImage src={BannerHomeStudent} />
+            <FancyImage
+              src={language === "es" ? BannerHomeStudent : BannerHomeStudentEN}
+            />
           </div>
         )}
 
@@ -81,14 +86,11 @@ const DiscoverPage = () => {
               <BGNeedHelp />
 
               <div className="content">
-                <strong>¿Necesitas ayuda?</strong>
-                <p>
-                  ¡Estamos aquí para ayudarte! Visita nuestro centro de ayuda
-                  donde aclaramos las dudas más frecuentes de nuestra comunidad
-                </p>
+                <strong>{dictionary.discoverPage[1][language]}</strong>
+                <p>{dictionary.discoverPage[2][language]}</p>
 
                 <Link className="action-button black" to="/help">
-                  Centro de ayuda
+                  {dictionary.discoverPage[3][language]}
                 </Link>
               </div>
             </div>

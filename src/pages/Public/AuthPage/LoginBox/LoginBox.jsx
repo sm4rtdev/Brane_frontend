@@ -11,20 +11,23 @@ import {
   getFromLocal,
   updateLocal,
 } from "../../../../helpers/localStorage";
+import { getInstitutionMetadata } from "../../../../api/getInstitutionMetadata";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
+import { postMetaInstitution } from "../../../../api/postMetaInstitution";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { postMetaBusiness } from "../../../../api/postMetaBusiness";
 import { postUserMetadata } from "../../../../api/postUserMetadata";
+import { getUserMetadata } from "../../../../api/getUserMetadata";
+import { getCompanyMeta } from "../../../../api/getCompanyMeta";
 import { postLogin } from "../../../../api/postLogin";
 import { putUser } from "../../../../api/putUser";
 import { getUser } from "../../../../api/getUser";
-import { getUserMetadata } from "../../../../api/getUserMetadata";
-import { getCompanyMeta } from "../../../../api/getCompanyMeta";
-import { getInstitutionMetadata } from "../../../../api/getInstitutionMetadata";
-import { postMetaInstitution } from "../../../../api/postMetaInstitution";
 
 const LoginBox = ({ institutions }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const boxContainer = useRef(null);
@@ -64,7 +67,7 @@ const LoginBox = ({ institutions }) => {
   // Trigger message on confirmation
   useEffect(() => {
     if (searchParams.get("confirmed")) {
-      toast.success("El correo electrónico ha sido verificado exitosamente.");
+      toast.success(dictionary.login.confirmed[language]);
     }
   }, []); //eslint-disable-line
 
@@ -130,7 +133,7 @@ const LoginBox = ({ institutions }) => {
 
             // Successful login
             if (ok) {
-              toast.success("Acceso exitoso");
+              toast.success(dictionary.login.access[language]);
               updateLocal("loggedUser", data.jwt);
               updateUserData({ jwt: data.jwt });
             }
@@ -210,7 +213,7 @@ const LoginBox = ({ institutions }) => {
         console.log(data);
 
         if (ok) {
-          toast.success("Post registration completed");
+          toast.success(dictionary.login.post[language]);
 
           setTimeout(() => {
             runAuth();
@@ -252,7 +255,7 @@ const LoginBox = ({ institutions }) => {
         console.log(data);
 
         if (ok) {
-          toast.success("Post-Registro completado");
+          toast.success(dictionary.login.post[language]);
 
           setTimeout(() => {
             runAuth();
@@ -295,7 +298,7 @@ const LoginBox = ({ institutions }) => {
         console.log(data);
 
         if (ok) {
-          toast.success("Post-Registro completado");
+          toast.success(dictionary.login.post[language]);
 
           setTimeout(() => {
             runAuth();
@@ -381,8 +384,8 @@ const LoginBox = ({ institutions }) => {
     <div id="login-box" className="auth-box" ref={boxContainer}>
       {screen === 0 ? (
         <>
-          <h1>Bienvenido</h1>
-          <p className="below">Inicie sesión en su cuenta Brane</p>
+          <h1>{dictionary.login.box[0][language]}</h1>
+          <p className="below">{dictionary.login.box[1][language]}</p>
 
           <form>
             <DynamicInput
@@ -396,7 +399,7 @@ const LoginBox = ({ institutions }) => {
               state={[inputs, setInputs]}
             />
             <Link className="recover-password" to="/auth/account-recovery">
-              Has olvidado tu contraseña?
+              {dictionary.login.box[2][language]}
             </Link>
 
             <button
@@ -405,19 +408,19 @@ const LoginBox = ({ institutions }) => {
               disabled={isLoading || isDisabled}
             >
               {isLoading && <SpinnerOfDoom />}
-              Iniciar sesión
+              {dictionary.login.box[3][language]}
             </button>
           </form>
 
           <p className="first-time">
-            No tienes una cuenta?{" "}
+            {dictionary.login.box[4][language]}{" "}
             <Link to={institutions ? "/ins-auth/signup" : "/auth/signup"}>
-              Regístrate
+              {dictionary.login.box[5][language]}
             </Link>
           </p>
 
           <div className="separator">
-            <span>O</span>
+            <span>{dictionary.login.box[6][language]}</span>
           </div>
 
           <div className="continue-with-google">
@@ -426,56 +429,54 @@ const LoginBox = ({ institutions }) => {
 
           <button className="continue-with-facebook">
             <LogoFacebook />
-            <p>Continuar con Facebook</p>
+            <p>{dictionary.login.box[7][language]}</p>
           </button>
 
           <button className="continue-with-apple">
             <LogoApple />
-            <p>Continuar con Apple</p>
+            <p>{dictionary.login.box[8][language]}</p>
           </button>
         </>
       ) : screen === 1 ? (
         <>
-          <h2>Gracias por registrarte</h2>
-          <p className="below">
-            Ingrese la siguiente información para continuar a la aplicación
-          </p>
+          <h2>{dictionary.login.box[9][language]}</h2>
+          <p className="below">{dictionary.login.box[10][language]}</p>
 
           <form autoComplete="off">
             <DynamicInput
               id={"firstName"}
               state={[inputsPRUser, setInputsPRUser]}
               noIcon
-              placeholder={"Nombre"}
-              label="Nombre"
+              placeholder={dictionary.login.box[11][language]}
+              label={dictionary.login.box[11][language]}
             />
             <DynamicInput
               id={"lastName"}
               state={[inputsPRUser, setInputsPRUser]}
               noIcon
-              placeholder={"Apellido"}
-              label="Apellido"
+              placeholder={dictionary.login.box[12][language]}
+              label={dictionary.login.box[12][language]}
             />
             <DynamicInput
               id={"birthdate"}
               type="date"
               state={[inputsPRUser, setInputsPRUser]}
               noIcon
-              label="Fecha de nacimiento"
+              label={dictionary.login.box[13][language]}
             />
             <DynamicInput
               id={"occupation"}
               state={[inputsPRUser, setInputsPRUser]}
               noIcon
-              placeholder={"Ocupación"}
-              label="Ocupación"
+              placeholder={dictionary.login.box[14][language]}
+              label={dictionary.login.box[14][language]}
             />
             <DynamicInput
               id={"location"}
               state={[inputsPRUser, setInputsPRUser]}
               noIcon
-              placeholder={"Ubicación"}
-              label="Ubicación"
+              placeholder={dictionary.login.box[15][language]}
+              label={dictionary.login.box[15][language]}
             />
 
             <button
@@ -484,24 +485,22 @@ const LoginBox = ({ institutions }) => {
               disabled={isLoading || isDisabledPost}
             >
               {isLoading && <SpinnerOfDoom />}
-              Continuar
+              {dictionary.login.box[16][language]}
             </button>
           </form>
         </>
       ) : screen === 2 ? (
         <>
-          <h2>Gracias por registrarte</h2>
-          <p className="below">
-            Ingrese la siguiente información para continuar a la aplicación
-          </p>
+          <h2>{dictionary.login.box[9][language]}</h2>
+          <p className="below">{dictionary.login.box[10][language]}</p>
 
           <form autoComplete="off">
             <DynamicInput
               id={"description"}
               state={[inputsPRBusiness, setInputsPRBusiness]}
               noIcon
-              placeholder={"Descripción del negocio"}
-              label="Descripción del negocio"
+              placeholder={dictionary.login.box[17][language]}
+              label={dictionary.login.box[17][language]}
             />
             <DynamicInput
               id={"numberOfWorkers"}
@@ -509,22 +508,22 @@ const LoginBox = ({ institutions }) => {
               type="number"
               number
               noIcon
-              placeholder={"Numero de empleados"}
-              label="Numero de empleados"
+              placeholder={dictionary.login.box[18][language]}
+              label={dictionary.login.box[18][language]}
             />
             <DynamicInput
               id={"foundationDate"}
               state={[inputsPRBusiness, setInputsPRBusiness]}
               type="date"
               noIcon
-              label="Fecha de fundación de la empresa"
+              label={dictionary.login.box[19][language]}
             />
             <DynamicInput
               id={"address"}
               state={[inputsPRBusiness, setInputsPRBusiness]}
               noIcon
-              placeholder={"Dirección física del negocio"}
-              label="Dirección física del negocio"
+              placeholder={dictionary.login.box[20][language]}
+              label={dictionary.login.box[20][language]}
             />
 
             <button
@@ -539,38 +538,36 @@ const LoginBox = ({ institutions }) => {
               }
             >
               {isLoading && <SpinnerOfDoom />}
-              Continuar
+              {dictionary.login.box[16][language]}
             </button>
           </form>
         </>
       ) : (
         <>
-          <h2>Gracias por registrarte</h2>
-          <p className="below">
-            Ingrese la siguiente información para continuar a la aplicación
-          </p>
+          <h2>{dictionary.login.box[9][language]}</h2>
+          <p className="below">{dictionary.login.box[10][language]}</p>
 
           <form autoComplete="off">
             <DynamicInput
               id={"description"}
               state={[inputsPRInstitutions, setInputsPRInstitutions]}
               noIcon
-              placeholder={"Descripción de la Institución"}
-              label="Descripción de la Institución"
+              placeholder={dictionary.login.box[21][language]}
+              label={dictionary.login.box[21][language]}
             />
             <DynamicInput
               id={"foundationDate"}
               state={[inputsPRInstitutions, setInputsPRInstitutions]}
               type="date"
               noIcon
-              label="Fecha de fundación de la Institución"
+              label={dictionary.login.box[22][language]}
             />
             <DynamicInput
               id={"address"}
               state={[inputsPRInstitutions, setInputsPRInstitutions]}
               noIcon
-              placeholder={"Dirección física de la Institución"}
-              label="Dirección física de la Institución"
+              placeholder={dictionary.login.box[23][language]}
+              label={dictionary.login.box[23][language]}
             />
 
             <button
@@ -584,7 +581,7 @@ const LoginBox = ({ institutions }) => {
               }
             >
               {isLoading && <SpinnerOfDoom />}
-              Continuar
+              {dictionary.login.box[16][language]}
             </button>
           </form>
         </>

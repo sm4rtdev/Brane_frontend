@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LogoBlack } from "../../assets/images";
 
 import "./PublicHeader.scss";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const PublicHeader = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   return (
     <div id="public-header" className="page-header">
       <Link to="/" className="logo">
@@ -12,18 +15,18 @@ const PublicHeader = () => {
       </Link>
 
       <nav>
-        <Link to={"/"}>Inicio</Link>
-        <Link to={"/business"}>Empresas</Link>
-        <Link to={"/teach"}>Instructores</Link>
-        <Link to={"/institutions"}>Instituciones</Link>
+        <Link to={"/"}>{dictionary.publicHeader[0][language]}</Link>
+        <Link to={"/business"}>{dictionary.publicHeader[1][language]}</Link>
+        <Link to={"/teach"}>{dictionary.publicHeader[2][language]}</Link>
+        <Link to={"/institutions"}>{dictionary.publicHeader[3][language]}</Link>
       </nav>
 
       <div className="access">
         <Link className="action-button" to={"/auth/login"}>
-          Iniciar sesión
+          {dictionary.publicHeader[4][language]}
         </Link>
         <Link className="action-button" to={"/auth/signup"}>
-          Regístrate gratis
+          {dictionary.publicHeader[5][language]}
         </Link>
       </div>
     </div>

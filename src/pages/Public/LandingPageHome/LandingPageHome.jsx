@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -11,16 +11,18 @@ import {
   QuotationMarks,
 } from "../../../assets/images";
 
+import { Ellipse } from "../../../assets/icons";
+
 import bannerLandingHome from "../../../assets/images/banner-landing-home.jpg";
-import communityRight from "../../../assets/images/community-right.png";
 import communityLeft from "../../../assets/images/community-left.png";
 import googlePlay from "../../../assets/images/google-play-badge.png";
 import appStore from "../../../assets/images/app-store-badge.png";
+import googlePlayEN from "../../../assets/images/google-play-badgeEN.png";
+import appStoreEN from "../../../assets/images/app-store-badgeEN.png";
 import estudiante from "../../../assets/images/estudiante.png";
-
-import lineas from "../../../assets/images/lineas.png";
-import subhero from "../../../assets/images/subhero.jpg";
 import instructor from "../../../assets/images/instructor.png";
+import subhero from "../../../assets/images/subhero.jpg";
+import lineas from "../../../assets/images/lineas.png";
 
 import PageTransition from "../../../components/PageTransition/PageTransition";
 import SpinnerOfDoom from "../../../components/SpinnerOfDoom/SpinnerOfDoom";
@@ -29,9 +31,11 @@ import CourseCard from "../../../components/CourseCard/CourseCard";
 import FancyImage from "../../../components/FancyImage/FancyImage";
 import Footer from "../../../components/Footer/Footer";
 import { getCoursesByCategory } from "../../../api/getCoursesByCategory";
-import { Ellipse } from "../../../assets/icons";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const LandingPageHome = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [courses, setCourses] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Design");
 
@@ -105,15 +109,12 @@ const LandingPageHome = () => {
             </div>
 
             <div className="banner-text">
-              <h1>Comienza a impulsar tu carrera profesional hoy</h1>
+              <h1>{dictionary.landingPage.banner[0][language]}</h1>
 
-              <p>
-                Prepárate para el éxito y obtén las herramientas necesarias para
-                triunfar en un mundo cada vez más competitivo.
-              </p>
+              <p>{dictionary.landingPage.banner[1][language]}</p>
 
               <Link to="/auth/signup" className="action-button">
-                Empieza hoy!
+                {dictionary.landingPage.banner[2][language]}
               </Link>
             </div>
           </div>
@@ -123,12 +124,7 @@ const LandingPageHome = () => {
               <FancyImage src={subhero} noEffect />
             </div>
             <div className="about-text">
-              <p>
-                Con Brane lograr Mejorar tus habilidades y conocimientos para el
-                mercado laboral está a tu alcance, certificándote en nuestros
-                cursos y talleres especializados y en colaboración con
-                prestigiosas universidades de toda la región.
-              </p>
+              <p>{dictionary.landingPage.about[0][language]}</p>
             </div>
           </div>
 
@@ -138,7 +134,7 @@ const LandingPageHome = () => {
               <img src={lineas} alt="" />
             </div>
 
-            <h2>Descubre nuevas habilidades</h2>
+            <h2>{dictionary.landingPage.courses[0][language]}</h2>
 
             <div className="categories">
               <span
@@ -147,7 +143,7 @@ const LandingPageHome = () => {
                 }}
                 className={selectedCategory === "Design" ? "selected" : ""}
               >
-                Diseño
+                {dictionary.landingPage.courses[1][language]}
               </span>
               <span
                 onClick={() => {
@@ -155,7 +151,7 @@ const LandingPageHome = () => {
                 }}
                 className={selectedCategory === "Development" ? "selected" : ""}
               >
-                Desarrollo
+                {dictionary.landingPage.courses[2][language]}
               </span>
               <span
                 onClick={() => {
@@ -193,15 +189,11 @@ const LandingPageHome = () => {
                 <FancyImage src={instructor} noEffect />
               </div>
               <div className="teach-text">
-                <h2>Vuélvete un instructor</h2>
-                <p>
-                  Profesionales de todo el mundo pueden ser parte de Brane
-                  aportando sus conocimientos y habilidades para mejorar la vida
-                  profesional millones de personas.
-                </p>
+                <h2>{dictionary.landingPage.teach[0][language]}</h2>
+                <p>{dictionary.landingPage.teach[1][language]}</p>
 
                 <Link to="/teach" className="action-button">
-                  Empieza hoy mismo!
+                  {dictionary.landingPage.teach[2][language]}
                 </Link>
               </div>
             </div>
@@ -210,13 +202,11 @@ const LandingPageHome = () => {
                 <FancyImage src={estudiante} noEffect />
               </div>
               <div className="teach-text">
-                <h2>Mejora y desarróllate</h2>
-                <p>
-                  {`En Brane podrás desarrollar nuevas habilidades y conocimientos prácticos  para el mercado laboral.\n\nComplementamos tu formación profesional y técnica con habilidades y conocimientos prácticos en las áreas de marketing, negocios y emprendimiento, diseño, ciberseguridad y programación.\n\nTe brindamos el espacio ideal para transformar tu carrera profesional.`}
-                </p>
+                <h2>{dictionary.landingPage.teach[3][language]}</h2>
+                <p>{dictionary.landingPage.teach[4][language]}</p>
 
                 <Link to="/auth/signup" className="action-button">
-                  Quiero registrarme!
+                  {dictionary.landingPage.teach[5][language]}
                 </Link>
               </div>
             </div>
@@ -254,7 +244,7 @@ const LandingPageHome = () => {
           </div> */}
 
           <div className="community">
-            <h2>Testimonios</h2>
+            <h2>{dictionary.landingPage.testimonials[0][language]}</h2>
 
             <div className="center">
               <div className="img-container">
@@ -279,29 +269,17 @@ const LandingPageHome = () => {
                   <div className="box">
                     <QuotationMarks />
 
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor in cididunt ut labore et dolore
-                      magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                    </p>
+                    <p>{dictionary.landingPage.testimonials[1][language]}</p>
                   </div>
                   <div className="box">
                     <QuotationMarks />
 
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor in cididunt ut labore et dolore
-                      magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                    </p>
+                    <p>{dictionary.landingPage.testimonials[2][language]}</p>
                   </div>
                   <div className="box">
                     <QuotationMarks />
 
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor in cididunt ut labore et dolore
-                      magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                    </p>
+                    <p>{dictionary.landingPage.testimonials[3][language]}</p>
                   </div>
                 </div>
               </div>
@@ -317,17 +295,21 @@ const LandingPageHome = () => {
 
             <div className="container">
               <Link to={"/auth/signup"} className={"action-button black"}>
-                Regístrate hoy
+                {dictionary.landingPage.call[0][language]}
               </Link>
 
-              <strong>Prueba Brane sin costo</strong>
-              <strong>
-                Crea tu cuenta y descubre todo lo que puedes lograr
-              </strong>
+              <strong> {dictionary.landingPage.call[1][language]}</strong>
+              <strong>{dictionary.landingPage.call[2][language]}</strong>
 
               <div className="phones">
-                <FancyImage src={googlePlay} noEffect={true} />
-                <FancyImage src={appStore} noEffect={true} />
+                <FancyImage
+                  src={language === "es" ? googlePlay : googlePlayEN}
+                  noEffect={true}
+                />
+                <FancyImage
+                  src={language === "es" ? appStore : appStoreEN}
+                  noEffect={true}
+                />
               </div>
             </div>
           </div>

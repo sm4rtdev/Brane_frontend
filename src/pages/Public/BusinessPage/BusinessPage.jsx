@@ -28,6 +28,7 @@ import { UserDataContext } from "../../../contexts/UserDataContext";
 import { postNewBusiness } from "../../../api/postNewBusiness";
 import CourseCard from "../../../components/CourseCard/CourseCard";
 import { getCoursesByCategory } from "../../../api/getCoursesByCategory";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 // const plans = [
 //   {
@@ -82,6 +83,7 @@ import { getCoursesByCategory } from "../../../api/getCoursesByCategory";
 // ];
 
 const BusinessPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -149,13 +151,10 @@ const BusinessPage = () => {
             <FancyImage src="/images/business.jpg" noEffect />
 
             <div className="container">
-              <h1>Brane Empresas</h1>
-              <p>
-                Desarrolla el talento de tu equipo de trabajo con las
-                habilidades más importantes que requiere el mercado.
-              </p>
+              <h1>{dictionary.business.banner[0][language]}</h1>
+              <p>{dictionary.business.banner[1][language]}</p>
               <a href="#request-demo" className="action-button">
-                Agenda una cita!
+                {dictionary.business.banner[2][language]}
               </a>
             </div>
           </div>
@@ -193,13 +192,13 @@ const BusinessPage = () => {
 
           <div className="form-container">
             <form>
-              <h2>Agenda una cita</h2>
+              <h2>{dictionary.business.formRegister[0][language]}</h2>
 
               <DynamicInput
                 id={"businessName"}
                 state={[inputs, setInputs]}
                 noIcon
-                label={"Nombre de la empresa"}
+                label={dictionary.business.formRegister[1][language]}
                 placeholder="ACME"
               />
               <DynamicInput
@@ -207,7 +206,7 @@ const BusinessPage = () => {
                 type={"email"}
                 noIcon
                 state={[inputs, setInputs]}
-                label={"Email de negocios"}
+                label={dictionary.business.formRegister[2][language]}
                 placeholder="company@email.com"
               />
               <DynamicInput
@@ -215,7 +214,7 @@ const BusinessPage = () => {
                 type={"password"}
                 noIcon
                 state={[inputs, setInputs]}
-                label={"Contraseña"}
+                label={dictionary.business.formRegister[3][language]}
                 placeholder="********"
               />
 
@@ -227,10 +226,10 @@ const BusinessPage = () => {
                 {isLoading ? (
                   <>
                     <SpinnerOfDoom />
-                    Cargando
+                    {dictionary.business.formRegister[4][language]}
                   </>
                 ) : (
-                  "Enviar"
+                  dictionary.business.formRegister[5][language]
                 )}
               </button>
             </form>
@@ -243,11 +242,11 @@ const BusinessPage = () => {
           <div className="what-do-we-do">
             <div className="container">
               <div className="left">
-                <strong>Capacita a tu equipo según tus necesidades</strong>
+                <strong>{dictionary.business.what[0][language]}</strong>
                 <ul>
-                  <li>Asigna cursos para desarrollar áreas específicas</li>
-                  <li>Seguimiento a su avance y toma de decisiones</li>
-                  <li>Recibe soporte personalizado</li>
+                  <li>{dictionary.business.what[1][language]}</li>
+                  <li>{dictionary.business.what[2][language]}</li>
+                  <li>{dictionary.business.what[3][language]}</li>
                 </ul>
               </div>
               <div className="right">
@@ -259,7 +258,7 @@ const BusinessPage = () => {
           </div>
 
           <div className="courses">
-            <h2>Que ofrecemos</h2>
+            <h2>{dictionary.business.courses[0][language]}</h2>
 
             <div className="categories">
               <span
@@ -268,7 +267,7 @@ const BusinessPage = () => {
                 }}
                 className={selectedCategory === "Design" ? "selected" : ""}
               >
-                Diseño
+                {dictionary.business.courses[1][language]}
               </span>
               <span
                 onClick={() => {
@@ -276,7 +275,7 @@ const BusinessPage = () => {
                 }}
                 className={selectedCategory === "Development" ? "selected" : ""}
               >
-                Desarrollo
+                {dictionary.business.courses[2][language]}
               </span>
               <span
                 onClick={() => {

@@ -18,6 +18,7 @@
 .env.test.local
 .env.production.local
 
+*.md
 *.txt
 
 npm-debug.log*

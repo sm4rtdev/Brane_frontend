@@ -4,8 +4,11 @@ import { CategoriesContext } from "../../contexts/CategoriesContext";
 import { UserDataContext } from "../../contexts/UserDataContext";
 
 import "./Categories.scss";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const Categories = ({ search, conference }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const { categories } = useContext(CategoriesContext);
 
@@ -25,10 +28,10 @@ const Categories = ({ search, conference }) => {
     <div id={`categories-home`} className={`${search ? "search" : ""}`}>
       <strong>
         {search
-          ? "Categorías principales"
+          ? dictionary.categories[0][language]
           : userData.company
-          ? "Categorías"
-          : "Descubre nuevos cursos"}
+          ? dictionary.categories[1][language]
+          : dictionary.categories[2][language]}
       </strong>
 
       <div className="buttons">
@@ -42,7 +45,9 @@ const Categories = ({ search, conference }) => {
                 className="btn-cat"
                 key={category.id}
               >
-                {category.attributes.nombre}
+                {language === "es"
+                  ? category.attributes.nombre
+                  : category.attributes.descripcion}
               </Link>
             );
           })}

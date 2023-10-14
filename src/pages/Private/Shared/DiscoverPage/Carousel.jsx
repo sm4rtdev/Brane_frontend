@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 
 import { ChevronForward } from "../../../../assets/icons";
 
 import CourseCard from "../../../../components/CourseCard/CourseCard";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const Carousel = ({ group }) => {
+  const { language } = useContext(DictionaryContext);
   const element = useRef(null);
 
   const moveLeft = () => {
@@ -28,7 +30,11 @@ const Carousel = ({ group }) => {
 
   return (
     <div className="category">
-      <h3>{group[0].attributes.categoria.data.attributes.nombre}</h3>
+      <h3>
+        {language === "es"
+          ? group[0].attributes.categoria.data.attributes.nombre
+          : group[0].attributes.categoria.data.attributes.descripcion}
+      </h3>
       <div className="carousel">
         <button className="move-left small-button" onClick={moveLeft}>
           <ChevronForward />

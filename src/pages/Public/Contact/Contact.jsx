@@ -19,8 +19,11 @@ import PublicHeader from "../../../components/PublicHeader/PublicHeader";
 import FancyImage from "../../../components/FancyImage/FancyImage";
 import Footer from "../../../components/Footer/Footer";
 import { UserDataContext } from "../../../contexts/UserDataContext";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const Contact = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const [inputs, setInputs] = useState({
     email: "",
@@ -39,7 +42,7 @@ const Contact = () => {
                 backButton: true,
                 bigTitle: true,
               }}
-              title={"Contact"}
+              title={dictionary.contact[0][language]}
             />
           </HeaderToggler>
         ) : (
@@ -53,7 +56,7 @@ const Contact = () => {
           <FancyImage src="/images/customer-service.png" />
         </div>
         <div className="main">
-          <h1>Contáctanos</h1>
+          <h1>{dictionary.contact[0][language]}</h1>
 
           <div className="social">
             <button>
@@ -78,29 +81,29 @@ const Contact = () => {
               id={"email"}
               state={[inputs, setInputs]}
               type="email"
-              label={"Correo electrónico"}
+              label={dictionary.contact[1][language]}
             />
             <DynamicInput
               id={"name"}
               state={[inputs, setInputs]}
               placeholder="Jhon Doe"
-              label={"Nombre"}
+              label={dictionary.contact[2][language]}
               noIcon
             />
             <DynamicInput
               id={"affair"}
               state={[inputs, setInputs]}
-              placeholder="Asunto"
-              label={"Asunto"}
+              placeholder={dictionary.contact[3][language]}
+              label={dictionary.contact[3][language]}
               noIcon
             />
             <DynamicInput
               id={"message"}
               state={[inputs, setInputs]}
               noIcon
-              label={"Mensaje"}
+              label={dictionary.contact[4][language]}
               multiline
-              placeholder={"Hola!..."}
+              placeholder={dictionary.contact[4][language]}
             />
 
             <button
@@ -109,7 +112,7 @@ const Contact = () => {
                 e.preventDefault();
               }}
             >
-              Enviar
+              {dictionary.contact[5][language]}
             </button>
           </form>
         </div>

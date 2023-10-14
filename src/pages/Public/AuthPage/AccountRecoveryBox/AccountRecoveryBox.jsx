@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -11,8 +11,10 @@ import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import { postSendResetEmail } from "../../../../api/postSendResetEmail";
 import { postResetPassword } from "../../../../api/postResetPassword";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const AccountRecoveryBox = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const navigate = useNavigate();
 
   const useQuery = () => {
@@ -52,7 +54,7 @@ const AccountRecoveryBox = () => {
     console.log(data);
 
     if (ok) {
-      toast.success("Se ha enviado un enlace de recuperación.");
+      toast.success(dictionary.recovery[0][language]);
       setCodeSent(true);
     } else {
       toast.error(`${data.error.message}`);
@@ -73,7 +75,7 @@ const AccountRecoveryBox = () => {
     console.log(data);
 
     if (ok) {
-      toast.success("Contraseña cambiada con éxito");
+      toast.success(dictionary.recovery[1][language]);
 
       navigate("login");
     } else {
@@ -88,17 +90,16 @@ const AccountRecoveryBox = () => {
         <Link to="/login" className="go-back">
           <ChevronForward />
         </Link>
-        <strong className="title-section">Recuperación de Cuenta</strong>
+        <strong className="title-section">
+          {dictionary.recovery[2][language]}
+        </strong>
       </div>
       {!code ? (
         <>
           <div className="illustration">
             <RAIOne />
           </div>
-          <p>
-            ¿Olvidaste la contraseña de tu cuenta? Ingrese su dirección de
-            correo electrónico y le enviaremos un enlace de recuperación.
-          </p>
+          <p>{dictionary.recovery[3][language]}</p>
           <div className="form">
             <DynamicInput
               id={"email"}
@@ -112,7 +113,9 @@ const AccountRecoveryBox = () => {
               disabled={codeSent || inputs.email === ""}
             >
               {loading && <SpinnerOfDoom />}
-              {codeSent ? "Enlace enviado" : "Recuperar cuenta"}
+              {codeSent
+                ? dictionary.recovery[4][language]
+                : dictionary.recovery[5][language]}
             </button>
           </div>
         </>
@@ -121,7 +124,7 @@ const AccountRecoveryBox = () => {
           <div className="illustration">
             <RAITwo />
           </div>
-          <p>Introduzca su nueva contraseña</p>
+          <p>{dictionary.recovery[6][language]}</p>
           <div className="form" id="second">
             <DynamicInput
               id={"password"}
@@ -132,7 +135,7 @@ const AccountRecoveryBox = () => {
               id={"repeatedPassword"}
               type={"password"}
               state={[inputs, setInputs]}
-              placeholder={"Confirmar contraseña"}
+              placeholder={dictionary.recovery[7][language]}
             />
 
             <button
@@ -143,7 +146,7 @@ const AccountRecoveryBox = () => {
               }
             >
               {loading && <SpinnerOfDoom />}
-              Confirmar
+              {dictionary.recovery[8][language]}
             </button>
           </div>
         </>

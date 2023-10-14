@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import "./SpinnerOfDoom.scss";
 
 import { Sync } from "../../assets/icons";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const SpinnerOfDoom = ({ standalone, center, full, top }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const [dots, setDots] = useState([]);
 
   useEffect(() => {
@@ -34,7 +36,12 @@ const SpinnerOfDoom = ({ standalone, center, full, top }) => {
       } ${full ? "full" : ""} ${top ? "top" : ""}`}
     >
       <Sync />
-      {standalone && <p>Cargando{` ${dots.map(() => ".").join("")}`}</p>}
+      {standalone && (
+        <p>
+          {dictionary.spinnerOfDoom[language]}
+          {` ${dots.map(() => ".").join("")}`}
+        </p>
+      )}
     </div>
   );
 };

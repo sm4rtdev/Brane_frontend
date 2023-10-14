@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -9,8 +9,11 @@ import { LogoApple, LogoFacebook } from "../../../../assets/icons";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import { postRegister } from "../../../../api/postRegister";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const SignupBox = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const boxContainer = useRef(null);
   const [loginButtonSize, setLoginButtonSize] = useState(448);
 
@@ -61,7 +64,7 @@ const SignupBox = () => {
     });
 
     if (ok) {
-      toast.success("Éxito!");
+      toast.success(dictionary.login.done[language]);
 
       setScreen(1);
     } else {
@@ -94,9 +97,10 @@ const SignupBox = () => {
     <div id="signup-box" className="auth-box" ref={boxContainer}>
       {screen === 0 ? (
         <>
-          <h1>Regístrate</h1>
+          <h1>{dictionary.signup[0][language]}</h1>
           <p className="not-first-time">
-            ¿Ya tienes una cuenta? <Link to="/auth/login">Iniciar sesión</Link>
+            {dictionary.signup[1][language]}{" "}
+            <Link to="/auth/login">{dictionary.signup[2][language]}</Link>
           </p>
 
           <form>
@@ -114,7 +118,7 @@ const SignupBox = () => {
               id={"repeatedPassword"}
               type={"password"}
               state={[inputs, setInputs]}
-              placeholder={"Confirmar contraseña"}
+              placeholder={dictionary.signup[3][language]}
             />
 
             <button
@@ -123,18 +127,19 @@ const SignupBox = () => {
               disabled={isLoading || isDisabled}
             >
               {isLoading && <SpinnerOfDoom />}
-              Registrarse
+              {dictionary.signup[4][language]}
             </button>
           </form>
 
           <p className="conditions">
-            Al hacer clic en "Registrarse", usted acepta nuestros{" "}
-            <Link to={"/terms"}>términos de servicio</Link> y{" "}
-            <Link to={"/privacy"}>políticas de privacidad</Link>.
+            {dictionary.signup[5][language]}{" "}
+            <Link to={"/terms"}>{dictionary.signup[6][language]}</Link>{" "}
+            {dictionary.signup[7][language]}{" "}
+            <Link to={"/privacy"}>{dictionary.signup[8][language]}</Link>.
           </p>
 
           <div className="separator">
-            <span>O</span>
+            <span>{dictionary.signup[9][language]}</span>
           </div>
 
           <div className="continue-with-google">
@@ -143,22 +148,19 @@ const SignupBox = () => {
 
           <button className="continue-with-facebook">
             <LogoFacebook />
-            <p>Continuar con Facebook</p>
+            <p>{dictionary.signup[10][language]}</p>
           </button>
 
           <button className="continue-with-apple">
             <LogoApple />
-            <p>Continuar con Apple</p>
+            <p>{dictionary.signup[11][language]}</p>
           </button>
         </>
       ) : (
         <>
-          <h1>Casi listo</h1>
+          <h1>{dictionary.signup[12][language]}</h1>
 
-          <p className="conditions">
-            Para comenzar a usar su cuenta, haga clic en el enlace de
-            verificación que le enviamos a su correo electrónico.
-          </p>
+          <p className="conditions">{dictionary.signup[13][language]}</p>
         </>
       )}
     </div>

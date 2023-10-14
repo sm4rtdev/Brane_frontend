@@ -10,20 +10,23 @@ import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import BlogCard from "./BlogCard";
 import { UserDataContext } from "../../../contexts/UserDataContext";
-
-const articles = Array(6).fill({
-  id: 1,
-  type: "blog",
-  url: `/blog/1`,
-  imageURL: "/images/blog-banner.png",
-  title: "Artículo de blog",
-  shortDescription:
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-});
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const BlogPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const outlet = useOutlet();
+
+  const articles = Array(6).fill({
+    id: 1,
+    type: "blog",
+    url: `/blog/1`,
+    imageURL: "/images/blog-banner.png",
+    title: dictionary.blog[0][language],
+    shortDescription:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+  });
 
   return (
     <div id="blog-page" className="page">
@@ -48,7 +51,7 @@ const BlogPage = () => {
             <>{outlet}</>
           ) : (
             <>
-              <h2>Entradas</h2>
+              <h2>{dictionary.blog[1][language]}</h2>
               <div className="articles">
                 {articles.map((article, index) => {
                   return <BlogCard {...article} key={index} />;

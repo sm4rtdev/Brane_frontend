@@ -14,8 +14,11 @@ import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import { UserDataContext } from "../../../contexts/UserDataContext";
 import { getUpdateRole } from "../../../api/getUpdateRole";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const TeachPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const [loading, setLoading] = useState(false);
 
@@ -48,31 +51,24 @@ const TeachPage = () => {
             <FancyImage src="/images/banner-teach.jpg" noEffect />
 
             <div className="container">
-              <h1>Conviértete en instructor</h1>
-              <p>
-                Vuélvete parte de la comunidad de instructores y tenga a
-                millones de personas en todo el mundo.
-              </p>
+              <h1>{dictionary.teach.banner[0][language]}</h1>
+              <p>{dictionary.teach.banner[1][language]}</p>
               <a href="#how-to-start" className="action-button">
-                Más información
+                {dictionary.teach.banner[2][language]}
               </a>
             </div>
           </div>
           <div className="main">
             <div id="how-to-start">
-              <h2>Como empezar</h2>
+              <h2>{dictionary.teach.how[0][language]}</h2>
 
               <div className="container">
                 <div className="left">
-                  <strong>Diseña tu curso</strong>
+                  <strong>{dictionary.teach.how[1][language]}</strong>
                   <ul>
-                    <li>
-                      Disponer de acceso a una computadora y acceso a internet.
-                    </li>
-                    <li>
-                      Recibirás ayuda para gestionar tus primeros contenidos.
-                    </li>
-                    <li>Genera ingresos de manera recurrente.</li>
+                    <li>{dictionary.teach.how[2][language]}</li>
+                    <li>{dictionary.teach.how[3][language]}</li>
+                    <li>{dictionary.teach.how[4][language]}</li>
                   </ul>
                 </div>
                 <div className="right">
@@ -84,11 +80,8 @@ const TeachPage = () => {
 
           <div className="become">
             <div className="container">
-              <h2>Vuélvete un instructor hoy</h2>
-              <p>
-                Se parte de nuestra comunidad de instructores y accede a
-                millones de estudiantes en todo el mundo.
-              </p>
+              <h2>{dictionary.teach.become[0][language]}</h2>
+              <p>{dictionary.teach.become[1][language]}</p>
               {userData.info ? (
                 <button
                   className="action-button"
@@ -97,15 +90,16 @@ const TeachPage = () => {
                 >
                   {loading ? (
                     <>
-                      <SpinnerOfDoom /> Cargando...
+                      <SpinnerOfDoom />{" "}
+                      {dictionary.teach.become[2][language] + "..."}
                     </>
                   ) : (
-                    "Empieza ya!"
+                    dictionary.teach.become[3][language]
                   )}
                 </button>
               ) : (
                 <Link to="/auth/login" className="action-button">
-                  Empieza ya!
+                  {dictionary.teach.become[3][language]}
                 </Link>
               )}
             </div>

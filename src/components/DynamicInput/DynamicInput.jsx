@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { KeyOutline, MailOutline, SearchOutline } from "../../assets/icons";
 
 import "./DynamicInput.scss";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const DynamicInput = ({
   id,
@@ -17,6 +18,8 @@ const DynamicInput = ({
   max,
   min,
 }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [placeholderValue, setPlaceholderValue] = useState(placeholder);
   const [iconValue, setIconValue] = useState("");
 
@@ -26,15 +29,18 @@ const DynamicInput = ({
   useEffect(() => {
     const defaultProps = {
       email: () => {
-        !placeholder && setPlaceholderValue("Correo electrónico");
+        !placeholder &&
+          setPlaceholderValue(dictionary.dynamicInput[0][language]);
         setIconValue(<MailOutline />);
       },
       password: () => {
-        !placeholder && setPlaceholderValue("Contraseña");
+        !placeholder &&
+          setPlaceholderValue(dictionary.dynamicInput[1][language]);
         setIconValue(<KeyOutline />);
       },
       search: () => {
-        !placeholder && setPlaceholderValue("Buscar");
+        !placeholder &&
+          setPlaceholderValue(dictionary.dynamicInput[2][language]);
         setIconValue(<SearchOutline />);
       },
     };
@@ -47,7 +53,7 @@ const DynamicInput = ({
     ) {
       defaultProps[type]();
     }
-  }, [type]); //eslint-disable-line
+  }, [type, language]); //eslint-disable-line
 
   return (
     <div

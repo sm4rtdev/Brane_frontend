@@ -10,19 +10,21 @@ import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import BlogCard from "./BlogCard";
 import { UserDataContext } from "../../../contexts/UserDataContext";
-
-const articles = Array(6).fill({
-  id: 1,
-  url: `/help/1`,
-  imageURL: "/images/help-banner.png",
-  title: "Artículo de ayuda",
-  shortDescription:
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-});
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const HelpCenter = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const outlet = useOutlet();
+
+  const articles = Array(6).fill({
+    id: 1,
+    url: `/help/1`,
+    imageURL: "/images/help-banner.png",
+    title: dictionary.blog[3][language],
+    shortDescription:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+  });
 
   return (
     <div id="blog-page" className="page">
@@ -33,7 +35,7 @@ const HelpCenter = () => {
           <div className="banner">
             <FancyImage src="/images/help-banner.png" />
             <div className="inner">
-              <h1>Centro de ayuda</h1>
+              <h1>{dictionary.blog[5][language]}</h1>
               <p>
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                 Commodi, qui ducimus. Earum nemo voluptatem odio ipsum quam non
@@ -47,7 +49,7 @@ const HelpCenter = () => {
             <>{outlet}</>
           ) : (
             <>
-              <h2>Temas</h2>
+              <h2>{dictionary.blog[1][language]}</h2>
               <div className="articles">
                 {articles.map((article, index) => {
                   return <BlogCard {...article} key={index} />;
