@@ -1,7 +1,14 @@
 import { customFetch } from "./customFetch";
 
-export const getLinkStripeAccount = async () => {
-  const pathname = `api/meta-usuario/stripe-connect`;
+export const getLinkAccount = async (pasarela) => {
 
-  return await customFetch(pathname);
+  if(pasarela === 'paypal'){
+
+    const pathname = `api/meta-usuario/paypal-connect`;
+    return await customFetch(pathname);
+
+  }else{
+    const pathname = `api/meta-usuario/stripe-connect`;
+    return await customFetch(pathname);
+  }
 };

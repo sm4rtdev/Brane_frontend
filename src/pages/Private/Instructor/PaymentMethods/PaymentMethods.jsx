@@ -1,30 +1,43 @@
+
 import React, { useState } from "react";
-
 import "./PaymentMethods.scss";
-
 import InstructorHeader from "../../../../components/CustomHeaders/InstructorHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
 import Footer from "../../../../components/Footer/Footer";
 import { LogoPaypal, LogoStripe } from "../../../../assets/images";
-import { getLinkStripeAccount } from "../../../../api/getLinkStripeAccount";
+import { getLinkAccount } from "../../../../api/getLinkStripeAccount";
 import { toast } from "react-toastify";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 
 const PaymentMethods = () => {
-  const [loading, setLoading] = useState(false);
+  const [loadingStripe, setLoadingStripe] = useState(false);
+  const [loadingPaypal, setLoadingPaypal] = useState(false);
 
-  const getLink = async () => {
-    setLoading(true);
+  const getLink = async (pasarela) => {
+    if (pasarela === "stripe") {
+      setLoadingStripe(true);
+    } else if (pasarela === "paypal") {
+      setLoadingPaypal(true);
+    }
 
-    const { ok, data } = await getLinkStripeAccount();
-
-    // console.log("Link", data);
-
+    const { ok, data } = await getLinkAccount(pasarela);
     if (ok) {
-      window.location = data.link.url;
+      if(pasarela === "stripe"){
+        window.location = data.link.url;
+      }else{
+        // muestro un toast indicando que se vinculo correctamente el email
+
+        toast.success(`Se vinculó correctamente paypal al email ${data.email}`);
+      }
+      
     } else {
       toast.error(`${data.error.message}`);
-      setLoading(false);
+    }
+
+    if (pasarela === "stripe") {
+      setLoadingStripe(false);
+    } else if (pasarela === "paypal") {
+      setLoadingPaypal(false);
     }
   };
 
@@ -32,21 +45,18 @@ const PaymentMethods = () => {
     <div id="payment-methods" className="page">
       <PageTransition>
         <InstructorHeader />
-
         <div className="main">
           <h1>Métodos de pago</h1>
-
           <div className="method">
             <div className="image">
               <LogoStripe />
             </div>
-
             <button
               className="small-button"
-              onClick={getLink}
-              disabled={loading}
+              onClick={() => getLink("stripe")}
+              disabled={loadingStripe}
             >
-              {loading ? (
+              {loadingStripe ? (
                 <>
                   <SpinnerOfDoom />
                   Cargando...
@@ -60,11 +70,22 @@ const PaymentMethods = () => {
             <div className="image">
               <LogoPaypal />
             </div>
-
-            <button className="small-button">Conectar</button>
+            <button
+              className="small-button"
+              onClick={() => getLink("paypal")}
+              disabled={loadingPaypal}
+            >
+              {loadingPaypal ? (
+                <>
+                  <SpinnerOfDoom />
+                  Cargando...
+                </>
+              ) : (
+                "Conectar"
+              )}
+            </button>
           </div>
         </div>
-
         <Footer unique instructor />
       </PageTransition>
     </div>
