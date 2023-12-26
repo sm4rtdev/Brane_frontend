@@ -93,7 +93,7 @@
         padding: 1rem;
         box-shadow: $box-shadow;
         border-radius: 0 0 0.5rem 0.5rem;
-        min-width: 14rem;
+        min-width: 18rem;
 
         strong {
           @extend .text;
@@ -111,6 +111,7 @@
           margin-bottom: 0.5rem;
           padding-bottom: 1rem;
           border-bottom: 1px solid $light-gray;
+          word-break: break-all;
         }
 
         .links {

@@ -4,26 +4,28 @@ import { toast } from "react-toastify";
 
 import "./LoginBox.scss";
 
-import { LogoApple, LogoFacebook } from "../../../../assets/icons";
+import { LogoApple, LogoFacebook, LogoGoogle } from "../../../../assets/icons";
 
 import {
   removeFromLocal,
   getFromLocal,
   updateLocal,
 } from "../../../../helpers/localStorage";
-import { getInstitutionMetadata } from "../../../../api/getInstitutionMetadata";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
+import { getInstitutionMetadata } from "../../../../api/getInstitutionMetadata";
 import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { postMetaInstitution } from "../../../../api/postMetaInstitution";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { postMetaBusiness } from "../../../../api/postMetaBusiness";
 import { postUserMetadata } from "../../../../api/postUserMetadata";
 import { getUserMetadata } from "../../../../api/getUserMetadata";
+import { postGoogleLogin } from "../../../../api/postGoogleLogin";
 import { getCompanyMeta } from "../../../../api/getCompanyMeta";
+import { getGoogleLogin } from "../../../../api/getGoogleLogin";
 import { postLogin } from "../../../../api/postLogin";
-import { putUser } from "../../../../api/putUser";
 import { getUser } from "../../../../api/getUser";
+import { putUser } from "../../../../api/putUser";
 
 const LoginBox = ({ institutions }) => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -31,45 +33,6 @@ const LoginBox = ({ institutions }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const boxContainer = useRef(null);
-
-  // Google Button
-  const [loginButtonSize, setLoginButtonSize] = useState(448);
-
-  useEffect(() => {
-    window.addEventListener("resize", (e) => {
-      setTimeout(() => {
-        if (boxContainer.current) {
-          setLoginButtonSize(boxContainer.current.offsetWidth);
-        }
-      }, 0);
-    });
-  }, []);
-
-  useEffect(() => {
-    /* global google */
-    setTimeout(() => {
-      if (boxContainer.current) {
-        setLoginButtonSize(boxContainer.current.offsetWidth);
-      }
-
-      google.accounts.id.renderButton(
-        document.getElementById("continue-with-google"),
-        {
-          theme: "outline",
-          size: "large",
-          width: loginButtonSize - 96,
-          shape: "pill",
-        } // customization attributes
-      );
-    }, 0);
-  }, [loginButtonSize]);
-
-  // Trigger message on confirmation
-  useEffect(() => {
-    if (searchParams.get("confirmed")) {
-      toast.success(dictionary.login.confirmed[language]);
-    }
-  }, []); //eslint-disable-line
 
   // ------------------------- Login Flow ------------------------------
 
@@ -88,7 +51,118 @@ const LoginBox = ({ institutions }) => {
     password: "",
   });
 
+  const pureAuth = (data) => {
+    updateLocal("tempUser", data.jwt);
+
+    (async () => {
+      //Get role
+      const { ok, data: roleRes } = await getUser(true);
+
+      if (ok) {
+        const { role } = roleRes;
+
+        // Check Meta
+        (async (role) => {
+          let res;
+
+          // Company
+          if (role.id === 4) {
+            res = await getCompanyMeta(true);
+          }
+          // Institution
+          else if (role.id === 6) {
+            res = await getInstitutionMetadata(true);
+          }
+          // Student or Instructor
+          else {
+            res = await getUserMetadata(true);
+          }
+
+          const { ok } = res;
+
+          // Successful login
+          if (ok) {
+            toast.success(dictionary.login.access[language]);
+            updateLocal("loggedUser", data.jwt);
+            updateUserData({ jwt: data.jwt });
+          }
+          // Post Registration
+          else {
+            toast.success(dictionary.login.done[language]);
+
+            setUserInfo(roleRes);
+            setUserID(data.user.id);
+
+            // Company
+            if (role.id === 4) {
+              setScreen(2);
+            }
+            // Institution
+            else if (role.id === 6) {
+              setScreen(3);
+            }
+            // Student or Instructor
+            else {
+              setScreen(1);
+            }
+
+            setIsLoading(false);
+          }
+        })(role);
+      } else {
+        toast.error(`${roleRes.error.message}`);
+      }
+    })();
+  };
+
+  useEffect(() => {
+    // Trigger message on confirmation
+    if (searchParams.get("confirmed")) {
+      toast.success(dictionary.login.confirmed[language]);
+    }
+
+    //Login with Google
+    let code = searchParams.get("code");
+
+    if (code) {
+      const obj = {
+        code,
+      };
+
+      const getJWT = async () => {
+        const { ok, data } = await postGoogleLogin(obj);
+
+        if (ok) {
+          let { token, user } = data.data;
+
+          pureAuth({ jwt: token, user });
+          //
+        } else {
+          toast.error(`${data.error.message}`);
+          setIsLoading(false);
+        }
+      };
+
+      getJWT();
+    }
+  }, []); //eslint-disable-line
+
+  const getGoogleWindow = async () => {
+    setIsLoading(true);
+
+    const { ok, data } = await getGoogleLogin();
+
+    if (ok) {
+      window.open(data.url, "_self");
+    } else {
+      toast.error(`${data.error.message}`);
+    }
+
+    setIsLoading(false);
+  };
+
   const runAuth = async () => {
+    // Clear bad localStorage
     if (getFromLocal("loggedUser")) {
       removeFromLocal("loggedUser");
     }
@@ -98,70 +172,10 @@ const LoginBox = ({ institutions }) => {
       password: inputs.password,
     });
 
-    console.log(data);
+    // console.log(data);
 
     if (ok) {
-      updateLocal("tempUser", data.jwt);
-
-      (async () => {
-        //Get role
-        const { ok, data: roleRes } = await getUser(true);
-
-        if (ok) {
-          const { role } = roleRes;
-
-          // console.log(role);
-
-          // Check Meta
-          (async (role) => {
-            let res;
-
-            // Company
-            if (role.id === 4) {
-              res = await getCompanyMeta(true);
-            }
-            // Institution
-            else if (role.id === 6) {
-              res = await getInstitutionMetadata(true);
-            }
-            // Student or Instructor
-            else {
-              res = await getUserMetadata(true);
-            }
-
-            const { ok } = res;
-
-            // Successful login
-            if (ok) {
-              toast.success(dictionary.login.access[language]);
-              updateLocal("loggedUser", data.jwt);
-              updateUserData({ jwt: data.jwt });
-            }
-            // Post Registration
-            else {
-              setUserInfo(roleRes);
-              setUserID(data.user.id);
-
-              // Company
-              if (role.id === 4) {
-                setScreen(2);
-              }
-              // Institution
-              else if (role.id === 6) {
-                setScreen(3);
-              }
-              // Student or Instructor
-              else {
-                setScreen(1);
-              }
-
-              setIsLoading(false);
-            }
-          })(role);
-        } else {
-          toast.error(`${roleRes.error.message}`);
-        }
-      })();
+      pureAuth(data);
     } else {
       toast.error(`${data.error.message}`);
       setIsLoading(false);
@@ -217,7 +231,7 @@ const LoginBox = ({ institutions }) => {
 
           setTimeout(() => {
             runAuth();
-          }, 300);
+          }, 3e3);
         } else {
           toast.error(`${data.error.message}`);
           setIsLoading(false);
@@ -423,9 +437,10 @@ const LoginBox = ({ institutions }) => {
             <span>{dictionary.login.box[6][language]}</span>
           </div>
 
-          <div className="continue-with-google">
-            <div id="continue-with-google"></div>
-          </div>
+          <button className="continue-with-google" onClick={getGoogleWindow}>
+            <LogoGoogle />
+            <p>{dictionary.login.google[language]}</p>
+          </button>
 
           <button className="continue-with-facebook">
             <LogoFacebook />

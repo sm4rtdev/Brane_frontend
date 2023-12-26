@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import "./AuthPage.scss";
@@ -14,19 +14,6 @@ import Footer from "../../../components/Footer/Footer";
 const AuthPage = ({ institutions }) => {
   const location = useLocation();
   const currentPath = location.pathname.split("/")[2];
-
-  const handleCredentialResponse = (response) => {
-    console.log("Encoded JWT ID Token: " + response.credential);
-  };
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id:
-        "683261810889-md5inc98mrldse6hf10fupo4ct1l8f3i.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-    });
-  }, []);
 
   return (
     <PageTransition>

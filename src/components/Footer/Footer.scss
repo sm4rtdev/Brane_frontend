@@ -37,13 +37,21 @@
     padding: 0.5rem 2rem;
     border: none;
     border-radius: $rounded;
-    background-color: $yellow;
     @extend .text;
     font-weight: 700;
     color: $white;
+    background-color: $yellow;
     margin-top: 1rem;
     margin-right: auto;
     cursor: pointer;
+
+    //dev only
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    // z-index: 99999999;
+    // margin-top: 0;
+    // padding: 0.5rem;
   }
 
   .logo {
@@ -160,6 +168,7 @@
     p {
       @extend .text-sm;
       color: $gray;
+      text-align: center;
 
       a {
         @extend .text-sm;
@@ -183,6 +192,10 @@
 
     .logo:hover svg path {
       fill: $dark-shadow;
+    }
+
+    .change-lang {
+      background-color: $black;
     }
 
     .column {

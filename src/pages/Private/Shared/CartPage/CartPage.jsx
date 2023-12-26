@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 
 import "./CartPage.scss";
 
+import LogoCardnet from "../../../../assets/images/logo-cardnet.png";
+import { ChevronForward } from "../../../../assets/icons";
+import { LogoPaypal, LogoStripe } from "../../../../assets/images";
+
 import InternalHeader from "../../../../components/InternalHeader/InternalHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
 import BusinessHeader from "../../../../components/CustomHeaders/BusinessHeader";
@@ -13,16 +17,19 @@ import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import CourseCard from "../../../../components/CourseCard/CourseCard";
 import Footer from "../../../../components/Footer/Footer";
 
-import { postRequestPayment } from "../../../../api/postRequestPayment";
+import { postRequestPaymentCardnet } from "../../../../api/postRequestPaymentCardnet";
+import { postRequestPaymentStripe } from "../../../../api/postRequestPaymentStripe";
+import { postRequestPaymentPaypal } from "../../../../api/postRequestPaymentPaypal";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getSearchCoupon } from "../../../../api/getSearchCoupon";
 import { CartContext } from "../../../../contexts/CartContext";
 import { getCourseById } from "../../../../api/getCourseById";
-import { ChevronForward } from "../../../../assets/icons";
 
 const CartPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
-  const { cart } = useContext(CartContext);
+  const { cart, removeFromCart } = useContext(CartContext);
 
   const [courses, setCourses] = useState(null);
   const [total, setTotal] = useState(0);
@@ -41,31 +48,43 @@ const CartPage = () => {
         const { ok, data } = await getCourseById(id);
 
         if (ok) {
-          setCourses((c) => {
-            if (!c) {
-              return [data.data[0]];
-            } else {
-              let array = c.slice(0);
+          if (data.data !== null && data.data.length > 0) {
+            setCourses((c) => {
+              if (!c) {
+                return [data.data[0]];
+              } else {
+                let array = c.slice(0);
 
-              let skip = false;
+                let skip = false;
 
-              for (let i = 0; i < array.length; i++) {
-                const element = array[i];
+                for (let i = 0; i < array.length; i++) {
+                  const element = array[i];
 
-                if (element.id === data.data[0].id) {
-                  skip = true;
+                  if (element.id === data.data[0].id) {
+                    skip = true;
 
-                  break;
+                    break;
+                  }
                 }
-              }
 
-              if (!skip) {
-                array.push(data.data[0]);
-              }
+                if (!skip) {
+                  array.push(data.data[0]);
+                }
 
-              return array;
-            }
-          });
+                return array;
+              }
+            });
+          } else {
+            removeFromCart(id, true);
+
+            setCourses((c) => {
+              if (!c) {
+                return [];
+              } else {
+                return c;
+              }
+            });
+          }
         }
       };
 
@@ -99,9 +118,10 @@ const CartPage = () => {
     finalObject.forEach((course) => {
       total = total + course.afterPrice;
     });
-    // console.log(total);
     setTotal(total);
   }, [finalObject]);
+
+  const [selectedProvider, setSelectedProvider] = useState(null);
 
   const requestPayment = async () => {
     setLoading(true);
@@ -120,12 +140,37 @@ const CartPage = () => {
       },
     };
 
-    const { ok, data } = await postRequestPayment(obj);
+    const paymentProviders = {
+      paypal: postRequestPaymentPaypal,
+      stripe: postRequestPaymentStripe,
+      cardnet: postRequestPaymentCardnet,
+    };
+
+    const { ok, data } = await paymentProviders[selectedProvider](obj);
 
     if (ok) {
       // console.log(data.url);
 
-      window.location.href = data.url;
+      if (selectedProvider !== "cardnet") {
+        window.location.href = data.url;
+      } else {
+        // Crear un formulario oculto
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = data.url;
+        form.target = "_self";
+
+        // Agregar el campo 'session' al formulario
+        const sessionInput = document.createElement("input");
+        sessionInput.type = "hidden";
+        sessionInput.name = "SESSION";
+        sessionInput.value = data.session;
+        form.appendChild(sessionInput);
+
+        // Agregar el formulario al documento y enviarlo
+        document.body.appendChild(form);
+        form.submit();
+      }
     } else {
       toast.error(`${data.error.message}`);
       setLoading(false);
@@ -134,8 +179,6 @@ const CartPage = () => {
 
   const checkCoupon = async () => {
     const { ok, data } = await getSearchCoupon(input.coupon);
-
-    // console.log(data.data[0]);
 
     if (ok) {
       if (data.data.length > 0) {
@@ -146,15 +189,8 @@ const CartPage = () => {
           nombre: data.data[0].attributes.nombre,
         };
 
-        // console.log(temp.cursos);
-
         const subIds = new Set(temp.cursos.map(({ id }) => id));
-        console.log(subIds);
-        const result = [...finalObject.keys()].filter((i) =>
-          subIds.has(finalObject[i].curso)
-        );
-
-        // console.log(result);
+        const result = [...finalObject.keys()].filter((i) => subIds.has(finalObject[i].curso));
 
         setFinalObject((c) => {
           let copy = c.slice();
@@ -162,10 +198,7 @@ const CartPage = () => {
           result.forEach((index) => {
             copy[index].cupon = temp.nombre;
             copy[index].afterPrice = Number(
-              (
-                copy[index].price -
-                (copy[index].price * Number(temp.valor)) / 100
-              ).toFixed(2)
+              (copy[index].price - (copy[index].price * Number(temp.valor)) / 100).toFixed(2)
             );
           });
 
@@ -173,12 +206,12 @@ const CartPage = () => {
         });
 
         if (result.length > 0) {
-          toast.success(`¡Descuento aplicado!`);
+          toast.success(dictionary.cartPage[0][language]);
         } else {
-          toast.warning(`El cupón ingresado no es válido`);
+          toast.warning(dictionary.cartPage[1][language]);
         }
       } else {
-        toast.warning(`El cupón ingresado no es válido`);
+        toast.warning(dictionary.cartPage[1][language]);
       }
     } else {
       toast.error(`${data.error.message}`);
@@ -201,17 +234,17 @@ const CartPage = () => {
                 backButton: true,
                 bigTitle: true,
               }}
-              title={"Cart"}
+              title={dictionary.cartPage[2][language]}
             />
           </HeaderToggler>
         )}
 
         <div className="main">
           <div className="block">
-            <h1>Mi carrito</h1>
+            <h1>{dictionary.cartPage[2][language]}</h1>
 
             <Link to="/" className="action-button">
-              Seguir comprando
+              {dictionary.cartPage[3][language]}
               <ChevronForward />
             </Link>
           </div>
@@ -219,13 +252,7 @@ const CartPage = () => {
           <div className="shopping-list">
             {courses ? (
               courses.map((course) => {
-                return (
-                  <CourseCard
-                    key={course.id}
-                    {...course}
-                    type={"related cart"}
-                  />
-                );
+                return <CourseCard key={course.id} {...course} type={"related cart"} />;
               })
             ) : (
               <SpinnerOfDoom standalone />
@@ -236,23 +263,14 @@ const CartPage = () => {
             <div className="discount-section">
               {isCouponBoxOpen ? (
                 <div className="coupon-box">
-                  <DynamicInput
-                    id="coupon"
-                    state={[input, setInput]}
-                    noIcon
-                    label={"Ingresa tu cupón aquí"}
-                  />
-                  <button
-                    className="action-button"
-                    disabled={input.coupon.length === 0}
-                    onClick={checkCoupon}
-                  >
-                    Consultar cupón
+                  <DynamicInput id="coupon" state={[input, setInput]} noIcon label={dictionary.cartPage[4][language]} />
+                  <button className="action-button" disabled={input.coupon.length === 0} onClick={checkCoupon}>
+                    {dictionary.cartPage[5][language]}
                   </button>
                 </div>
               ) : (
                 <button className="button" onClick={openCouponBox}>
-                  ¿Tiene algún código de descuento?
+                  {dictionary.cartPage[6][language]}
                 </button>
               )}
             </div>
@@ -264,23 +282,41 @@ const CartPage = () => {
             <strong>${total.toFixed(2)} USD</strong>
           </div>
 
-          <p className="remember">
-            Para completar la transacción, lo enviaremos a los servidores
-            seguros de nuestro proveedor de pagos.
-          </p>
+          <div className="providers">
+            <button
+              className={`option ${selectedProvider === "paypal" ? "selected" : ""}`}
+              onClick={() => setSelectedProvider("paypal")}
+            >
+              <LogoPaypal />
+            </button>
+            <button
+              className={`option ${selectedProvider === "stripe" ? "selected" : ""}`}
+              onClick={() => setSelectedProvider("stripe")}
+            >
+              <LogoStripe />
+            </button>
+            <button
+              className={`option ${selectedProvider === "cardnet" ? "selected" : ""}`}
+              onClick={() => setSelectedProvider("cardnet")}
+            >
+              <img src={LogoCardnet} alt="cardnet" srcset="" />
+            </button>
+          </div>
+
+          <p className="remember">{dictionary.cartPage[7][language]}</p>
 
           <button
             className="action-button"
             onClick={requestPayment}
-            disabled={cart.length === 0 ? true : false || loading}
+            disabled={!selectedProvider || cart.length === 0 ? true : false || loading}
           >
             {loading ? (
               <>
                 <SpinnerOfDoom />
-                Cargando
+                {dictionary.spinnerOfDoom[language]}
               </>
             ) : (
-              "Verificar"
+              dictionary.cartPage[8][language]
             )}
           </button>
         </div>

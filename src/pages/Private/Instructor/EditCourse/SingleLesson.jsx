@@ -24,9 +24,7 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false);
 
   const deleteTextFromTextArray = (objectKey, text) => {
-    let filteredArray = JSON.parse(inputs[objectKey]).filter(
-      (el) => el !== text
-    );
+    let filteredArray = JSON.parse(inputs[objectKey]).filter((el) => el !== text);
 
     let value = null;
 
@@ -144,11 +142,13 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
         nombre: inputs.nombre,
         descripcion: inputs.descripcion,
         duracion: inputs.duracion,
-        additionalResources: inputs.additionalResources,
+        additionalResources: JSON.parse(inputs.additionalResources),
       },
     };
 
     // console.log(obj);
+    // setOngoingUpdate(false);
+
     const { ok, data } = await putLesson(id, obj);
 
     if (ok) {
@@ -170,10 +170,7 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
     formData.append("field", "clase");
     formData.append("files", file, file.name);
 
-    const { ok, data } = await postUserProfileImage(
-      formData,
-      savedMediaID ? savedMediaID : null
-    );
+    const { ok, data } = await postUserProfileImage(formData, savedMediaID ? savedMediaID : null);
 
     setUploadingFile(false);
 
@@ -189,11 +186,7 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
 
   const checkEverything = () => {
     if (inputs.nombre.length < 3) {
-      toast.error(
-        `El nombre de la lección Nº${
-          index + 1
-        } no puede estar vacío y debe tener al menos 3 letras`
-      );
+      toast.error(`El nombre de la lección Nº${index + 1} no puede estar vacío y debe tener al menos 3 letras`);
     } else if (inputs.descripcion === "") {
       toast.error(`Falta descripción en la lección: ${inputs.nombre}`);
     } else if (preview === null) {
@@ -224,19 +217,8 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
 
       <div className="inner-container">
         <div className="basic-stuff">
-          <DynamicInput
-            id={"nombre"}
-            state={[inputs, setInputs]}
-            label="Título"
-            noIcon
-          />
-          <DynamicInput
-            id={"descripcion"}
-            state={[inputs, setInputs]}
-            label="Descripción"
-            multiline
-            noIcon
-          />
+          <DynamicInput id={"nombre"} state={[inputs, setInputs]} label="Título" noIcon />
+          <DynamicInput id={"descripcion"} state={[inputs, setInputs]} label="Descripción" multiline noIcon />
         </div>
 
         <div className="additional-resources">
@@ -244,8 +226,7 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
             <>
               <h3>Recursos adicionales</h3>
               <div className="links">
-                {inputs.additionalResources !== null &&
-                inputs.additionalResources.length > 0 ? (
+                {inputs.additionalResources !== null && inputs.additionalResources.length > 0 ? (
                   JSON.parse(inputs.additionalResources).map((text, index) => {
                     return (
                       <LinkItem
@@ -292,13 +273,7 @@ const SingleLesson = ({ id, index, attributes, deleteLesson }) => {
         <div className="media-creation">
           <h2>Medio de lección</h2>
 
-          <input
-            type="file"
-            id="media"
-            onChange={handleFileChange}
-            ref={inputFile}
-            accept="video/*"
-          />
+          <input type="file" id="media" onChange={handleFileChange} ref={inputFile} accept="video/*" />
 
           <div className="media" onClick={openFileSelection}>
             {preview ? (

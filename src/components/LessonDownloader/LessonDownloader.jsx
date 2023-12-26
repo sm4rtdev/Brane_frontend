@@ -1,12 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+
 import { DownloadOutline, Pause, TrashOutline } from "../../assets/icons";
-import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
+
 import SpinnerOfDoom from "../SpinnerOfDoom/SpinnerOfDoom";
+import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 
 import "./LessonDownloader.scss";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [existInDatabase, setExistInDatabase] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -58,7 +63,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
     request.onerror = (event) => {
       console.error(event);
       setIsDownloading(false);
-      toast.error("La operacion no pudo ser completada");
+      toast.error(dictionary.lessonDownloader[0][language]);
     };
 
     request.onsuccess = (event) => {
@@ -66,7 +71,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
 
       db.onerror = (event) => {
         console.error(`Database error: ${event.target.errorCode}`);
-        toast.error("La operacion no pudo ser completada");
+        toast.error(dictionary.lessonDownloader[0][language]);
         setIsDownloading(false);
       };
 
@@ -79,7 +84,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
 
       addRequest.onsuccess = () => {
         triggerUpdate();
-        toast.success("El vídeo se ha almacenado correctamente.");
+        toast.success(dictionary.lessonDownloader[1][language]);
       };
 
       transaction.oncomplete = () => {
@@ -123,10 +128,8 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
     }
 
     const videoBlob = new Blob(chunks);
-    // console.log(videoBlob);
 
     saveVideo(videoBlob);
-    // controllerRef.current = null;
   };
 
   const pauseDownload = () => {
@@ -140,7 +143,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
     request.onerror = (event) => {
       console.error(event);
       setIsDownloading(false);
-      toast.error("La operacion no pudo ser completada");
+      toast.error(dictionary.lessonDownloader[0][language]);
     };
 
     request.onsuccess = (event) => {
@@ -148,7 +151,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
 
       db.onerror = (event) => {
         console.error(`Database error: ${event.target.errorCode}`);
-        toast.error("La operacion no pudo ser completada");
+        toast.error(dictionary.lessonDownloader[0][language]);
         setIsDownloading(false);
       };
 
@@ -157,11 +160,11 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
       const deleteRequest = objectStore.delete(videoID);
 
       deleteRequest.onsuccess = function () {
-        toast.success(`El vídeo se eliminó correctamente de tus descargas.`);
+        toast.success(dictionary.lessonDownloader[2][language]);
       };
 
       deleteRequest.onerror = function () {
-        toast.error(`Error al eliminar el vídeo de tus descargas`);
+        toast.error(dictionary.lessonDownloader[3][language]);
       };
 
       transaction.oncomplete = function () {
@@ -177,10 +180,8 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
 
       {attributes.clase.data && (
         <p className="size">
-          Tamaño:{" "}
-          <strong>
-            {(attributes.clase.data.attributes.size / 1024).toFixed(2)} MB
-          </strong>
+          {dictionary.lessonDownloader[4][language]}:{" "}
+          <strong>{(attributes.clase.data.attributes.size / 1024).toFixed(2)} MB</strong>
         </p>
       )}
       <div className="options">
@@ -189,7 +190,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
             <div></div>
             <button className="small-button" onClick={removeVideo}>
               <TrashOutline />
-              <p>Quitar del local</p>
+              <p>{dictionary.lessonDownloader[5][language]}</p>
             </button>
           </>
         ) : (
@@ -197,7 +198,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
             {isDownloading ? (
               <div className="status">
                 <SpinnerOfDoom />
-                <p>{`Download progress: ${(progress * 100).toFixed(2)}%`}</p>
+                <p>{`${dictionary.lessonDownloader[9][language]}: ${(progress * 100).toFixed(2)}%`}</p>
               </div>
             ) : (
               <div></div>
@@ -207,21 +208,19 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
                 <button
                   className="small-button"
                   onClick={() => {
-                    downloadVideo(
-                      getImageLinkFrom(attributes.clase.data.attributes.url)
-                    );
+                    downloadVideo(getImageLinkFrom(attributes.clase.data.attributes.url));
                   }}
                 >
                   <DownloadOutline />
-                  <p>Descargar video</p>
+                  <p>{dictionary.lessonDownloader[6][language]}</p>
                 </button>
               ) : (
-                <p className="no-data">No se pudo obtener la lección</p>
+                <p className="no-data">{dictionary.lessonDownloader[7][language]}</p>
               )
             ) : (
               <button className="small-button" onClick={pauseDownload}>
                 <Pause />
-                <p>Pausar descarga</p>
+                <p>{dictionary.lessonDownloader[8][language]}</p>
               </button>
             )}
           </>

@@ -16,9 +16,7 @@ const Categories = ({ search, conference }) => {
 
   useEffect(() => {
     if (categories) {
-      const parents = categories.filter(
-        (category) => category.attributes.categoria_padre.data === null
-      );
+      const parents = categories.filter((category) => category.attributes.categoria_padre.data === null);
 
       setParentCategories(parents);
     }
@@ -39,15 +37,11 @@ const Categories = ({ search, conference }) => {
           parentCategories.map((category) => {
             return (
               <Link
-                to={`/${conference ? "conferences" : "courses"}/${
-                  category.attributes.slug
-                }`}
+                to={`/${conference ? "conferences" : "courses"}/${category.attributes.slug}`}
                 className="btn-cat"
                 key={category.id}
               >
-                {language === "es"
-                  ? category.attributes.nombre
-                  : category.attributes.descripcion}
+                {language === "es" ? category.attributes.nombre : category.attributes.descripcion}
               </Link>
             );
           })}

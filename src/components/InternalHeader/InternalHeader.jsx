@@ -32,6 +32,7 @@ const InternalHeader = ({
   openOptionsMenu,
 }) => {
   const location = useLocation();
+
   const { cart } = useContext(CartContext);
   const { userData } = useContext(UserDataContext);
 
@@ -52,9 +53,9 @@ const InternalHeader = ({
       {!isSearchBarOpen ? (
         title && (
           <div
-            className={`title ${
-              options.bigTitle || options.longTitle ? "big" : ""
-            } ${options.titleAlignLeft ? "left" : ""}`}
+            className={`title ${options.bigTitle || options.longTitle ? "big" : ""} ${
+              options.titleAlignLeft ? "left" : ""
+            }`}
           >
             {options.bigTitle ? <h1>{title}</h1> : <p>{title}</p>}
           </div>
@@ -85,9 +86,7 @@ const InternalHeader = ({
           <Link to="/cart" className="small-button">
             <CartOutline />
           </Link>
-          {cart.length > 0 && (
-            <div className="noti">{cart.length < 10 ? cart.length : ""}</div>
-          )}
+          {cart.length > 0 && <div className="noti">{cart.length < 10 ? cart.length : ""}</div>}
         </div>
       )}
 

@@ -17,10 +17,12 @@ import {
 import FancyImage from "../FancyImage/FancyImage";
 import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../contexts/UserDataContext";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const BusinessHeader = ({ openOptionsMenu }) => {
   const navigate = useNavigate();
 
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData, closeSession } = useContext(UserDataContext);
 
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -47,16 +49,10 @@ const BusinessHeader = ({ openOptionsMenu }) => {
           <CartOutline />
         </Link>
 
-        <div
-          className="user"
-          onMouseEnter={toggleHover}
-          onMouseLeave={toggleHover}
-        >
+        <div className="user" onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
           <button className="profile-picture" onClick={toggleUserDropdown}>
             {userData.avatar ? (
-              <FancyImage
-                src={getImageLinkFrom(userData.avatar.formats.thumbnail.url)}
-              />
+              <FancyImage src={getImageLinkFrom(userData.avatar.formats.thumbnail.url)} />
             ) : (
               <PersonOutline />
             )}
@@ -76,17 +72,17 @@ const BusinessHeader = ({ openOptionsMenu }) => {
                   <div className="links">
                     <Link to={"/my-courses"} className="option">
                       <PlayCircleOutline />
-                      Mis cursos
+                      {dictionary.header.dropdown[0][language]}
                     </Link>
                     <Link to={`/user/${userData.info.slug}`} className="option">
                       <PersonCircleOutline />
-                      Perfil
+                      {dictionary.header.dropdown[5][language]}
                     </Link>
                   </div>
 
                   <button onClick={() => closeSession(navigate)}>
                     <LogOutOutline />
-                    Cerrar sesión
+                    {dictionary.header.dropdown[6][language]}
                   </button>
                 </div>
               )}

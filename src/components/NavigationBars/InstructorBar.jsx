@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -9,29 +9,33 @@ import {
   VideocamOutline,
 } from "../../assets/icons";
 
+import { DictionaryContext } from "../../contexts/DictionaryContext";
+
 const InstructorBar = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   return (
     <div className="navigation-bar instructor">
       <div className="container">
         <Link to="/create-course">
           <PlayCircleOutline />
-          <span>Crear</span>
+          <span>{dictionary.navigationBars.instructor[0][language]}</span>
         </Link>
         <Link to="/create-conference">
           <VideocamOutline />
-          <span>Conferencia</span>
+          <span>{dictionary.navigationBars.instructor[1][language]}</span>
         </Link>
         <Link to="/messages">
           <ChatboxEllipsesOutline />
-          <span>Mensajes</span>
+          <span>{dictionary.navigationBars.instructor[2][language]}</span>
         </Link>
         <Link to={`/coupons`}>
           <PricetagOutline />
-          <span>Cupones</span>
+          <span>{dictionary.navigationBars.instructor[3][language]}</span>
         </Link>
         <Link to={`/payments`}>
           <CashOutline />
-          <span>Pagos</span>
+          <span>{dictionary.navigationBars.instructor[4][language]}</span>
         </Link>
       </div>
     </div>

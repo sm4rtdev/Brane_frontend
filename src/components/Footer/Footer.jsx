@@ -110,11 +110,11 @@ const Footer = ({ unique, instructor, company }) => {
         <p>
           Copyright © 2023 {dictionary.footer.copy[language]}{" "}
           <a
-            href="https://miamisignaturedesigns.com"
+            href="https://msdsoftware.agency/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            MSD Soft
+            MSD Software Agency
           </a>
         </p>
       </div>

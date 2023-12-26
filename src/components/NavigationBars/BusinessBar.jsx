@@ -1,28 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import {
-  PeopleCircleOutline,
-  HelpCircleOutline,
-  AppsOutline,
-  StatsChart,
-} from "../../assets/icons";
+import { PeopleCircleOutline, HelpCircleOutline, AppsOutline, StatsChart } from "../../assets/icons";
+
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const BusinessBar = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   return (
     <div className="navigation-bar business">
       <div className="container">
         <Link to="/">
           <AppsOutline />
-          <span>Catálogo</span>
+          <span>{dictionary.navigationBars.business[0][language]}</span>
         </Link>
         <Link to="/add-users">
           <PeopleCircleOutline />
-          <span>Agregar usuarios</span>
+          <span>{dictionary.navigationBars.business[1][language]}</span>
         </Link>
         <Link to={`/statistics`}>
           <StatsChart />
-          <span>Estadísticas</span>
+          <span>{dictionary.navigationBars.business[2][language]}</span>
         </Link>
         <Link to={`/faq`}>
           <HelpCircleOutline />

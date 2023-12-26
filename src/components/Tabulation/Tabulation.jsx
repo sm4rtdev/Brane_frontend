@@ -12,9 +12,7 @@ const Tabulation = ({ tabs, options, children }) => {
         {tabs.map((option, index) => {
           return (
             <div
-              className={`tab ${openTab === index ? "selected" : ""} ${
-                type ? type : ""
-              } ${color ? color : ""}`}
+              className={`tab ${openTab === index ? "selected" : ""} ${type ? type : ""} ${color ? color : ""}`}
               key={index}
             >
               <button

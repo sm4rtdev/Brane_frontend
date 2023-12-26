@@ -2,12 +2,7 @@ import React, { useContext, useState } from "react";
 
 import "./Contact.scss";
 
-import {
-  ChevronForward,
-  LogoFacebook,
-  LogoTwitter,
-  LogoWhatsapp,
-} from "../../../assets/icons";
+import { ChevronForward, LogoFacebook, LogoWhatsapp, LogoTwitter } from "../../../assets/icons";
 
 import { Dots } from "../../../assets/images";
 
@@ -117,10 +112,7 @@ const Contact = () => {
           </form>
         </div>
 
-        <Footer
-          unique
-          {...(userData.mode === "instructor" && { instructor: true })}
-        />
+        <Footer unique {...(userData.mode === "instructor" && { instructor: true })} />
       </PageTransition>
     </div>
   );

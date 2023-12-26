@@ -1,0 +1,72 @@
+@use "../../styles/variables" as *;
+
+#report-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 300;
+
+  width: 100%;
+  min-height: calc(var(--unit) * 100);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $shadow;
+  opacity: 0;
+  cursor: pointer;
+  padding: 1rem;
+
+  @include transition(opacity);
+
+  &.visible {
+    opacity: 1;
+  }
+
+  .modal {
+    cursor: default;
+    background-color: $white;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 12rem;
+    max-width: 20rem;
+
+    strong {
+      @extend .text;
+
+      color: $black;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .action-button {
+        height: 38px;
+        width: 100%;
+        padding: 0 1rem;
+        margin-right: 0.75rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &.gray {
+          background-color: $gray;
+        }
+
+        @extend .text-sm;
+        font-weight: 500;
+      }
+    }
+  }
+}

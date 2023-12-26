@@ -22,8 +22,6 @@ const SpinnerOfDoom = ({ standalone, center, full, top }) => {
       }, 100);
 
       return () => {
-        // console.log("cleared");
-
         clearInterval(timer);
       };
     }
@@ -31,9 +29,9 @@ const SpinnerOfDoom = ({ standalone, center, full, top }) => {
 
   return (
     <div
-      className={`spinner-of-doom ${standalone ? "standalone" : ""} ${
-        center ? "center" : ""
-      } ${full ? "full" : ""} ${top ? "top" : ""}`}
+      className={`spinner-of-doom ${standalone ? "standalone" : ""} ${center ? "center" : ""} ${full ? "full" : ""} ${
+        top ? "top" : ""
+      }`}
     >
       <Sync />
       {standalone && (

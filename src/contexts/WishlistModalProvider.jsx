@@ -24,9 +24,7 @@ const WishlistModalProvider = ({ children }) => {
   };
 
   return (
-    <WishlistModalContext.Provider
-      value={{ isModalOpen, openWishlistModal, closeModal, closeOnClick }}
-    >
+    <WishlistModalContext.Provider value={{ isModalOpen, openWishlistModal, closeModal, closeOnClick }}>
       {children}
 
       {isModalOpen && <WishlistModal selectedCourseID={selectedCourseID} />}

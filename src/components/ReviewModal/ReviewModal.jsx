@@ -8,14 +8,17 @@ import { Star } from "../../assets/icons";
 import SpinnerOfDoom from "../SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../DynamicInput/DynamicInput";
 import { ReviewModalContext } from "../../contexts/ReviewModalContext";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { getSpecificReview } from "../../api/getSpecificReview";
 import { postReview } from "../../api/postReview";
 import { putReview } from "../../api/putReview";
 
 const ReviewModal = ({ selectedCourseID, editMode }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { closeModal, closeOnClick, stars } = useContext(ReviewModalContext);
   const { userData } = useContext(UserDataContext);
+
   const [previousReview, setPreviousReview] = useState(null);
 
   const [input, setInput] = useState({
@@ -32,12 +35,7 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
 
     if (editMode) {
       const getPrevious = async () => {
-        const { ok, data } = await getSpecificReview(
-          selectedCourseID,
-          userData.info.id
-        );
-
-        console.log(data.data);
+        const { ok, data } = await getSpecificReview(selectedCourseID, userData.info.id);
 
         if (ok) {
           setPreviousReview(data.data);
@@ -68,13 +66,11 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
 
       const { ok, data } = await postReview(obj);
 
-      console.log(data);
-
       if (ok) {
         setInput({ review: "" });
         closeModal();
 
-        toast.success(`Reseña creada`);
+        toast.success(dictionary.reviewModal[0][language]);
       } else {
         setLoading(false);
         toast.error(`${data.error.message}`);
@@ -89,13 +85,11 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
 
       const { ok, data } = await putReview(previousReview[0].id, obj);
 
-      console.log(data);
-
       if (ok) {
         setInput({ review: "" });
         closeModal();
 
-        toast.success(`Reseña actualizada`);
+        toast.success(dictionary.reviewModal[1][language]);
       } else {
         setLoading(false);
         toast.error(`${data.error.message}`);
@@ -104,15 +98,9 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
   };
 
   return (
-    <div
-      id="review-modal-container"
-      onClick={closeOnClick}
-      ref={modalContainer}
-    >
+    <div id="review-modal-container" onClick={closeOnClick} ref={modalContainer}>
       <div className="modal">
-        <strong>
-          {editMode ? "Editar calificación" : "¿Qué opinas de este curso?"}
-        </strong>
+        <strong>{editMode ? dictionary.reviewModal[2][language] : dictionary.reviewModal[3][language]}</strong>
 
         <div className="stars">
           {Array(stars)
@@ -129,7 +117,7 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
                 id={"review"}
                 state={[input, setInput]}
                 noIcon
-                label={"Tu reseña aquí"}
+                label={dictionary.reviewModal[4][language]}
                 multiline
               />
             ) : (
@@ -140,25 +128,21 @@ const ReviewModal = ({ selectedCourseID, editMode }) => {
               id={"review"}
               state={[input, setInput]}
               noIcon
-              label={"Tu reseña aquí"}
+              label={dictionary.reviewModal[4][language]}
               multiline
             />
           )}
         </div>
 
-        <button
-          className="action-button"
-          onClick={sendReview}
-          disabled={input.review.length === 0 || loading}
-        >
+        <button className="action-button" onClick={sendReview} disabled={input.review.length === 0 || loading}>
           {loading ? (
             <>
-              <SpinnerOfDoom /> Cargando
+              <SpinnerOfDoom /> {dictionary.spinnerOfDoom[language]}
             </>
           ) : editMode ? (
-            "Actualizar reseña"
+            dictionary.reviewModal[5][language]
           ) : (
-            "Enviar reseña"
+            dictionary.reviewModal[6][language]
           )}
         </button>
       </div>

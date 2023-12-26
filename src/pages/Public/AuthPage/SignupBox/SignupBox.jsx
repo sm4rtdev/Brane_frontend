@@ -4,48 +4,18 @@ import { toast } from "react-toastify";
 
 import "./SignupBox.scss";
 
-import { LogoApple, LogoFacebook } from "../../../../assets/icons";
+import { LogoApple, LogoFacebook, LogoGoogle } from "../../../../assets/icons";
 
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
-import { postRegister } from "../../../../api/postRegister";
 import { DictionaryContext } from "../../../../contexts/DictionaryContext";
+import { getGoogleLogin } from "../../../../api/getGoogleLogin";
+import { postRegister } from "../../../../api/postRegister";
 
 const SignupBox = () => {
   const { dictionary, language } = useContext(DictionaryContext);
 
   const boxContainer = useRef(null);
-  const [loginButtonSize, setLoginButtonSize] = useState(448);
-
-  useEffect(() => {
-    window.addEventListener("resize", (e) => {
-      setTimeout(() => {
-        if (boxContainer.current) {
-          // console.log(boxContainer.current.offsetWidth);
-          setLoginButtonSize(boxContainer.current.offsetWidth);
-        }
-      }, 0);
-    });
-  }, []);
-
-  useEffect(() => {
-    /* global google */
-    setTimeout(() => {
-      if (boxContainer.current) {
-        setLoginButtonSize(boxContainer.current.offsetWidth);
-      }
-
-      google.accounts.id.renderButton(
-        document.getElementById("continue-with-google"),
-        {
-          theme: "outline",
-          size: "large",
-          width: loginButtonSize - 96,
-          shape: "pill",
-        } // customization attributes
-      );
-    }, 0);
-  }, [loginButtonSize]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -55,6 +25,20 @@ const SignupBox = () => {
     password: "",
     repeatedPassword: "",
   });
+
+  const getGoogleWindow = async () => {
+    setIsLoading(true);
+
+    const { ok, data } = await getGoogleLogin();
+
+    if (ok) {
+      window.open(data.url, "_self");
+    } else {
+      toast.error(`${data.error.message}`);
+    }
+
+    setIsLoading(false);
+  };
 
   const register = async () => {
     const { ok, data } = await postRegister({
@@ -142,9 +126,10 @@ const SignupBox = () => {
             <span>{dictionary.signup[9][language]}</span>
           </div>
 
-          <div className="continue-with-google">
-            <div id="continue-with-google"></div>
-          </div>
+          <button className="continue-with-google" onClick={getGoogleWindow}>
+            <LogoGoogle />
+            <p>{dictionary.login.google[language]}</p>
+          </button>
 
           <button className="continue-with-facebook">
             <LogoFacebook />

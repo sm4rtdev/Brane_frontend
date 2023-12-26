@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { getFromLocal, updateLocal } from "../helpers/localStorage";
+import { DictionaryContext } from "./DictionaryContext";
 import { CartContext } from "./CartContext";
 
 const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(
-    getFromLocal("cart") ? getFromLocal("cart") : []
-  );
+  const { dictionary, language } = useContext(DictionaryContext);
+
+  const [cart, setCart] = useState(getFromLocal("cart") ? getFromLocal("cart") : []);
 
   useEffect(() => {
     updateLocal("cart", cart);
@@ -23,30 +24,25 @@ const CartProvider = ({ children }) => {
         return [...new Set([...c, courseID])];
       });
 
-      toast.success(`El curso ha sido añadido al carrito.`);
+      toast.success(dictionary.cartProvider[0][language]);
     }
   };
 
-  const removeFromCart = (id) => {
+  const removeFromCart = (id, silent) => {
     const filtered = cart.filter((el) => el !== id);
 
-    // console.log(filtered);
-
     setCart(filtered);
-    toast.success(`El curso ha sido eliminado del carrito.`);
+
+    if (!silent) {
+      toast.success(dictionary.cartProvider[1][language]);
+    }
   };
 
   const clearCart = () => {
     setCart([]);
   };
 
-  return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, clearCart }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>{children}</CartContext.Provider>;
 };
 
 export default CartProvider;

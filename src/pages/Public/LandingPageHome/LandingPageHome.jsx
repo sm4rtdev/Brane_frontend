@@ -4,21 +4,16 @@ import { toast } from "react-toastify";
 
 import "./LandingPageHome.scss";
 
-import {
-  BGTeach,
-  Dots,
-  DotsVertical,
-  QuotationMarks,
-} from "../../../assets/images";
+import { BGTeach, Dots, DotsVertical, QuotationMarks } from "../../../assets/images";
 
 import { Ellipse } from "../../../assets/icons";
 
 import bannerLandingHome from "../../../assets/images/banner-landing-home.jpg";
+import googlePlayEN from "../../../assets/images/google-play-badgeEN.png";
 import communityLeft from "../../../assets/images/community-left.png";
 import googlePlay from "../../../assets/images/google-play-badge.png";
-import appStore from "../../../assets/images/app-store-badge.png";
-import googlePlayEN from "../../../assets/images/google-play-badgeEN.png";
 import appStoreEN from "../../../assets/images/app-store-badgeEN.png";
+import appStore from "../../../assets/images/app-store-badge.png";
 import estudiante from "../../../assets/images/estudiante.png";
 import instructor from "../../../assets/images/instructor.png";
 import subhero from "../../../assets/images/subhero.jpg";
@@ -45,8 +40,6 @@ const LandingPageHome = () => {
     const getCourses = async () => {
       const { ok, data } = await getCoursesByCategory(selectedCategory);
 
-      // console.log(data.data);
-
       if (ok) {
         setCourses(data.data);
       } else {
@@ -65,14 +58,10 @@ const LandingPageHome = () => {
 
     if (boxContainer) {
       timer = setInterval(() => {
-        let scrollMax =
-          boxContainer.current.scrollHeight - boxContainer.current.clientHeight;
-        let top =
-          boxContainer.current.scrollTop +
-          boxContainer.current.clientHeight * 2;
+        let scrollMax = boxContainer.current.scrollHeight - boxContainer.current.clientHeight;
+        let top = boxContainer.current.scrollTop + boxContainer.current.clientHeight * 2;
 
         setDotFillingState((top / scrollMax) * 2);
-        // console.log((top / scrollMax) * 2);
 
         if (boxContainer.current.scrollTop === scrollMax) {
           boxContainer.current.scrollBy({
@@ -82,9 +71,7 @@ const LandingPageHome = () => {
           });
         } else {
           boxContainer.current.scrollBy({
-            top:
-              boxContainer.current.scrollTop +
-              boxContainer.current.clientHeight,
+            top: boxContainer.current.scrollTop + boxContainer.current.clientHeight,
             left: 0,
             behavior: "smooth",
           });
@@ -166,14 +153,7 @@ const LandingPageHome = () => {
             {courses ? (
               <div className="grid">
                 {courses.map((course) => {
-                  return (
-                    <CourseCard
-                      key={course.id}
-                      {...course}
-                      type="standard landing"
-                      landing
-                    />
-                  );
+                  return <CourseCard key={course.id} {...course} type="standard landing" landing />;
                 })}
               </div>
             ) : (
@@ -211,37 +191,6 @@ const LandingPageHome = () => {
               </div>
             </div>
           </div>
-
-          {/* <div className="services">
-            <h2>Our services</h2>
-
-            <div className="cards">
-              <div className="card">
-                <div className="card-image">
-                  <Service1 />
-                </div>
-                <strong>Special plans</strong>
-              </div>
-              <div className="card">
-                <div className="card-image">
-                  <Service2 />
-                </div>
-                <strong>Conferences</strong>
-              </div>
-              <div className="card">
-                <div className="card-image">
-                  <Service3 />
-                </div>
-                <strong>Courses</strong>
-              </div>
-              <div className="card">
-                <div className="card-image">
-                  <Service4 />
-                </div>
-                <strong>Remote friendly</strong>
-              </div>
-            </div>
-          </div> */}
 
           <div className="community">
             <h2>{dictionary.landingPage.testimonials[0][language]}</h2>
@@ -302,14 +251,8 @@ const LandingPageHome = () => {
               <strong>{dictionary.landingPage.call[2][language]}</strong>
 
               <div className="phones">
-                <FancyImage
-                  src={language === "es" ? googlePlay : googlePlayEN}
-                  noEffect={true}
-                />
-                <FancyImage
-                  src={language === "es" ? appStore : appStoreEN}
-                  noEffect={true}
-                />
+                <FancyImage src={language === "es" ? googlePlay : googlePlayEN} noEffect={true} />
+                <FancyImage src={language === "es" ? appStore : appStoreEN} noEffect={true} />
               </div>
             </div>
           </div>

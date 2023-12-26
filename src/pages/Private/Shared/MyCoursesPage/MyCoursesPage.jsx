@@ -26,102 +26,105 @@ import { getMyCourses } from "../../../../api/getMyCourses";
 const MyCoursesPage = () => {
   const { userData } = useContext(UserDataContext);
 
-  const [courses, setCourses] = useState(null);
-  const [myUsers, setMyUsers] = useState(null);
+  // ========== Student
+  const [studentRawCourses, setStudentRawCourses] = useState(null);
+  const [studentCoursesFilteredBySearch, setStudentCoursesFilteredBySearch] = useState(null);
 
-  // Run on page load or user mode change
-  useEffect(() => {
-    setTimeout(() => {
-      setCourses(null);
-    }, 0);
+  // ========== Instructor
+  const [instructorRawCourses, setInstructorRawCourses] = useState(null);
+  const [instructorCoursesFilteredBySearch, setInstructorCoursesFilteredBySearch] = useState(null);
+  const [instructorPublishedCourses, setInstructorPublishedCourses] = useState(null);
 
-    if (userData.mode === "instructor") {
-      const getCreatedCourses = async () => {
-        const { ok, data } = await getALLCoursesByInstructor(userData.info.id);
+  // Handle async operations
+  const [loading, setLoading] = useState(false);
 
-        // console.log("getCreatedCourses", data.data);
-
-        if (ok) {
-          setCourses(data.data);
-        } else {
-          toast.error(`${data.error.message}`);
-        }
-      };
-
-      getCreatedCourses();
-    } else {
-      const getAcquiredCourses = async () => {
-        const { ok, data } = await getMyCourses();
-
-        // console.log("getAcquiredCourses", data.data);
-
-        if (ok) {
-          setCourses(data.data);
-        } else {
-          toast.error(`${data.error.message}`);
-        }
-      };
-
-      getAcquiredCourses();
-    }
-
-    if (userData.company) {
-      const getMyUsers = async () => {
-        const { ok, data } = await getCompanyUsers(userData.info.id);
-
-        // console.log("getMyUsers", data);
-
-        if (ok) {
-          setMyUsers(data);
-        } else {
-          toast.error(`${data.error.message}`);
-        }
-      };
-
-      getMyUsers();
-    }
-  }, [userData]);
-
+  // For filtering
   const [input, setInput] = useState({
     query: "",
   });
-  const [filteredCourses, setFilteredCourses] = useState(null);
-  const [publishedCourses, setPublishedCourses] = useState(null);
 
+  // Update raw course data when user mode changes
   useEffect(() => {
-    if (courses) {
-      if (userData.mode !== "instructor") {
-        const array = courses.filter((course) =>
-          course.attributes.curso.data.attributes.name
-            .toLowerCase()
-            .includes(input.query.toLowerCase())
-        );
+    setStudentRawCourses(null);
+    setStudentCoursesFilteredBySearch(null);
 
-        setFilteredCourses(array);
-      } else {
-        const array = courses.filter((course) => {
-          // console.log(course);
+    setInstructorRawCourses(null);
+    setInstructorCoursesFilteredBySearch(null);
+    setInstructorPublishedCourses(null);
 
-          return course.attributes.name
-            .toLowerCase()
-            .includes(input.query.toLowerCase());
-        });
+    // Mode instructor
+    if (userData.mode === "instructor") {
+      (async () => {
+        const { ok, data } = await getALLCoursesByInstructor(userData.info.id);
 
-        setFilteredCourses(array);
-        setPublishedCourses(
-          array.filter((course) => course.attributes.status === "published")
-        );
-      }
+        if (ok) {
+          setInstructorRawCourses(data.data);
+          setLoading(false);
+        } else {
+          toast.error(`${data.error.message}`);
+          setLoading(false);
+        }
+      })();
     }
-  }, [courses, input, userData]);
+    // Mode student
+    else {
+      (async () => {
+        const { ok, data } = await getMyCourses();
 
-  //empresa
+        if (ok) {
+          setStudentRawCourses(data.data);
+          setLoading(false);
+        } else {
+          toast.error(`${data.error.message}`);
+          setLoading(false);
+        }
+      })();
+    }
+  }, [userData]);
+
+  // Filter student courses
+  useEffect(() => {
+    if (studentRawCourses) {
+      const array = studentRawCourses.filter((course) =>
+        course.attributes.curso.data.attributes.name.toLowerCase().includes(input.query.toLowerCase())
+      );
+
+      setStudentCoursesFilteredBySearch(array);
+    }
+  }, [studentRawCourses, input.query]);
+
+  // Filter instructor courses
+  useEffect(() => {
+    if (instructorRawCourses) {
+      const array = instructorRawCourses.filter((course) =>
+        course.attributes.name.toLowerCase().includes(input.query.toLowerCase())
+      );
+
+      setInstructorCoursesFilteredBySearch(array);
+      setInstructorPublishedCourses(array.filter((course) => course.attributes.status === "published"));
+    }
+  }, [instructorRawCourses, input.query]);
+
+  // ================================== Company only ===============================
+  const [myUsers, setMyUsers] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [status, setStatus] = useState(null);
+
+  // Get users of company
+  if (userData.company) {
+    (async () => {
+      const { ok, data } = await getCompanyUsers(userData.info.id);
+
+      if (ok) {
+        setMyUsers(data);
+      } else {
+        toast.error(`${data.error.message}`);
+      }
+    })();
+  }
 
   const getNameOfSelectedCourse = () => {
-    let obj = courses.find(
-      (course) => course.attributes.curso.data.id === selectedCourse
-    );
+    let obj = studentRawCourses.find((course) => course.attributes.curso.data.id === selectedCourse);
 
     if (obj) {
       return obj.attributes.curso.data.attributes.name;
@@ -160,8 +163,6 @@ const MyCoursesPage = () => {
       toast.error(`${data.error.message}`);
     }
   };
-
-  const [status, setStatus] = useState(null);
 
   const getStatus = async () => {
     const { ok, data } = await getCourseAssignmentStatus(selectedCourse);
@@ -219,12 +220,7 @@ const MyCoursesPage = () => {
           </div>
 
           <div className="filters">
-            <DynamicInput
-              id="query"
-              type="search"
-              state={[input, setInput]}
-              label="Buscar mis cursos"
-            />
+            <DynamicInput id="query" type="search" state={[input, setInput]} label="Buscar mis cursos" />
           </div>
 
           <Tabulation
@@ -232,25 +228,20 @@ const MyCoursesPage = () => {
               !userData.company
                 ? userData.mode === "instructor"
                   ? ["Publicado", "Editar cursos"]
-                  : ["Mis cursos", "Descargas"]
+                  : ["Mis cursos y conferencias", "Descargas"]
                 : ["Mis cursos", "Asignar usuarios"]
             }
             options={{ type: "bubble", color: "yellow" }}
           >
+            {/* First tab */}
             {userData.mode === "instructor" ? (
               <>
-                {filteredCourses ? (
-                  publishedCourses && publishedCourses.length > 0 ? (
+                {/* --------- Instructor */}
+                {instructorCoursesFilteredBySearch ? (
+                  instructorPublishedCourses && instructorPublishedCourses.length > 0 && !loading ? (
                     <div className="courses">
-                      {publishedCourses.map((course) => {
-                        return (
-                          <CourseCard
-                            key={course.id}
-                            {...course}
-                            type={`standard other`}
-                            id={course.id}
-                          />
-                        );
+                      {instructorPublishedCourses.map((course) => {
+                        return <CourseCard key={course.id} {...course} type={`standard other`} id={course.id} />;
                       })}
                     </div>
                   ) : (
@@ -266,17 +257,16 @@ const MyCoursesPage = () => {
               </>
             ) : (
               <>
-                {filteredCourses ? (
-                  filteredCourses.length > 0 ? (
+                {/* --------- Student OR company */}
+                {studentCoursesFilteredBySearch !== null && !loading ? (
+                  studentCoursesFilteredBySearch && studentCoursesFilteredBySearch.length > 0 ? (
                     <div className="courses">
-                      {filteredCourses.map((course) => {
+                      {studentCoursesFilteredBySearch.map((course) => {
                         return (
                           <CourseCard
                             key={course.id}
                             {...course}
-                            type={`standard  ${
-                              userData.company ? "small" : "big"
-                            }`}
+                            type={`standard  ${userData.company ? "small" : "big"}`}
                             {...(userData.company && {
                               company: setSelectedCourse,
                             })}
@@ -300,21 +290,17 @@ const MyCoursesPage = () => {
               </>
             )}
 
+            {/* Second tab */}
             {!userData.company ? (
               userData.mode === "instructor" ? (
                 <>
-                  {filteredCourses ? (
-                    filteredCourses.length > 0 ? (
+                  {/* Instructor */}
+                  {instructorCoursesFilteredBySearch ? (
+                    instructorCoursesFilteredBySearch.length > 0 ? (
                       <div className="courses">
-                        {filteredCourses.map((course) => {
+                        {instructorCoursesFilteredBySearch.map((course) => {
                           return (
-                            <CourseCard
-                              key={course.id}
-                              id={course.id}
-                              {...course}
-                              type={`standard other`}
-                              openEdit
-                            />
+                            <CourseCard key={course.id} id={course.id} {...course} type={`standard other`} openEdit />
                           );
                         })}
                       </div>
@@ -331,9 +317,16 @@ const MyCoursesPage = () => {
                 </>
               ) : (
                 <>
-                  {filteredCourses ? (
-                    filteredCourses.length > 0 ? (
-                      <DownloadManager filteredCourses={filteredCourses} />
+                  {/*  Student */}
+                  {studentCoursesFilteredBySearch ? (
+                    studentCoursesFilteredBySearch.length > 0 ? (
+                      studentCoursesFilteredBySearch.filter(
+                        (course) => course.attributes.curso.data.attributes.tipo !== "conferencia"
+                      ).length > 0 ? (
+                        <DownloadManager filteredCourses={studentCoursesFilteredBySearch} />
+                      ) : (
+                        <p className="no-data">No tienes cursos con lecciones descargables</p>
+                      )
                     ) : (
                       <p className="no-data">
                         {input.query === ""
@@ -348,8 +341,8 @@ const MyCoursesPage = () => {
               )
             ) : (
               <>
-                {filteredCourses ? (
-                  filteredCourses.length > 0 ? (
+                {studentCoursesFilteredBySearch ? (
+                  studentCoursesFilteredBySearch.length > 0 ? (
                     selectedCourse ? (
                       <div className="company">
                         <h2>Curso seleccionado:</h2>
@@ -366,19 +359,15 @@ const MyCoursesPage = () => {
                                   <div key={user.id} className={"user-card"}>
                                     <div className="data">
                                       <p>
-                                        <span>ID:</span>{" "}
-                                        <strong>{user.id}</strong>
+                                        <span>ID:</span> <strong>{user.id}</strong>
                                       </p>
                                       <p>
-                                        <span>Email:</span>{" "}
-                                        <strong>{user.email}</strong>
+                                        <span>Email:</span> <strong>{user.email}</strong>
                                       </p>
                                       {!user.name && !user.apellidos ? (
                                         <p>Sin nombre</p>
                                       ) : (
-                                        <p>{`${
-                                          user.nombre ? user.nombre : ""
-                                        } ${
+                                        <p>{`${user.nombre ? user.nombre : ""} ${
                                           user.apellidos ? user.apellidos : ""
                                         }`}</p>
                                       )}
@@ -394,10 +383,7 @@ const MyCoursesPage = () => {
                                           }
                                         }}
                                       >
-                                        <AddCircleOutline />{" "}
-                                        {encountered(status, user.id)
-                                          ? "Desasignar"
-                                          : "Asignar"}
+                                        <AddCircleOutline /> {encountered(status, user.id) ? "Desasignar" : "Asignar"}
                                       </button>
                                     </div>
                                   </div>

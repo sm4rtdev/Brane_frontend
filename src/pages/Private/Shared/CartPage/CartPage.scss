@@ -111,6 +111,57 @@
       width: 100%;
       padding: 1rem;
       max-width: 42rem;
+      margin-top: 1rem;
+    }
+
+    .providers {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      width: 100%;
+
+      button {
+        padding: 0.5rem 2rem;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: $rounded;
+        box-shadow: 0 0.25rem $shadow;
+        position: relative;
+        gap: 1rem;
+        padding-left: 4rem;
+
+        svg,
+        img {
+          height: 2rem;
+          width: auto;
+        }
+
+        &::after {
+          content: "";
+          width: 1rem;
+          height: 1rem;
+          // position: absolute;
+          // right: -1rem;
+          border-radius: $rounded;
+          border: 1px solid $gray;
+        }
+
+        &.selected {
+          border-color: $yellow;
+        }
+
+        &.selected::after {
+          background-color: $yellow;
+          border-color: $yellow;
+        }
+      }
     }
 
     & > .action-button {

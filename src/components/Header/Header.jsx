@@ -3,20 +3,14 @@ import { Link } from "react-router-dom";
 
 import "./Header.scss";
 
-import {
-  NotificationsOutline,
-  LogOutOutline,
-  CartOutline,
-  LogoBrane,
-  Trophy,
-} from "../../assets/icons";
+import { NotificationsOutline, LogOutOutline, CartOutline, LogoBrane, Trophy } from "../../assets/icons";
 
 import HeaderDropdown from "../HeaderDropdown/HeaderDropdown";
 import DynamicInput from "../DynamicInput/DynamicInput";
 import MsgDropdown from "../MsgDropdown/MsgDropdown";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { CartContext } from "../../contexts/CartContext";
-import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const Header = ({ black, title, progress }) => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -94,20 +88,18 @@ const Header = ({ black, title, progress }) => {
                 <Link to="/cart" className="small-button">
                   <CartOutline />
                 </Link>
-                {cart.length > 0 && (
-                  <div className="noti">
-                    {cart.length < 10 ? cart.length : ""}
-                  </div>
-                )}
+                {cart.length > 0 && <div className="noti">{cart.length < 10 ? cart.length : ""}</div>}
               </div>
             )}
           </>
         ) : (
           <>
-            <div className="trophy">
-              <span>{progress}</span>
-              <Trophy />
-            </div>
+            {progress && progress > 0 && (
+              <div className="trophy">
+                <span>{progress}</span>
+                <Trophy />
+              </div>
+            )}
             <Link to="/my-courses" className="small-button">
               <LogOutOutline />
             </Link>
@@ -131,9 +123,7 @@ const Header = ({ black, title, progress }) => {
             <Link to="/cart" className="small-button">
               <CartOutline />
             </Link>
-            {cart.length > 0 && (
-              <div className="noti">{cart.length < 10 ? cart.length : ""}</div>
-            )}
+            {cart.length > 0 && <div className="noti">{cart.length < 10 ? cart.length : ""}</div>}
           </div>
         )}
       </div>

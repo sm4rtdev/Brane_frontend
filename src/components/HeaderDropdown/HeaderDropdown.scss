@@ -82,6 +82,7 @@
       @extend .text-sm;
 
       width: 100%;
+      word-break: break-all;
       color: $dark-gray;
       margin-bottom: 0.5rem;
       padding-bottom: 1rem;

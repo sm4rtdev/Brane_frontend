@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import "./styles/global.scss";
 
 import WishlistModalProvider from "./contexts/WishlistModalProvider";
+import ReportModalProvider from "./contexts/ReportModalProvider";
 import ReviewModalProvider from "./contexts/ReviewModalProvider";
 import CategoriesProvider from "./contexts/CategoriesProvider";
 import DictionaryProvider from "./contexts/DictionaryProvider";
@@ -21,19 +22,21 @@ function App() {
             <CategoriesProvider>
               <WishlistModalProvider>
                 <ReviewModalProvider>
-                  <AppRouter />
-                  <ToastContainer
-                    position="bottom-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                  />
+                  <ReportModalProvider>
+                    <AppRouter />
+                    <ToastContainer
+                      position="bottom-right"
+                      autoClose={5000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                    />
+                  </ReportModalProvider>
                 </ReviewModalProvider>
               </WishlistModalProvider>
             </CategoriesProvider>

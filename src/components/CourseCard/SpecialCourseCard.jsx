@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import "./CourseCard.scss";
@@ -8,10 +8,13 @@ import { ChevronForward } from "../../assets/icons";
 import LessonDownloader from "../LessonDownloader/LessonDownloader";
 import SpinnerOfDoom from "../SpinnerOfDoom/SpinnerOfDoom";
 import FancyImage from "../FancyImage/FancyImage";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 import { getAllClasses } from "../../api/getAllClasses";
 
 const SpecialCourseCard = ({ attributes, triggerUpdate, updater }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const temp = attributes.curso.data.attributes;
 
   const [isManagerOpen, setIsManagerOpen] = useState(false);
@@ -23,8 +26,6 @@ const SpecialCourseCard = ({ attributes, triggerUpdate, updater }) => {
 
       const getLessons = async () => {
         const { ok, data } = await getAllClasses(temp.slug);
-
-        console.log("getLessons", data.data);
 
         if (ok) {
           setLessons(data.data);
@@ -46,9 +47,7 @@ const SpecialCourseCard = ({ attributes, triggerUpdate, updater }) => {
       <div className="container">
         <div className="inner-container">
           <div className="course-image">
-            <FancyImage
-              src={getImageLinkFrom(temp.imagen.data[0].attributes.url)}
-            />
+            <FancyImage src={getImageLinkFrom(temp.imagen.data[0].attributes.url)} />
           </div>
           <div className="text">
             <strong>{temp.name}</strong>
@@ -63,7 +62,7 @@ const SpecialCourseCard = ({ attributes, triggerUpdate, updater }) => {
               setIsManagerOpen((current) => !current);
             }}
           >
-            <p>Administrar descargas</p>
+            <p>{dictionary.specialCourseCard[0][language]}</p>
 
             <span>
               <ChevronForward className={`${isManagerOpen ? "open" : ""}`} />
@@ -74,19 +73,18 @@ const SpecialCourseCard = ({ attributes, triggerUpdate, updater }) => {
             <div className="manager">
               {lessons ? (
                 <>
-                  <h3>Lecciones:</h3>
+                  <h3>{dictionary.specialCourseCard[1][language]}:</h3>
 
                   <div className="lessons">
-                    {lessons.map((lesson, index) => {
-                      return (
-                        <LessonDownloader
-                          key={index}
-                          {...lesson}
-                          triggerUpdate={triggerUpdate}
-                          updater={updater}
-                        />
-                      );
-                    })}
+                    {lessons.length > 0 ? (
+                      lessons.map((lesson, index) => {
+                        return (
+                          <LessonDownloader key={index} {...lesson} triggerUpdate={triggerUpdate} updater={updater} />
+                        );
+                      })
+                    ) : (
+                      <p className="no-data">{dictionary.specialCourseCard[2][language]}</p>
+                    )}
                   </div>
                 </>
               ) : (

@@ -4,23 +4,20 @@ import Slider from "@mui/material/Slider";
 
 import "./SearchHeader.scss";
 
-import {
-  CartOutline,
-  Filter,
-  LogoBrane,
-  NotificationsOutline,
-} from "../../assets/icons";
+import { CartOutline, Filter, LogoBrane, NotificationsOutline } from "../../assets/icons";
 
 import HeaderDropdown from "../HeaderDropdown/HeaderDropdown";
 import DynamicInput from "../DynamicInput/DynamicInput";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { CartContext } from "../../contexts/CartContext";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
+import MsgDropdown from "../MsgDropdown/MsgDropdown";
 
 const SearchHeader = ({ state, starRange, priceRange, general }) => {
   const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const { cart } = useContext(CartContext);
+
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
   const closeFiltersMenu = (e) => {
@@ -41,12 +38,16 @@ const SearchHeader = ({ state, starRange, priceRange, general }) => {
         </Link>
       )}
 
-      <DynamicInput
-        id="query"
-        type="search"
-        state={state}
-        placeholder={dictionary.header.search[language]}
-      />
+      <DynamicInput id="query" type="search" state={state} placeholder={dictionary.header.search[language]} />
+
+      <nav className="other-links">
+        <Link className="link" to={"/courses/development"}>
+          {dictionary.header.nav[1][language]}
+        </Link>
+        <Link className="link" to={"/conferences/development"}>
+          {dictionary.header.nav[2][language]}
+        </Link>
+      </nav>
 
       {!general && (
         <button
@@ -63,13 +64,14 @@ const SearchHeader = ({ state, starRange, priceRange, general }) => {
         <Link to="/notifications" className="small-button">
           <NotificationsOutline />
         </Link>
+
+        {!userData.institution && !userData.company && <MsgDropdown />}
+
         <div className="cart-noti-container">
           <Link to="/cart" className="small-button">
             <CartOutline />
           </Link>
-          {cart.length > 0 && (
-            <div className="noti">{cart.length < 10 ? cart.length : ""}</div>
-          )}
+          {cart.length > 0 && <div className="noti">{cart.length < 10 ? cart.length : ""}</div>}
         </div>
 
         <HeaderDropdown company />

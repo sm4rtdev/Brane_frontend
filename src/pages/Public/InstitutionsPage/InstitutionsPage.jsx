@@ -32,24 +32,6 @@ const InstitutionsPage = () => {
                 {dictionary.institutions.bannerButton[language]}
               </a>
             </div>
-            {/* <div className="bar">
-              <div className="item">
-                <strong>50</strong>
-                <span>Available countries</span>
-              </div>
-              <div className="item">
-                <strong>2</strong>
-                <span>Languages</span>
-              </div>
-              <div className="item">
-                <strong>180</strong>
-                <span>Corporate customers</span>
-              </div>
-              <div className="item">
-                <strong>3</strong>
-                <span>Payment methods</span>
-              </div>
-            </div> */}
           </div>
           <div className="main">
             <div id="how-to-start">
@@ -57,15 +39,11 @@ const InstitutionsPage = () => {
 
               <div className="container">
                 <div className="left">
-                  <strong>
-                    {dictionary.institutions.howList.title[language]}
-                  </strong>
+                  <strong>{dictionary.institutions.howList.title[language]}</strong>
                   <ul>
-                    {dictionary.institutions.howList.items.map(
-                      (item, index) => {
-                        return <li key={index}>{item[language]}</li>;
-                      }
-                    )}
+                    {dictionary.institutions.howList.items.map((item, index) => {
+                      return <li key={index}>{item[language]}</li>;
+                    })}
                   </ul>
                 </div>
                 <div className="right">

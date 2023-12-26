@@ -14,8 +14,10 @@ import Notification from "../../../../components/Notification/Notification";
 import Footer from "../../../../components/Footer/Footer";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getNotifications } from "../../../../api/getNotifications";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const NotificationsPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
 
   const [notifications, setNotifications] = useState(null);
@@ -55,7 +57,7 @@ const NotificationsPage = () => {
                 backButton: true,
                 bigTitle: true,
               }}
-              title={"Notifications"}
+              title={dictionary.notificationsPage[0][language]}
             />
           </HeaderToggler>
         ) : (
@@ -64,10 +66,8 @@ const NotificationsPage = () => {
 
         <div className="main">
           <div className="title">
-            <h1>Notificaciones</h1>
+            <h1>{dictionary.notificationsPage[0][language]}</h1>
           </div>
-
-          {/* <h3>Today</h3> */}
 
           {notifications ? (
             notifications.length !== 0 ? (
@@ -75,7 +75,9 @@ const NotificationsPage = () => {
                 return <Notification {...notification} key={index} />;
               })
             ) : (
-              <p className="no-data">No tienes notificaciones</p>
+              <p className="no-data">
+                {dictionary.notificationsPage[1][language]}
+              </p>
             )
           ) : (
             <SpinnerOfDoom standalone center />

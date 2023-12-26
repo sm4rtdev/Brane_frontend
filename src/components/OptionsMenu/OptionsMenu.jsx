@@ -4,19 +4,15 @@ import { toast } from "react-toastify";
 
 import "./OptionsMenu.scss";
 
-import {
-  AlertCircleOutline,
-  ChevronForward,
-  CreateOutline,
-  LogOutOutline,
-} from "../../assets/icons";
+import { AlertCircleOutline, ChevronForward, CreateOutline, LogOutOutline } from "../../assets/icons";
 
-import { putUserMetadata } from "../../api/putUserMetadata";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { UserDataContext } from "../../contexts/UserDataContext";
+import { putUserMetadata } from "../../api/putUserMetadata";
 
 const OptionsMenu = ({ closeOptionsMenu }) => {
-  const { userData, closeSession, setMetadataRefresh } =
-    useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
+  const { userData, closeSession, setMetadataRefresh } = useContext(UserDataContext);
 
   const [notifications, setNotifications] = useState({
     messages: userData.meta.notificacion_mensajes,
@@ -38,7 +34,7 @@ const OptionsMenu = ({ closeOptionsMenu }) => {
 
     if (ok) {
       setMetadataRefresh(Date.now());
-      toast.success("Tu configuración de notificaciones ha sido actualizada.");
+      toast.success(dictionary.optionsMenu[0][language]);
     } else {
       toast.error(`${data.error.message}`);
     }
@@ -55,46 +51,40 @@ const OptionsMenu = ({ closeOptionsMenu }) => {
   return (
     <div id="options-menu" onClick={closeOptionsMenu}>
       <div className="container">
-        <strong>Ajustes</strong>
+        <strong>{dictionary.optionsMenu[1][language]}</strong>
 
         {!userData.instructor && userData.company && userData.institution && (
-          <button className="action-button">Conviértete en instructor</button>
+          <button className="action-button">{dictionary.optionsMenu[2][language]}</button>
         )}
 
         <Link to="/edit-profile" className="link">
           <CreateOutline />
-          <p>Editar perfil</p>
+          <p>{dictionary.optionsMenu[3][language]}</p>
           <ChevronForward />
         </Link>
 
         <div className={`slider ${notifications.messages ? "checked" : ""}`}>
-          <p>Notificaciones de mensajes</p>
+          <p>{dictionary.optionsMenu[4][language]}</p>
           <button onClick={() => toggleSetting("messages")}></button>
         </div>
         <div className={`slider ${notifications.promotions ? "checked" : ""}`}>
-          <p>Notificación de promociones</p>
+          <p>{dictionary.optionsMenu[5][language]}</p>
           <button onClick={() => toggleSetting("promotions")}></button>
         </div>
-        <div
-          className={`slider ${
-            notifications.instructorAnnouncement ? "checked" : ""
-          }`}
-        >
-          <p>Notificaciones de anuncios del instructor</p>
-          <button
-            onClick={() => toggleSetting("instructorAnnouncement")}
-          ></button>
+        <div className={`slider ${notifications.instructorAnnouncement ? "checked" : ""}`}>
+          <p>{dictionary.optionsMenu[6][language]}</p>
+          <button onClick={() => toggleSetting("instructorAnnouncement")}></button>
         </div>
 
         <Link to="/help" className="link">
           <AlertCircleOutline />
-          <p>Centro de ayuda</p>
+          <p>{dictionary.optionsMenu[7][language]}</p>
           <ChevronForward />
         </Link>
 
         <div className="link logout" onClick={closeSession}>
           <LogOutOutline />
-          <p>Cerrar sesión</p>
+          <p>{dictionary.optionsMenu[8][language]}</p>
         </div>
       </div>
     </div>

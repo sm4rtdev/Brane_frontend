@@ -12,9 +12,9 @@ import PublicHeader from "../../../components/PublicHeader/PublicHeader";
 import FancyImage from "../../../components/FancyImage/FancyImage";
 import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 import { UserDataContext } from "../../../contexts/UserDataContext";
 import { getUpdateRole } from "../../../api/getUpdateRole";
-import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const TeachPage = () => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -27,10 +27,8 @@ const TeachPage = () => {
 
     const { ok, data } = await getUpdateRole();
 
-    // console.log(data.data);
-
     if (ok) {
-      toast.success(`Exito`);
+      toast.success(dictionary.login.done[language]);
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -83,15 +81,10 @@ const TeachPage = () => {
               <h2>{dictionary.teach.become[0][language]}</h2>
               <p>{dictionary.teach.become[1][language]}</p>
               {userData.info ? (
-                <button
-                  className="action-button"
-                  onClick={becomeAnInstructor}
-                  disabled={loading}
-                >
+                <button className="action-button" onClick={becomeAnInstructor} disabled={loading}>
                   {loading ? (
                     <>
-                      <SpinnerOfDoom />{" "}
-                      {dictionary.teach.become[2][language] + "..."}
+                      <SpinnerOfDoom /> {dictionary.teach.become[2][language] + "..."}
                     </>
                   ) : (
                     dictionary.teach.become[3][language]

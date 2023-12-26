@@ -22,13 +22,13 @@
     width: 100%;
     background-color: $light-shadow;
     border-radius: 16px;
-    padding: 0 2rem;
+    padding: 2rem;
     margin-bottom: 1rem;
 
     .image {
-      height: 6rem;
       width: 6rem;
       margin-right: 1rem;
+      flex-shrink: 0;
 
       svg {
         width: 100%;
@@ -36,8 +36,31 @@
       }
     }
 
-    .small-button {
-      font-weight: 700;
+    .text {
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 1rem;
+
+      p,
+      strong {
+        @extend .text-sm;
+        color: $gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      strong {
+        font-weight: 700;
+        color: $black;
+        padding-left: 0.25rem;
+      }
+    }
+
+    .action-button {
       width: max-content;
       padding: 0 3rem;
     }

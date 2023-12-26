@@ -82,6 +82,7 @@ const AppRouter = () => {
         <Route path="/auth" element={<AuthPage />}>
           <Route index element={<Navigate to={"login"} />} />
           <Route path="login" element={<LoginBox />} />
+          <Route path="google/callback" element={<></>} />
           <Route path="signup" element={<SignupBox />} />
           <Route path="account-recovery" element={<AccountRecoveryBox />} />
           <Route path="*" element={<Navigate to={"login"} />} />
@@ -102,118 +103,57 @@ const AppRouter = () => {
           <>
             {userData.info && (
               <>
-                <Route
-                  path="/role"
-                  element={
-                    userData.instructor ? (
-                      <RoleSelection />
-                    ) : (
-                      <Navigate to={"/"} />
-                    )
-                  }
-                />
+                <Route path="/role" element={userData.instructor ? <RoleSelection /> : <Navigate to={"/"} />} />
 
                 {userData.mode === "instructor" && (
-                  <Route
-                    path="/"
-                    element={<SupraContainer mode={"instructor"} />}
-                  >
+                  <Route path="/" element={<SupraContainer mode={"instructor"} />}>
                     <Route index element={<HomeInstructor />} />
-                    <Route
-                      path="create-course"
-                      element={<CreateCoursePage />}
-                    />
-                    <Route
-                      path="create-conference"
-                      element={<CreateConferencePage />}
-                    />
+                    <Route path="create-course" element={<CreateCoursePage />} />
+                    <Route path="create-conference" element={<CreateConferencePage />} />
                     <Route path="payments" element={<PaymentMethods />} />
                     <Route path="messages" element={<Messages />} />
                     <Route path="coupons" element={<CreateCoupons />} />
-                    <Route
-                      path="notifications"
-                      element={<NotificationsPage />}
-                    />
+                    <Route path="notifications" element={<NotificationsPage />} />
                     <Route path="my-courses" element={<MyCoursesPage />} />
                     <Route path="user/:slug" element={<UserProfilePage />} />
                     <Route path="edit-profile" element={<EditProfilePage />} />
-                    <Route
-                      path="/edit-course/:courseID"
-                      element={<EditCoursePage />}
-                    />
+                    <Route path="/edit-course/:courseID" element={<EditCoursePage />} />
                     <Route path="*" element={<Navigate to={"/"} />} />
                   </Route>
                 )}
 
                 {userData.company ? (
-                  <Route
-                    path="/"
-                    element={<SupraContainer mode={"business"} />}
-                  >
+                  <Route path="/" element={<SupraContainer mode={"business"} />}>
                     <Route index element={<DiscoverPage />} />
-                    <Route
-                      path="notifications"
-                      element={<NotificationsPage />}
-                    />
+                    <Route path="notifications" element={<NotificationsPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="add-users" element={<AddUsers />} />
                     <Route path="course/:slug" element={<CoursePage />} />
-                    <Route
-                      path="courses/:category"
-                      element={<AdvancedSearchPage />}
-                    />
+                    <Route path="courses/:category" element={<AdvancedSearchPage />} />
                     <Route path="/faq" element={<FAQPage />} />
-                    <Route
-                      path="courses/:category/:subcategory"
-                      element={<AdvancedSearchPage />}
-                    />
+                    <Route path="courses/:category/:subcategory" element={<AdvancedSearchPage />} />
                     <Route path="my-courses" element={<MyCoursesPage />} />
                     <Route path="statistics" element={<StatisticsPage />} />
                     <Route path="user/:slug" element={<UserProfilePage />} />
-                    <Route
-                      path="edit-profile"
-                      element={<EditProfilePage mode={"company"} />}
-                    />
+                    <Route path="edit-profile" element={<EditProfilePage mode={"company"} />} />
 
-                    <Route
-                      path="payment-failure"
-                      element={<PaymentFailure />}
-                    />
-                    <Route
-                      path="successful-purchase"
-                      element={<SuccessfulPurchase />}
-                    />
+                    {/* After payment */}
+                    <Route path="payment-failure" element={<PaymentFailure />} />
+                    <Route path="successful-purchase" element={<SuccessfulPurchase />} />
+                    <Route path="payment-success" element={<SuccessfulPurchase />} />
 
                     <Route path="*" element={<Navigate to={"/"} />} />
                   </Route>
                 ) : userData.institution ? (
-                  <Route
-                    path="/"
-                    element={<SupraContainer mode={"institution"} />}
-                  >
+                  <Route path="/" element={<SupraContainer mode={"institution"} />}>
                     <Route index element={<HomeInstitutions />} />
-                    <Route
-                      path="notifications"
-                      element={<NotificationsPage />}
-                    />
-                    <Route
-                      path="manage-instructors"
-                      element={<ManageInstructors />}
-                    />
+                    <Route path="notifications" element={<NotificationsPage />} />
+                    <Route path="manage-instructors" element={<ManageInstructors />} />
                     <Route path="course/:slug" element={<CoursePage />} />
-                    <Route
-                      path="courses/:category"
-                      element={<AdvancedSearchPage />}
-                    />
-                    <Route
-                      path="courses/:category/:subcategory"
-                      element={<AdvancedSearchPage />}
-                    />
+                    <Route path="courses/:category" element={<AdvancedSearchPage />} />
+                    <Route path="courses/:category/:subcategory" element={<AdvancedSearchPage />} />
                     <Route path="user/:slug" element={<UserProfilePage />} />
-                    <Route
-                      path="edit-profile"
-                      element={<EditProfilePage mode={"institution"} />}
-                    />
+                    <Route path="edit-profile" element={<EditProfilePage mode={"institution"} />} />
 
                     <Route path="*" element={<Navigate to={"/"} />} />
                   </Route>
@@ -222,37 +162,19 @@ const AppRouter = () => {
                   <Route path="/" element={<SupraContainer mode={"student"} />}>
                     <Route index element={<DiscoverPage />} />
 
-                    <Route
-                      path="conference/:slug"
-                      element={<ConferencePage />}
-                    />
+                    <Route path="conference/:conferenceID" element={<ConferencePage />} />
 
                     <Route path="course/:slug" element={<CoursePage />} />
                     <Route path="course/:slug/learn" element={<LearnPage />} />
-                    <Route
-                      path="course/:slug/learn/lesson/:lessonId"
-                      element={<LessonPage />}
-                    />
+                    <Route path="course/:slug/learn/lesson/:lessonId" element={<LessonPage />} />
 
                     <Route path="courses" element={<SearchPage />} />
-                    <Route
-                      path="courses/:category"
-                      element={<AdvancedSearchPage />}
-                    />
-                    <Route
-                      path="courses/:category/:subcategory"
-                      element={<AdvancedSearchPage />}
-                    />
+                    <Route path="courses/:category" element={<AdvancedSearchPage />} />
+                    <Route path="courses/:category/:subcategory" element={<AdvancedSearchPage />} />
 
                     <Route path="conferences" element={<SearchPage />} />
-                    <Route
-                      path="conferences/:category"
-                      element={<AdvancedSearchPage conference />}
-                    />
-                    <Route
-                      path="conferences/:category/:subcategory"
-                      element={<AdvancedSearchPage conference />}
-                    />
+                    <Route path="conferences/:category" element={<AdvancedSearchPage conference />} />
+                    <Route path="conferences/:category/:subcategory" element={<AdvancedSearchPage conference />} />
 
                     <Route path="cart" element={<CartPage />} />
                     <Route path="my-courses" element={<MyCoursesPage />} />
@@ -261,18 +183,9 @@ const AppRouter = () => {
                     <Route path="edit-profile" element={<EditProfilePage />} />
                     <Route path="wishlist" element={<WishlistPage />} />
                     <Route path="wishlist/:listID" element={<WishlistPage />} />
-                    <Route
-                      path="notifications"
-                      element={<NotificationsPage />}
-                    />
-                    <Route
-                      path="payment-failure"
-                      element={<PaymentFailure />}
-                    />
-                    <Route
-                      path="successful-purchase"
-                      element={<SuccessfulPurchase />}
-                    />
+                    <Route path="notifications" element={<NotificationsPage />} />
+                    <Route path="payment-failure" element={<PaymentFailure />} />
+                    <Route path="successful-purchase" element={<SuccessfulPurchase />} />
                     <Route path="chat" element={<ChatPage />} />
                     <Route path="*" element={<Navigate to={"/"} />} />
                   </Route>
@@ -280,10 +193,7 @@ const AppRouter = () => {
               </>
             )}
 
-            <Route
-              path="*"
-              element={<SpinnerOfDoom standalone center full />}
-            />
+            <Route path="*" element={<SpinnerOfDoom standalone center full />} />
           </>
         )}
 

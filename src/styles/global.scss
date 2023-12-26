@@ -1,21 +1,12 @@
 @use "./variables" as *;
 
-.continue-with-google {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
-
-  width: 100%;
-  height: $btn-height;
-}
-
 #g_a11y_announcement {
   display: none !important;
 }
 
 .continue-with-facebook,
-.continue-with-apple {
+.continue-with-apple,
+.continue-with-google {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,6 +49,19 @@
 
 .continue-with-apple {
   background-color: $black;
+}
+.continue-with-google {
+  background-color: $white;
+  border: 1px solid $grayish;
+  text-decoration: none;
+
+  p {
+    color: $gray;
+  }
+
+  svg {
+    fill: $gray;
+  }
 }
 
 .action-button {
@@ -182,6 +186,7 @@
     width: 100%;
     margin-bottom: 1.5rem;
     border-bottom: 1px solid $light-gray;
+    gap: 1rem;
 
     .tab {
       padding-bottom: 0.75rem;
@@ -303,6 +308,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    min-height: 60vh;
     padding: 1rem;
 
     margin-bottom: 3rem;

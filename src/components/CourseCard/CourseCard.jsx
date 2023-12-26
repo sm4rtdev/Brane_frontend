@@ -3,14 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./CourseCard.scss";
 
-import {
-  ChevronForward,
-  HeartOutline,
-  ImageOutline,
-  TrashOutline,
-  StarOutline,
-  Star,
-} from "../../assets/icons";
+import { ChevronForward, HeartOutline, ImageOutline, TrashOutline, StarOutline, Star } from "../../assets/icons";
 
 import FancyImage from "../FancyImage/FancyImage";
 import { WishlistModalContext } from "../../contexts/WishlistModalContext";
@@ -18,6 +11,7 @@ import { ReviewModalContext } from "../../contexts/ReviewModalContext";
 import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { CartContext } from "../../contexts/CartContext";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 
 const CourseCard = ({
   type = "vertical",
@@ -30,13 +24,13 @@ const CourseCard = ({
   selectedCourse,
   openEdit,
 }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const { openReviewModal } = useContext(ReviewModalContext);
   const { openWishlistModal } = useContext(WishlistModalContext);
 
   const handleUserRating = (index, alreadyExists) => {
-    // console.log(index);
-
     openReviewModal(id, index, alreadyExists);
   };
 
@@ -44,9 +38,7 @@ const CourseCard = ({
 
   const [stars, setStars] = useState(
     attributes.valoracion
-      ? Array(5)
-          .fill("1", 0, attributes.valoracion)
-          .fill("0", attributes.valoracion)
+      ? Array(5).fill("1", 0, attributes.valoracion).fill("0", attributes.valoracion)
       : Array(5).fill("0")
   );
 
@@ -58,7 +50,6 @@ const CourseCard = ({
     if (type.includes("other")) {
       setTemp(attributes);
     } else if (type.includes("big") || type.includes("small")) {
-      // console.log(attributes);
       setTemp(attributes.curso.data.attributes);
     } else {
       setTemp(attributes);
@@ -66,20 +57,13 @@ const CourseCard = ({
   }, [attributes]); //eslint-disable-line
 
   return (
-    <div
-      className={`course-card ${type} ${
-        selectedCourse === id ? "selected" : ""
-      }`}
-    >
+    <div className={`course-card ${type} ${selectedCourse === id ? "selected" : ""}`}>
       {!type.includes("big") &&
         !type.includes("download") &&
         !type.includes("cart") &&
         !userData.company &&
         !userData.institution && (
-          <button
-            className="save-to-wish-list small-button"
-            onClick={() => openWishlistModal(id)}
-          >
+          <button className="save-to-wish-list small-button" onClick={() => openWishlistModal(id)}>
             <HeartOutline />
           </button>
         )}
@@ -88,7 +72,7 @@ const CourseCard = ({
         <button
           className="cart-button small-button"
           onClick={() => {
-            console.log(id);
+            // console.log(id);
             removeFromCart(id);
           }}
         >
@@ -105,7 +89,11 @@ const CourseCard = ({
               ? "#"
               : openEdit
               ? `/edit-course/${id}`
-              : `/course/${temp.slug}${type.includes("big") ? "/learn" : ""}`
+              : type.includes("big")
+              ? temp.tipo === "conferencia"
+                ? `/conference/${id}`
+                : `/course/${temp.slug}/learn`
+              : `/course/${temp.slug}`
           }
           {...(noLink && { onClick: (e) => e.preventDefault() })}
           {...(company && {
@@ -119,21 +107,14 @@ const CourseCard = ({
           <div className="inner-container">
             <div className="course-image">
               {temp.logo_institucion ? (
-                <FancyImage
-                  src={getImageLinkFrom(temp.logo_institucion)}
-                  alt=""
-                />
+                <FancyImage src={getImageLinkFrom(temp.logo_institucion)} alt="" />
               ) : (
                 temp.imagen &&
                 (temp.imagen.data === null ? (
                   <ImageOutline />
                 ) : (
                   <FancyImage
-                    src={getImageLinkFrom(
-                      temp.imagen.data
-                        ? temp.imagen.data[0].attributes.url
-                        : temp.imagen[0].url
-                    )}
+                    src={getImageLinkFrom(temp.imagen.data ? temp.imagen.data[0].attributes.url : temp.imagen[0].url)}
                     alt=""
                   />
                 ))
@@ -141,8 +122,7 @@ const CourseCard = ({
             </div>
             <div className="text">
               <strong>{temp.name}</strong>
-              {!type.includes("other") &&
-              (type.includes("big") || type.includes("small")) ? (
+              {!type.includes("other") && (type.includes("big") || type.includes("small")) ? (
                 <p>{`${temp.instructor.data.attributes.nombre} ${temp.instructor.data.attributes.apellidos}`}</p>
               ) : (
                 <p>{`${temp.instructor.nombre} ${temp.instructor.apellidos}`}</p>
@@ -154,9 +134,7 @@ const CourseCard = ({
                     <div className="group">
                       <div className="rating">
                         <Star />
-                        <span>
-                          {temp.averageScore ? temp.averageScore : "NEW"}
-                        </span>
+                        <span>{temp.averageScore ? temp.averageScore : dictionary.courseCard[0][language]}</span>
                       </div>
 
                       {temp.precio && (
@@ -171,13 +149,12 @@ const CourseCard = ({
                   {type.includes("big") && (
                     <div className="extra">
                       <div className="progress">
-                        <p>Progreso de finalización: {attributes.progress}%</p>
+                        <p>
+                          {dictionary.courseCard[1][language]}: {attributes.progress}%
+                        </p>
 
                         <div className="bar">
-                          <div
-                            className="bar-filler"
-                            style={{ width: `${attributes.progress}%` }}
-                          ></div>
+                          <div className="bar-filler" style={{ width: `${attributes.progress}%` }}></div>
                         </div>
                       </div>
 
@@ -187,8 +164,8 @@ const CourseCard = ({
                             <>
                               <p>
                                 {attributes.valoracion
-                                  ? "Your rating"
-                                  : "Leave a rating"}
+                                  ? dictionary.courseCard[2][language]
+                                  : dictionary.courseCard[3][language]}
                               </p>
 
                               <div className="stars">
@@ -200,18 +177,11 @@ const CourseCard = ({
                                       onClick={(e) => {
                                         e.preventDefault();
 
-                                        handleUserRating(
-                                          index + 1,
-                                          attributes.valoracion
-                                        );
+                                        handleUserRating(index + 1, attributes.valoracion);
                                       }}
                                       {...(!attributes.valoracion && {
                                         onMouseEnter: () => {
-                                          let newStars = Array(5).fill(
-                                            "1",
-                                            0,
-                                            index
-                                          );
+                                          let newStars = Array(5).fill("1", 0, index);
                                           newStars.fill("0", index);
 
                                           setStars(newStars);
@@ -223,20 +193,14 @@ const CourseCard = ({
                                         },
                                       })}
                                     >
-                                      {value === "1" ? (
-                                        <Star />
-                                      ) : (
-                                        <StarOutline />
-                                      )}
+                                      {value === "1" ? <Star /> : <StarOutline />}
                                     </button>
                                   );
                                 })}
                               </div>
                             </>
                           ) : (
-                            <p className="is-my-course">
-                              Eres el autor de este curso
-                            </p>
+                            <p className="is-my-course">{dictionary.courseCard[4][language]}</p>
                           )}
                         </div>
                       )}

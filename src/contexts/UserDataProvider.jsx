@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  getFromLocal,
-  removeFromLocal,
-  updateLocal,
-} from "../helpers/localStorage";
+import { getFromLocal, removeFromLocal, updateLocal } from "../helpers/localStorage";
 
 import { getInstitutionMetadata } from "../api/getInstitutionMetadata";
 import { getUserMetadata } from "../api/getUserMetadata";
 import { getCompanyMeta } from "../api/getCompanyMeta";
 import { UserDataContext } from "./UserDataContext";
-import { getUser } from "../api/getUser";
 import { CartContext } from "./CartContext";
+import { getUser } from "../api/getUser";
 
 const UserDataProvider = ({ children }) => {
   const { clearCart } = useContext(CartContext);

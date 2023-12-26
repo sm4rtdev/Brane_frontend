@@ -213,6 +213,10 @@ const dictionary = {
     ],
   },
   business: {
+    success: {
+      es: "¡Éxito, nos comunicaremos con usted cuando revisemos su solicitud!",
+      en: "Success, we will contact you when we review your request!",
+    },
     banner: [
       {
         es: "Brane Empresas",
@@ -354,6 +358,10 @@ const dictionary = {
     post: {
       es: "Post-registro completado",
       en: "Post registration completed",
+    },
+    google: {
+      es: "Continuar con Google",
+      en: "Continue with Google",
     },
     done: {
       es: "Éxito!",
@@ -516,6 +524,56 @@ const dictionary = {
       en: "To start using your account, click the verification link we sent to your email.",
     },
   ],
+  insSignup: [
+    {
+      es: "Nombre de la institución",
+      en: "Name of the Institution",
+    },
+    {
+      es: "Su nombre",
+      en: "Your name",
+    },
+    {
+      es: "Su posición en la institucion",
+      en: "Your position in the institution",
+    },
+    {
+      es: "Su número de teléfono",
+      en: "Your phone number",
+    },
+    {
+      es: "Confirmar Contraseña",
+      en: "Confirm Password",
+    },
+    {
+      es: `Contactar asesor`,
+      en: `Contact advisor`,
+    },
+    {
+      es: `Al hacer clic en "Contactar asesor", usted acepta nuestros`,
+      en: `By clicking “Contact advisor”, you agree to our`,
+    },
+    {
+      es: "términos de servicio",
+      en: "terms of service",
+    },
+    {
+      es: "y",
+      en: "&",
+    },
+    {
+      es: "políticas de privacidad",
+      en: "privacy policies",
+    },
+    {
+      es: "Casi listo",
+      en: "Almost ready",
+    },
+    {
+      es: "Un asesor se pondrá en contacto contigo para brindar información detallada, así como verificar la existencia de la institución legalmente.",
+      en: "An advisor will contact you to provide detailed information, as well as verify the existence of the institution legally.",
+    },
+  ],
   contact: [
     {
       es: "Contáctanos",
@@ -642,6 +700,238 @@ const dictionary = {
     es: "Cargando",
     en: "Loading",
   },
+  notificationsPage: [
+    {
+      es: "Notificaciones",
+      en: "Notifications",
+    },
+    {
+      es: "No tienes notificaciones",
+      en: "You don't have notifications",
+    },
+    {
+      es: "Ver más",
+      en: "See more",
+    },
+  ],
+  cartPage: [
+    {
+      es: "¡Descuento aplicado!",
+      en: "Discount applied!",
+    },
+    {
+      es: "El cupón ingresado no es válido",
+      en: "The coupon entered is not valid",
+    },
+    {
+      es: "Mi carrito",
+      en: "My cart",
+    },
+    {
+      es: "Seguir comprando",
+      en: "Keep buying",
+    },
+    {
+      es: "Ingresa tu cupón aquí",
+      en: "Enter your coupon here",
+    },
+    {
+      es: "Consultar cupón",
+      en: "Check coupon",
+    },
+    {
+      es: "¿Tiene algún código de descuento?",
+      en: "Do you have any discount codes?",
+    },
+    {
+      es: "Para completar la transacción, te enviaremos a los servidores seguros del proveedor de pagos seleccionado.",
+      en: "To complete the transaction, we will send you to the secure servers of the selected payment provider.",
+    },
+    {
+      es: "Pagar",
+      en: "Pay",
+    },
+  ],
+  privateBusiness: {
+    addUsers: [
+      { es: "Usuario creado", en: "User created" },
+      { es: "Usuario eliminado", en: "User removed" },
+      { es: "Administrar empleados", en: "Manage employees" },
+      { es: "Mis empleados", en: "My employees" },
+      {
+        es: "Usuario sin nombre asignado (Iniciar sesion para cambiar)",
+        en: "User without assigned name (Login to change)",
+      },
+      {
+        es: "Aún no tienes usuarios",
+        en: "You don't have users yet",
+      },
+      {
+        es: "Agregar empleados",
+        en: "Add employees",
+      },
+      {
+        es: "Estudiante",
+        en: "Student",
+      },
+      {
+        es: "Añadir",
+        en: "Add",
+      },
+    ],
+    faq: [
+      { es: "Preguntas frecuentes", en: "Frequently Asked Questions" },
+      { es: "Consulta creada", en: "Query created" },
+      { es: "Completa todos los campos", en: "Complete all fields" },
+      { es: "Cuéntanos tu pregunta", en: "Tell us about your question" },
+      { es: "Nombre completo", en: "Full Name" },
+      { es: "Número de teléfono", en: "Phone Number" },
+      { es: "Cuéntanos tu pregunta aquí", en: "Tell us about your question here" },
+      { es: "Enviar pregunta", en: "Send question" },
+    ],
+    statistics: [
+      { es: "Estadísticas", en: "Statistics" },
+      { es: "Tasa de progreso de cada curso", en: "Rate of progress of every course" },
+      {
+        es: "Ninguno de sus empleados ha progresado en ningún curso.",
+        en: "None of your employees have progressed in any course.",
+      },
+      { es: "Todos los empleados", en: "All employees" },
+      { es: "ID de usuario", en: "User ID" },
+      { es: "Nombre", en: "Name" },
+      { es: "ID del curso", en: "Course ID" },
+      { es: "Curso", en: "Course" },
+      { es: "Progreso", en: "Progress" },
+      { es: "Actividad", en: "Activity" },
+    ],
+  },
+  courseCard: [
+    { es: "Nuevo", en: "New" },
+    { es: "Progreso de finalización", en: "Completion progress" },
+    { es: "Tu clasificación", en: "Your rating" },
+    { es: "Deja una calificación", en: "Leave a rating" },
+    {
+      es: "Eres el autor de este curso",
+      en: "Eres el autor de este curso",
+    },
+  ],
+  specialCourseCard: [
+    { es: "Administrar descargas", en: "Manage downloads" },
+    { es: "Lecciones", en: "Lessons" },
+    { es: "El curso no tiene lecciones", en: "The course has no lessons" },
+  ],
+  lessonDownloader: [
+    { es: "La operación no pudo ser completada", en: "The operation could not be completed" },
+    { es: "El vídeo se ha almacenado correctamente", en: "The video has been stored successfully" },
+    {
+      es: "El vídeo se eliminó correctamente de tus descargas.",
+      en: "The video was successfully removed from your downloads.",
+    },
+    {
+      es: "Error al eliminar el vídeo de tus descargas",
+      en: "Error removing video from your downloads",
+    },
+    { es: "Tamaño", en: "Size" },
+    { es: "Remover datos descargados", en: "Remove downloaded data" },
+    { es: "Descargar vídeo", en: "Download video" },
+    { es: "No se pudo obtener la lección", en: "Could not get lesson" },
+    { es: "Pausar descarga", en: "Pause download" },
+    { es: "Progreso de descarga", en: "Download progress" },
+  ],
+  navigationBars: {
+    business: [
+      { es: "Catálogo", en: "Catalogue" },
+      { es: "Agregar usuarios", en: "Add users" },
+      { es: "Estadísticas", en: "Statistics" },
+    ],
+    institution: [{ es: "Inicio", en: "Start" }],
+    instructor: [
+      { es: "Crear", en: "Create" },
+      { es: "Conferencia", en: "Conference" },
+      { es: "Mensajes", en: "Messages" },
+      { es: "Cupones", en: "Coupons" },
+      { es: "Pagos", en: "Payments" },
+    ],
+    student: [
+      { es: "Descubrir", en: "Discover" },
+      { es: "Buscar", en: "Search" },
+      { es: "Mis listas", en: "My lists" },
+      { es: "Perfil", en: "Profile" },
+    ],
+  },
+  optionsMenu: [
+    {
+      es: "Tu configuración de notificaciones ha sido actualizada.",
+      en: "Your notification settings have been updated.",
+    },
+    { es: "Ajustes", en: "Settings" },
+    { es: "Conviértete en instructor", en: "Become an instructor" },
+    { es: "Editar perfil", en: "Edit profile" },
+    { es: "Notificaciones de mensajes", en: "Message notifications" },
+    { es: "Notificación de promociones", en: "Promotions notification" },
+    { es: "Notificaciones de anuncios del instructor", en: "Instructor Announcement Notifications" },
+    { es: "Centro de ayuda", en: "Help Center" },
+    { es: "Cerrar sesión", en: "Logout" },
+  ],
+  reportModal: [
+    { es: "Reportar problema", en: "Report problem" },
+    { es: "Título del problema", en: "Problem title" },
+    { es: "Comentarios", en: "Comments" },
+    { es: "Cancelar", en: "Cancel" },
+    { es: "Enviar", en: "Send" },
+  ],
+  reviewModal: [
+    { es: "Reseña creada", en: "Review created" },
+    { es: "Reseña actualizada", en: "Review updated" },
+    { es: "Editar calificación", en: "Edit rating" },
+    { es: "¿Qué opinas de este curso?", en: "What do you think of this course?" },
+    { es: "Tu reseña aquí", en: "Your review here" },
+    { es: "Actualizar reseña", en: "Update review" },
+    { es: "Enviar reseña", en: "Submit review" },
+  ],
+  wishlistModal: [
+    { es: "Agregado", en: "Added" },
+    { es: "Eliminado", en: "Removed" },
+    { es: "Lista de deseos creada", en: "Wishlist created" },
+    { es: "Guardar en...", en: "Keep in..." },
+    { es: "No tienes listas", en: "You don't have lists" },
+    { es: "Nombre de la lista", en: "List name" },
+    { es: "Agregar nueva lista", en: "Add new list" },
+    { es: "Crear lista", en: "Create list" },
+    { es: "Guardar", en: "Save" },
+  ],
+  cartProvider: [
+    { es: "El curso ha sido añadido al carrito.", en: "The course has been added to the cart." },
+    { es: "El curso ha sido eliminado del carrito.", en: "The course has been removed from the cart." },
+  ],
+  privateIntitutions: [
+    { es: "Ventas", en: "Sales" },
+    { es: "Hola", en: "Hello" },
+    { es: "Qué bueno verte", en: "Good to see you" },
+    { es: "Inscribe instructores", en: "Register instructors" },
+    { es: "Genera ventas y reparte las ganancias.", en: "Generate sales and share profits." },
+    { es: "Ir ahora", en: "Go now" },
+    {
+      es: "Distribución de ganancias obtenidas por instructor:",
+      en: "Distribution of profits obtained by instructor:",
+    },
+    { es: "Ninguno de tus instructores ha vendido un curso.", en: "None of your instructors have sold a course." },
+    { es: "ID de usuario", en: "User ID" },
+    { es: "Cursos", en: "Courses" },
+    { es: "Ventas totales", en: "Total Sales" },
+    { es: "ID del curso", en: "Course ID" },
+    { es: "Nombre del curso", en: "Course Name" },
+    { es: "Resumen de ventas de tus instructores:", en: "Sales summary of your instructors:" },
+    { es: "Filtrar por curso", en: "Filter by course" },
+    { es: "Filtrar por instructor", en: "Filter by instructor" },
+  ],
+  privateIntitutionsManage: [
+    { es: "Usuario creado", en: "User created" },
+    { es: "Usuario eliminado", en: "User deleted" },
+    { es: "Administrar instructores", en: "Manage instructors" },
+    { es: "Mis instructores", en: "My instructors" },
+    { es: "Añadir instructores", en: "Add instructors" },
+  ],
 };
 
 const DictionaryProvider = ({ children }) => {
@@ -657,11 +947,7 @@ const DictionaryProvider = ({ children }) => {
   }, [language]);
 
   return (
-    <DictionaryContext.Provider
-      value={{ dictionary, language, toggleLanguage }}
-    >
-      {children}
-    </DictionaryContext.Provider>
+    <DictionaryContext.Provider value={{ dictionary, language, toggleLanguage }}>{children}</DictionaryContext.Provider>
   );
 };
 

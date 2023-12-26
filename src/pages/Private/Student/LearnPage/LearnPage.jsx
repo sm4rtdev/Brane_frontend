@@ -28,8 +28,6 @@ const LearnPage = () => {
     const getCourse = async () => {
       const { ok, data } = await getCourseBySlug(slug);
 
-      console.log(data.data);
-
       if (ok) {
         setCourse(data.data);
       } else {
@@ -39,8 +37,6 @@ const LearnPage = () => {
 
     const getLessons = async () => {
       const { ok, data } = await getAllClasses(slug);
-
-      console.log(data.data);
 
       if (ok) {
         setLessons(data.data);
@@ -75,37 +71,36 @@ const LearnPage = () => {
               </div>
 
               <div className="lessons">
-                {lessons.map((lesson, index) => {
-                  return (
-                    <div className="lesson" key={lesson.id}>
-                      <h2>Lesson {index + 1}</h2>
+                {lessons.length > 0 ? (
+                  lessons.map((lesson, index) => {
+                    return (
+                      <div className="lesson" key={lesson.id}>
+                        <h2>Lesson {index + 1}</h2>
 
-                      <Link to={`lesson/${lesson.id}`} className="lesson-card">
-                        <div className="left">
-                          <FancyImage
-                            src={getImageLinkFrom(course.curso.imagen[0].url)}
-                          />
-                        </div>
-                        <div className="middle">
-                          <strong>{lesson.attributes.nombre}</strong>
-                          <span>{lesson.attributes.duracion} min</span>
-                        </div>
-                        <div className="right">
-                          <span className="small-button">
-                            <ChevronForward />
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                  );
-                })}
+                        <Link to={`lesson/${lesson.id}`} className="lesson-card">
+                          <div className="left">
+                            <FancyImage src={getImageLinkFrom(course.curso.imagen[0].url)} />
+                          </div>
+                          <div className="middle">
+                            <strong>{lesson.attributes.nombre}</strong>
+                            <span>{lesson.attributes.duracion} min</span>
+                          </div>
+                          <div className="right">
+                            <span className="small-button">
+                              <ChevronForward />
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p className="no-data">Este curso no posee clases en este momento</p>
+                )}
               </div>
             </div>
 
-            <Footer
-              unique
-              {...(userData.mode === "instructor" && { instructor: true })}
-            />
+            <Footer unique {...(userData.mode === "instructor" && { instructor: true })} />
           </PageTransition>
         ) : (
           <SpinnerOfDoom standalone center />

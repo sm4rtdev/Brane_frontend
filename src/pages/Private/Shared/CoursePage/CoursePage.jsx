@@ -71,8 +71,6 @@ const CoursePage = () => {
     const getUserPurchasedCourses = async () => {
       const { ok, data } = await getMyCourses();
 
-      // console.log(data.data);
-
       if (ok) {
         setUserPurchasedCourses(data.data);
       } else {
@@ -99,8 +97,6 @@ const CoursePage = () => {
     const getCurrentCourseInstructor = async () => {
       const { ok, data } = await getUserBySlug(currentCourse.instructor.slug);
 
-      // console.log(data);
-
       if (ok) {
         setCurrentCourseInstructor(data);
       } else {
@@ -116,8 +112,7 @@ const CoursePage = () => {
   useEffect(() => {
     if (currentCourse && userPurchasedCourses) {
       const coincidences = userPurchasedCourses.filter(
-        (purchasedCourse) =>
-          purchasedCourse.attributes.curso.data.id === currentCourse.id
+        (purchasedCourse) => purchasedCourse.attributes.curso.data.id === currentCourse.id
       ).length;
 
       setCourseIsOwned(coincidences);
@@ -157,9 +152,7 @@ const CoursePage = () => {
               <div className="info-card">
                 <div className="course-image">
                   {currentCourse.imagen ? (
-                    <FancyImage
-                      src={getImageLinkFrom(currentCourse.imagen[0].url)}
-                    />
+                    <FancyImage src={getImageLinkFrom(currentCourse.imagen[0].url)} />
                   ) : (
                     <ImageOutline />
                   )}
@@ -173,17 +166,13 @@ const CoursePage = () => {
                     (!courseIsOwned ? (
                       <>
                         <p className="price">
-                          Precio actual:{" "}
-                          <strong>${currentCourse.precio}</strong>
+                          Precio actual: <strong>${currentCourse.precio}</strong>
                         </p>
 
                         {!userData.institution &&
                           (!courseMadeByMe ? (
                             <div className="buttons">
-                              <button
-                                className="action-button black"
-                                onClick={() => addToCart(currentCourse.id)}
-                              >
+                              <button className="action-button black" onClick={() => addToCart(currentCourse.id)}>
                                 <Cart />
                                 Añadir a la cesta
                               </button>
@@ -199,9 +188,7 @@ const CoursePage = () => {
                               {!userData.company && (
                                 <button
                                   className="action-button border white wish-course-normal"
-                                  onClick={() =>
-                                    openWishlistModal(currentCourse.id)
-                                  }
+                                  onClick={() => openWishlistModal(currentCourse.id)}
                                 >
                                   <HeartOutline />
                                   Añadir a la lista de deseos
@@ -211,19 +198,14 @@ const CoursePage = () => {
                           ) : (
                             <p className="no-data">
                               Eres el creador de{" "}
-                              {currentCourse.tipo === "conferencia"
-                                ? "esta conferencia"
-                                : "este curso"}
+                              {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
                             </p>
                           ))}
                       </>
                     ) : (
                       <>
                         <strong className="message">
-                          Ya tienes{" "}
-                          {currentCourse.tipo === "conferencia"
-                            ? "esta conferencia"
-                            : "este curso"}
+                          Ya tienes {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
                         </strong>
                         <button
                           className="action-button"
@@ -232,7 +214,7 @@ const CoursePage = () => {
                               navigate(`/my-courses`);
                             } else {
                               if (currentCourse.tipo === "conferencia") {
-                                navigate(`/conference/${currentCourse.slug}`);
+                                navigate(`/conference/${currentCourse.id}`);
                               } else {
                                 navigate(`/course/${currentCourse.slug}/learn`);
                               }
@@ -263,22 +245,13 @@ const CoursePage = () => {
                   )}
                 </div>
 
-                <p className="short-description">
-                  {currentCourse.shortDescription}
-                </p>
+                <p className="short-description">{currentCourse.shortDescription}</p>
 
                 {currentCourseInstructor && (
-                  <Link
-                    to={`/user/${currentCourseInstructor.slug}`}
-                    className="instructor"
-                  >
+                  <Link to={`/user/${currentCourseInstructor.slug}`} className="instructor">
                     <div className="avatar">
                       {currentCourseInstructor.avatar ? (
-                        <FancyImage
-                          src={getImageLinkFrom(
-                            currentCourseInstructor.avatar.formats.thumbnail.url
-                          )}
-                        />
+                        <FancyImage src={getImageLinkFrom(currentCourseInstructor.avatar.formats.thumbnail.url)} />
                       ) : (
                         <PersonOutline />
                       )}
@@ -298,19 +271,12 @@ const CoursePage = () => {
                   {currentCourse.subTitles.length > 0 && (
                     <div className="detail">
                       <LogoClosedCaptioning />
-                      <span>{`Subtítulos: ${currentCourse.subTitles.join(
-                        ", "
-                      )}`}</span>
+                      <span>{`Subtítulos: ${currentCourse.subTitles.join(", ")}`}</span>
                     </div>
                   )}
                   <div className="detail">
                     <Star />
-                    <span>
-                      Estrellas:{" "}
-                      {currentCourse.averageScore
-                        ? currentCourse.averageScore
-                        : "(Sin reseñas)"}
-                    </span>
+                    <span>Estrellas: {currentCourse.averageScore ? currentCourse.averageScore : "(Sin reseñas)"}</span>
                   </div>
                   <div className="detail">
                     <People />
@@ -318,10 +284,7 @@ const CoursePage = () => {
                   </div>
                 </div>
 
-                <Tabulation
-                  tabs={["Detalles", "Contenido"]}
-                  options={{ type: "bubble", color: "black" }}
-                >
+                <Tabulation tabs={["Detalles", "Contenido"]} options={{ type: "bubble", color: "black" }}>
                   <>
                     <h2>Lo que vas a aprender:</h2>
                     <ul>
@@ -361,24 +324,16 @@ const CoursePage = () => {
                     <h2>Descripción:</h2>
                     <p className="description">{currentCourse.descripcion}</p>
 
-                    <h2>
-                      Para quién es{" "}
-                      {currentCourse.tipo === "conferencia"
-                        ? "esta conferencia"
-                        : "este curso"}
-                      :
-                    </h2>
+                    <h2>Para quién es {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}:</h2>
                     <ul className="requirements">
-                      {JSON.parse(currentCourse.whoIsThisCourseFor).map(
-                        (el, index) => {
-                          return (
-                            <li key={`requirement-${index}`}>
-                              <Ellipse />
-                              {el}
-                            </li>
-                          );
-                        }
-                      )}
+                      {JSON.parse(currentCourse.whoIsThisCourseFor).map((el, index) => {
+                        return (
+                          <li key={`requirement-${index}`}>
+                            <Ellipse />
+                            {el}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </>
                   <>
@@ -388,26 +343,23 @@ const CoursePage = () => {
                         <>
                           <li>
                             <Videocam />
-                            Duración estimada:{" "}
-                            {currentCourse.conference.ZoomDuration} min
+                            Duración estimada: {currentCourse.conference.ZoomDuration} min
                           </li>
                         </>
                       ) : (
                         <>
                           <li>
                             <Videocam />
-                            {currentCourse.summary[0].cantidadClases} Lecciones
-                            ({currentCourse.summary[0].duracionTotal}min)
+                            {currentCourse.summary[0].cantidadClases} Lecciones (
+                            {currentCourse.summary[0].duracionTotal}min)
                           </li>
                           <li>
                             <Book />
-                            {currentCourse.summary[0].additionalResources}{" "}
-                            Recursos adicionales
+                            {currentCourse.summary[0].additionalResources} Recursos adicionales
                           </li>
                           <li>
                             <Hammer />
-                            {currentCourse.summary[0].cantidadProjects}{" "}
-                            Practicas
+                            {currentCourse.summary[0].cantidadProjects} Practicas
                           </li>
                           <li>
                             <Flag />
@@ -429,11 +381,7 @@ const CoursePage = () => {
                                 </div>
                                 <div className="lesson-miniature">
                                   {currentCourse.imagen ? (
-                                    <FancyImage
-                                      src={getImageLinkFrom(
-                                        currentCourse.imagen[0].url
-                                      )}
-                                    />
+                                    <FancyImage src={getImageLinkFrom(currentCourse.imagen[0].url)} />
                                   ) : (
                                     <ImageOutline />
                                   )}
@@ -455,10 +403,7 @@ const CoursePage = () => {
                           <>
                             <strong>
                               Eres el creador de{" "}
-                              {currentCourse.tipo === "conferencia"
-                                ? "esta conferencia"
-                                : "este curso"}
-                              .
+                              {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}.
                             </strong>
 
                             <button
@@ -476,14 +421,10 @@ const CoursePage = () => {
                             <strong>
                               {cart.includes(currentCourse.id)
                                 ? `${
-                                    currentCourse.tipo === "conferencia"
-                                      ? "Esta conferencia"
-                                      : "Este curso"
+                                    currentCourse.tipo === "conferencia" ? "Esta conferencia" : "Este curso"
                                   } ya está en tu carrito`
                                 : `Compra ${
-                                    currentCourse.tipo === "conferencia"
-                                      ? "esta conferencia"
-                                      : "este curso"
+                                    currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"
                                   } para ver su contenido`}
                             </strong>
                             <button
@@ -496,18 +437,13 @@ const CoursePage = () => {
                                 }
                               }}
                             >
-                              {cart.includes(currentCourse.id)
-                                ? "Ir al carrito"
-                                : "Añadir al carrito"}
+                              {cart.includes(currentCourse.id) ? "Ir al carrito" : "Añadir al carrito"}
                             </button>
                           </>
                         ) : (
                           <>
                             <strong>
-                              Ya tienes{" "}
-                              {currentCourse.tipo === "conferencia"
-                                ? "esta conferencia"
-                                : "este curso"}
+                              Ya tienes {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
                             </strong>
                             <button
                               className="action-button"
@@ -515,19 +451,17 @@ const CoursePage = () => {
                                 if (userData.company) {
                                   navigate(`/my-courses`);
                                 } else {
-                                  navigate(
-                                    `/course/${currentCourse.slug}/learn`
-                                  );
+                                  if (currentCourse.tipo === "conferencia") {
+                                    navigate(`/conference/${currentCourse.id}`);
+                                  } else {
+                                    navigate(`/course/${currentCourse.slug}/learn`);
+                                  }
                                 }
                               }}
                             >
                               {userData.company
                                 ? "Ver mis cursos"
-                                : `Ir ${
-                                    currentCourse.tipo === "conferencia"
-                                      ? "a la conferencia"
-                                      : "al curso"
-                                  }`}
+                                : `Ir ${currentCourse.tipo === "conferencia" ? "a la conferencia" : "al curso"}`}
                             </button>
                           </>
                         )}
@@ -537,9 +471,7 @@ const CoursePage = () => {
                 </Tabulation>
 
                 {!courseMadeByMe && !userData.institution && (
-                  <div
-                    className={`buy-now ${userData.company ? "company" : ""}`}
-                  >
+                  <div className={`buy-now ${userData.company ? "company" : ""}`}>
                     {!courseIsOwned && <p>${currentCourse.precio}</p>}
 
                     <button
@@ -550,7 +482,7 @@ const CoursePage = () => {
                             navigate(`/my-courses`);
                           } else {
                             if (currentCourse.tipo === "conferencia") {
-                              navigate(`/conference/${currentCourse.slug}`);
+                              navigate(`/conference/${currentCourse.id}`);
                             } else {
                               navigate(`/course/${currentCourse.slug}/learn`);
                             }
@@ -566,6 +498,8 @@ const CoursePage = () => {
                       {courseIsOwned
                         ? userData.company
                           ? "Ver mis cursos"
+                          : currentCourse.tipo === "conferencia"
+                          ? "Ir a la conferencia"
                           : "Ir al curso"
                         : "Comprar ahora"}
                     </button>

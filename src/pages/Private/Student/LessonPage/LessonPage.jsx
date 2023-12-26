@@ -32,12 +32,14 @@ import { getUserBySlug } from "../../../../api/getUserBySlug";
 import { getClass } from "../../../../api/getClass";
 
 // import SUB from "./sub.en.vtt";
-// import videoSubtitles from "./subtitles.en.vtt";
+import videoSubtitles from "./subtitles.en.vtt";
 import { formatDistance, formatRelative } from "date-fns";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getMyCourseProgress } from "../../../../api/getMyCourseProgress";
+import { ReportModalContext } from "../../../../contexts/ReportModalContext";
 
 const LessonPage = () => {
+  const { openReportModal } = useContext(ReportModalContext);
   const { userData } = useContext(UserDataContext);
   const { slug, lessonId } = useParams();
   const navigate = useNavigate();
@@ -58,18 +60,15 @@ const LessonPage = () => {
   const [currentLessonVideoID, setCurrentLessonVideoID] = useState(null);
   const [localVideo, setLocalVideo] = useState(null);
 
-  const [currentPositionInArrayOfLessons, setCurrentPositionInArrayOfLessons] =
-    useState(null);
+  const [currentPositionInArrayOfLessons, setCurrentPositionInArrayOfLessons] = useState(null);
 
   const getCourse = async () => {
     const { ok, data } = await getCourseBySlug(slug);
 
-    // console.log(data.data);
+    console.log(data.data);
 
     if (ok) {
-      const index = data.data.clases.findIndex(
-        (el) => el.id === Number(lessonId)
-      );
+      const index = data.data.clases.findIndex((el) => el.id === Number(lessonId));
       setCurrentPositionInArrayOfLessons(index);
 
       setCourse(data.data.curso);
@@ -92,7 +91,7 @@ const LessonPage = () => {
 
       if (ok) {
         setCurrentLesson(data.data);
-        setCurrentLessonVideoID(data.data.attributes.clase.data.id);
+        setCurrentLessonVideoID(data.data.attributes.clase.data ? data.data.attributes.clase.data.id : null);
       } else {
         toast.error(`${data.error.message}`);
 
@@ -199,6 +198,12 @@ const LessonPage = () => {
     }
   }, [course]);
 
+  useEffect(() => {
+    if (courseProgress === 100) {
+      // generate certificate
+    }
+  }, [courseProgress]);
+
   const getComments = async () => {
     const { ok, data } = await getCommentsFromLesson(currentLesson.id);
 
@@ -219,18 +224,13 @@ const LessonPage = () => {
 
   useEffect(() => {
     if (comments && commentsContainer.current) {
-      commentsContainer.current.scrollTop =
-        commentsContainer.current.scrollHeight;
+      commentsContainer.current.scrollTop = commentsContainer.current.scrollHeight;
     }
   }, [comments, commentsContainer]);
 
   const previousLesson = () => {
     if (currentPositionInArrayOfLessons > 0) {
-      navigate(
-        `/course/${course.slug}/learn/lesson/${
-          lessons[currentPositionInArrayOfLessons - 1].id
-        }`
-      );
+      navigate(`/course/${course.slug}/learn/lesson/${lessons[currentPositionInArrayOfLessons - 1].id}`);
     }
   };
   const markAsCompleted = async () => {
@@ -256,11 +256,7 @@ const LessonPage = () => {
 
   const nextLesson = () => {
     if (currentPositionInArrayOfLessons < lessons.length) {
-      navigate(
-        `/course/${course.slug}/learn/lesson/${
-          lessons[currentPositionInArrayOfLessons + 1].id
-        }`
-      );
+      navigate(`/course/${course.slug}/learn/lesson/${lessons[currentPositionInArrayOfLessons + 1].id}`);
       markAsCompleted();
     }
   };
@@ -291,31 +287,27 @@ const LessonPage = () => {
     setLoading(false);
   };
 
-  // const [captions_arr, setCaptions] = useState([
-  //   {
-  //     kind: "subtitles",
-  //     src: SUB,
-  //     srcLang: "en",
-  //     default: true,
-  //   },
-  // ]);
+  const [captions_arr, setCaptions] = useState([
+    {
+      kind: "subtitles",
+      src: videoSubtitles,
+      srcLang: "en",
+      default: true,
+    },
+  ]);
 
-  // var mySubtitle_arr = captions_arr.map((v) => ({
-  //   kind: v.kind,
-  //   src: v.src,
-  //   srcLang: v.en,
-  // }));
+  var mySubtitle_arr = captions_arr.map((v) => ({
+    kind: v.kind,
+    src: v.src,
+    srcLang: v.en,
+  }));
 
   return (
-    <div id="lesson-page" className="page">
+    <div className="page lesson-page-like">
       <PageTransition margin>
         {lessons && currentLesson ? (
           <>
-            <HeaderToggler
-              black
-              title={currentLesson.attributes.nombre}
-              progress={courseProgress}
-            >
+            <HeaderToggler black title={currentLesson.attributes.nombre} progress={courseProgress}>
               <InternalHeader
                 options={{
                   backButton: true,
@@ -332,11 +324,7 @@ const LessonPage = () => {
                   {currentLesson.attributes.clase.data ? (
                     <ReactPlayer
                       url={
-                        localVideo
-                          ? localVideo
-                          : getImageLinkFrom(
-                              currentLesson.attributes.clase.data.attributes.url
-                            )
+                        localVideo ? localVideo : getImageLinkFrom(currentLesson.attributes.clase.data.attributes.url)
                       }
                       width={"100%"}
                       height={"100%"}
@@ -349,14 +337,14 @@ const LessonPage = () => {
                           attributes: {
                             crossOrigin: "true",
                           },
-                          // tracks: [
-                          //   {
-                          //     kind: "subtitles",
-                          //     src: videoSubtitles,
-                          //     srcLang: "en",
-                          //     default: true,
-                          //   },
-                          // ],
+                          tracks: [
+                            {
+                              kind: "subtitles",
+                              src: videoSubtitles,
+                              srcLang: "en",
+                              default: true,
+                            },
+                          ],
                         },
                       }}
                     />
@@ -389,10 +377,7 @@ const LessonPage = () => {
                   <button
                     className="action-button"
                     onClick={markAsCompleted}
-                    disabled={
-                      lessons[currentPositionInArrayOfLessons].status ===
-                        "finalizada" || simpleDisable
-                    }
+                    disabled={lessons[currentPositionInArrayOfLessons].status === "finalizada" || simpleDisable}
                   >
                     Marcar lección como completada
                   </button>
@@ -400,9 +385,7 @@ const LessonPage = () => {
                     <button
                       className="action-button black"
                       onClick={nextLesson}
-                      disabled={
-                        currentPositionInArrayOfLessons === lessons.length - 1
-                      }
+                      disabled={currentPositionInArrayOfLessons === lessons.length - 1}
                     >
                       Siguiente lección
                     </button>
@@ -416,10 +399,8 @@ const LessonPage = () => {
                   options={{ type: "bubble", color: "black" }}
                 >
                   <>
-                    {!currentLesson.attributes.descripcion ? (
-                      <p className="description">
-                        {currentLesson.attributes.descripcion}
-                      </p>
+                    {currentLesson.attributes.descripcion ? (
+                      <p className="description">{currentLesson.attributes.descripcion}</p>
                     ) : (
                       <p className="no-data">Esta clase no tiene descripción</p>
                     )}
@@ -432,14 +413,8 @@ const LessonPage = () => {
                           <div className="inner-container">
                             {reviews.map((review) => {
                               return (
-                                <div
-                                  className="review"
-                                  key={"review" + review.id}
-                                >
-                                  <Link
-                                    className="name"
-                                    to={`/user/${review.attributes.usuario.data.attributes.slug}`}
-                                  >
+                                <div className="review" key={"review" + review.id}>
+                                  <Link className="name" to={`/user/${review.attributes.usuario.data.attributes.slug}`}>
                                     {`${review.attributes.usuario.data.attributes.nombre} ${review.attributes.usuario.data.attributes.apellidos}`}
                                   </Link>
                                   <div className="gray">
@@ -452,18 +427,10 @@ const LessonPage = () => {
                                     </div>
 
                                     <span>
-                                      {formatRelative(
-                                        new Date(
-                                          Date.parse(
-                                            review.attributes.updatedAt
-                                          )
-                                        ),
-                                        new Date(),
-                                        {
-                                          includeSeconds: true,
-                                          addSuffix: true,
-                                        }
-                                      )}
+                                      {formatRelative(new Date(Date.parse(review.attributes.updatedAt)), new Date(), {
+                                        includeSeconds: true,
+                                        addSuffix: true,
+                                      })}
                                     </span>
                                   </div>
 
@@ -487,18 +454,12 @@ const LessonPage = () => {
                           <h2>Recursos adicionales</h2>
 
                           <div className="links">
-                            {JSON.parse(
-                              currentLesson.attributes.additionalResources
-                            ).map((el, index) => {
+                            {JSON.parse(currentLesson.attributes.additionalResources).map((el, index) => {
                               return (
                                 <div key={index} className="link">
                                   <LinkOutline />
 
-                                  <a
-                                    href={el}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
+                                  <a href={el} target="_blank" rel="noopener noreferrer">
                                     {el}
                                   </a>
                                 </div>
@@ -508,9 +469,7 @@ const LessonPage = () => {
                         </div>
                       </>
                     ) : (
-                      <p className="no-data">
-                        Esta clase no tiene material adicional
-                      </p>
+                      <p className="no-data">Esta clase no tiene material adicional</p>
                     )}
                   </>
                 </Tabulation>
@@ -519,9 +478,7 @@ const LessonPage = () => {
                   <div className="instructor-card">
                     <div className="avatar">
                       {instructor.avatar && instructor.avatar.url ? (
-                        <FancyImage
-                          src={getImageLinkFrom(instructor.avatar.url)}
-                        />
+                        <FancyImage src={getImageLinkFrom(instructor.avatar.url)} />
                       ) : (
                         <PersonOutline />
                       )}
@@ -540,7 +497,15 @@ const LessonPage = () => {
                 <div className="report-section">
                   <strong>¿Algún problema con el vídeo?</strong>
 
-                  <button className="report-button">
+                  <button
+                    className="report-button"
+                    onClick={() =>
+                      openReportModal({
+                        courseID: course.id,
+                        lessonID: currentLesson.id,
+                      })
+                    }
+                  >
                     Informar de un problema <AlertCircleOutline />
                   </button>
                 </div>
@@ -553,19 +518,14 @@ const LessonPage = () => {
                       comments.map((comment) => {
                         return (
                           <div className="comment" key={comment.id}>
-                            <Link
-                              to={`/user/${comment.attributes.autor.data.attributes.slug}`}
-                            >
+                            <Link to={`/user/${comment.attributes.autor.data.attributes.slug}`}>
                               {`${comment.attributes.autor.data.attributes.nombre} ${comment.attributes.autor.data.attributes.apellidos}`}
                             </Link>
                             <span>
-                              {formatDistance(
-                                new Date(
-                                  Date.parse(comment.attributes.createdAt)
-                                ),
-                                new Date(),
-                                { includeSeconds: true, addSuffix: true }
-                              )}
+                              {formatDistance(new Date(Date.parse(comment.attributes.createdAt)), new Date(), {
+                                includeSeconds: true,
+                                addSuffix: true,
+                              })}
                             </span>
                             <p>{comment.attributes.comentario}</p>
                           </div>
@@ -581,17 +541,8 @@ const LessonPage = () => {
                   </div>
 
                   <div className="add-new-comment">
-                    <DynamicInput
-                      id={"comment"}
-                      state={[inputs, setInputs]}
-                      label="Leave a comment"
-                      noIcon
-                    />
-                    <button
-                      className="action-button"
-                      disabled={inputs.comment === "" || loading}
-                      onClick={sendComment}
-                    >
+                    <DynamicInput id={"comment"} state={[inputs, setInputs]} label="Leave a comment" noIcon />
+                    <button className="action-button" disabled={inputs.comment === "" || loading} onClick={sendComment}>
                       {loading ? "Sending..." : "Send"}
                     </button>
                   </div>
@@ -603,7 +554,15 @@ const LessonPage = () => {
                   <div className="report-section">
                     <strong>¿Algún problema con el vídeo?</strong>
 
-                    <button className="report-button">
+                    <button
+                      className="report-button"
+                      onClick={() =>
+                        openReportModal({
+                          courseID: course.id,
+                          lessonID: currentLesson.id,
+                        })
+                      }
+                    >
                       Informar de un problema <AlertCircleOutline />
                     </button>
                   </div>
@@ -615,21 +574,13 @@ const LessonPage = () => {
                       return (
                         <Link
                           to={`/course/${course.slug}/learn/lesson/${lesson.id}`}
-                          className={`lesson ${
-                            lesson.id === Number(lessonId) ? "current" : ""
-                          } `}
+                          className={`lesson ${lesson.id === Number(lessonId) ? "current" : ""} `}
                           key={lesson.id}
                         >
                           <p>{lesson.nombre}</p>
 
                           <div className="check-area">
-                            <div
-                              className={`check ${
-                                lesson.status === "finalizada"
-                                  ? "completed"
-                                  : "·"
-                              }`}
-                            >
+                            <div className={`check ${lesson.status === "finalizada" ? "completed" : "·"}`}>
                               <Checkmark />
                             </div>
                           </div>
@@ -641,10 +592,7 @@ const LessonPage = () => {
               )}
             </div>
 
-            <Footer
-              unique
-              {...(userData.mode === "instructor" && { instructor: true })}
-            />
+            <Footer unique {...(userData.mode === "instructor" && { instructor: true })} />
           </>
         ) : (
           <SpinnerOfDoom standalone center />

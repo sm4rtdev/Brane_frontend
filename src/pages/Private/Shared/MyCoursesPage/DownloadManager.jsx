@@ -28,18 +28,19 @@ const DownloadManager = ({ filteredCourses }) => {
 
   return (
     <div className="courses downloads">
-      {filteredCourses.map((course) => {
-        console.log(course);
-        return (
-          <SpecialCourseCard
-            key={course.id}
-            id={course.attributes.curso.data.id}
-            {...course}
-            triggerUpdate={triggerUpdate}
-            updater={updater}
-          />
-        );
-      })}
+      {filteredCourses
+        .filter((course) => course.attributes.curso.data.attributes.tipo !== "conferencia")
+        .map((course) => {
+          return (
+            <SpecialCourseCard
+              key={course.id}
+              id={course.attributes.curso.data.id}
+              {...course}
+              triggerUpdate={triggerUpdate}
+              updater={updater}
+            />
+          );
+        })}
     </div>
   );
 };

@@ -509,12 +509,12 @@
       @extend .text;
 
       font-weight: bold;
-
       margin-right: 1rem;
     }
 
     .action-button {
-      color: $black;
+      color: $white;
+      padding: 0 1rem;
     }
   }
 

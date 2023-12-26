@@ -43,9 +43,7 @@ const ReviewModalProvider = ({ children }) => {
     >
       {children}
 
-      {isModalOpen && (
-        <ReviewModal selectedCourseID={selectedCourseID} editMode={editMode} />
-      )}
+      {isModalOpen && <ReviewModal selectedCourseID={selectedCourseID} editMode={editMode} />}
     </ReviewModalContext.Provider>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import palette from "../../../../helpers/palette";
 import { DataGrid } from "@mui/x-data-grid";
@@ -11,24 +11,27 @@ import PageTransition from "../../../../components/PageTransition/PageTransition
 import BusinessHeader from "../../../../components/CustomHeaders/BusinessHeader";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import Footer from "../../../../components/Footer/Footer";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { getReports } from "../../../../api/getReports";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function MyTable({ rows }) {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const columns = [
-    { field: "userId", headerName: "User ID" },
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "courseId", headerName: "Course ID", flex: 1 },
-    { field: "course", headerName: "Course", flex: 1 },
+    { field: "userId", headerName: dictionary.privateBusiness.statistics[4][language] },
+    { field: "name", headerName: dictionary.privateBusiness.statistics[5][language], flex: 1 },
+    { field: "courseId", headerName: dictionary.privateBusiness.statistics[6][language], flex: 1 },
+    { field: "course", headerName: dictionary.privateBusiness.statistics[7][language], flex: 1 },
     {
       field: "progress",
-      headerName: "Progress",
+      headerName: dictionary.privateBusiness.statistics[8][language],
       flex: 1,
     },
     {
       field: "activity",
-      headerName: "Activity",
+      headerName: dictionary.privateBusiness.statistics[9][language],
       flex: 1,
     },
   ];
@@ -41,6 +44,8 @@ function MyTable({ rows }) {
 }
 
 const StatisticsPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [reports, setReports] = useState(null);
   const [rows, setRows] = useState(null);
   const [graphData, setGraphData] = useState(null);
@@ -48,8 +53,6 @@ const StatisticsPage = () => {
 
   const getAnaly = async () => {
     const { ok, data } = await getReports();
-
-    console.log("Reports", data);
 
     if (ok) {
       setReports(data);
@@ -105,7 +108,7 @@ const StatisticsPage = () => {
         return acc;
       }, {});
 
-      console.log("forDataset", forDataset);
+      // console.log("forDataset", forDataset);
 
       const averages = Object.values(forDataset).map((item) => {
         return {
@@ -114,7 +117,7 @@ const StatisticsPage = () => {
         };
       });
 
-      console.log("Averages", averages);
+      // console.log("Averages", averages);
 
       const data = {
         labels: averages.map((item) => item.courseId),
@@ -128,7 +131,7 @@ const StatisticsPage = () => {
         ],
       };
 
-      console.log("data", data);
+      // console.log("data", data);
       setGraphData(data);
 
       let num = 0;
@@ -150,29 +153,25 @@ const StatisticsPage = () => {
       <PageTransition>
         <BusinessHeader />
         <div className="main">
-          <h1>Statistics</h1>
+          <h1>{dictionary.privateBusiness.statistics[0][language]}</h1>
 
           {reports ? (
             rows ? (
               <>
-                <h2>Rate of progress of every course</h2>
+                <h2>{dictionary.privateBusiness.statistics[1][language]}</h2>
                 <div className="chart">
                   {graphData && thereIsInfo ? (
                     <Doughnut data={graphData} />
                   ) : (
-                    <p className="no-data">
-                      None of your employees have progressed in any course.
-                    </p>
+                    <p className="no-data">{dictionary.privateBusiness.statistics[2][language]}</p>
                   )}
                 </div>
 
-                <h2>All employees</h2>
+                <h2>{dictionary.privateBusiness.statistics[3][language]}</h2>
                 <MyTable rows={rows} />
               </>
             ) : (
-              <p className="no-data">
-                None of your employees have progressed in any course.
-              </p>
+              <p className="no-data">{dictionary.privateBusiness.statistics[2][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone center />

@@ -15,7 +15,7 @@
 
   .logo {
     display: none;
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
 
   .dynamic-input {
@@ -42,6 +42,14 @@
     }
   }
 
+  .other-links {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    padding-left: 1rem;
+  }
+
   .buttons-section {
     display: none;
     align-items: center;
@@ -49,7 +57,8 @@
     height: 100%;
     margin-left: 1rem;
 
-    & > .small-button {
+    & > a,
+    & > div:not(:last-child) {
       margin-right: 0.5rem;
     }
 
@@ -258,6 +267,10 @@
 
     .filter-btn {
       display: none;
+    }
+
+    .other-links {
+      display: flex;
     }
 
     .buttons-section {

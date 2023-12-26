@@ -28,9 +28,7 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false);
 
   const deleteTextFromTextArray = (objectKey, text) => {
-    let filteredArray = JSON.parse(inputs[objectKey]).filter(
-      (el) => el !== text
-    );
+    let filteredArray = JSON.parse(inputs[objectKey]).filter((el) => el !== text);
 
     let value = null;
 
@@ -172,23 +170,22 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
 
     // Create
 
-    const { ok, data } = await postNewLesson(obj);
+    console.log(obj);
+    // const { ok, data } = await postNewLesson(obj);
 
-    if (ok) {
-      toast.success("La lección ha sido creada.");
+    // if (ok) {
+    //   toast.success("La lección ha sido creada.");
 
-      // console.log(data.data.id);
-      setCurrentLessonID(data.data.id);
-    } else {
-      toast.error(`${data.error.message}`);
-    }
+    //   // console.log(data.data.id);
+    //   setCurrentLessonID(data.data.id);
+    // } else {
+    //   toast.error(`${data.error.message}`);
+    // }
   };
 
   const checkEverything = () => {
     if (inputs.nombre.length < 3) {
-      toast.error(
-        `El nombre de la lección no puede estar vacío y debe tener al menos 3 letras.`
-      );
+      toast.error(`El nombre de la lección no puede estar vacío y debe tener al menos 3 letras.`);
     } else if (inputs.descripcion === "") {
       toast.error(`Falta descripción en nueva lección`);
     } else if (!file) {
@@ -206,19 +203,8 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
 
       <div className="inner-container">
         <div className="basic-stuff">
-          <DynamicInput
-            id={"nombre"}
-            state={[inputs, setInputs]}
-            label="Título"
-            noIcon
-          />
-          <DynamicInput
-            id={"descripcion"}
-            state={[inputs, setInputs]}
-            label="Descripción"
-            multiline
-            noIcon
-          />
+          <DynamicInput id={"nombre"} state={[inputs, setInputs]} label="Título" noIcon />
+          <DynamicInput id={"descripcion"} state={[inputs, setInputs]} label="Descripción" multiline noIcon />
         </div>
 
         <div className="additional-resources">
@@ -226,8 +212,7 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
             <>
               <h3>Recursos adicionales</h3>
               <div className="links">
-                {inputs.additionalResources !== null &&
-                inputs.additionalResources.length > 0 ? (
+                {inputs.additionalResources !== null && inputs.additionalResources.length > 0 ? (
                   JSON.parse(inputs.additionalResources).map((text, index) => {
                     return (
                       <LinkItem
@@ -274,13 +259,7 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
         <div className="media-creation">
           <h2>Medios de lección</h2>
 
-          <input
-            type="file"
-            id="media"
-            onChange={handleFileChange}
-            ref={inputFile}
-            accept="video/*"
-          />
+          <input type="file" id="media" onChange={handleFileChange} ref={inputFile} accept="video/*" />
 
           <div className="media" onClick={openFileSelection}>
             {preview ? (

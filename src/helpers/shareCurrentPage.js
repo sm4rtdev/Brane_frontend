@@ -1,16 +1,17 @@
-import { FRONT } from "../api/settings";
 import { toast } from "react-toastify";
+
+import { FRONT } from "../api/settings";
 
 export const shareCurrentPage = (location) => {
   const url = `${FRONT}${location.pathname.slice(1)}`;
 
   navigator.clipboard
-    .writeText("assd")
+    .writeText(url)
     .then(() => {
-      toast.success("El enlace a esta página ha sido copiado al portapapeles.");
+      toast.success("📋 ✔️");
     })
     .catch(() => {
-      toast.info("No se pudo compartir");
+      toast.info("Error");
     });
 
   console.log(url);

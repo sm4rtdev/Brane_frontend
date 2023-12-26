@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 import "./FAQPage.scss";
+
+import { FAQImage } from "../../../../assets/images";
 
 import BusinessHeader from "../../../../components/CustomHeaders/BusinessHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
@@ -9,7 +11,7 @@ import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import Footer from "../../../../components/Footer/Footer";
 import FAQDropdown from "./FAQDropdown";
-import { FAQImage } from "../../../../assets/images";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { postFAQ } from "../../../../api/postFAQ";
 
 const questions = [...Array(6)].map((el, index) => {
@@ -18,22 +20,19 @@ const questions = [...Array(6)].map((el, index) => {
     title: "Lorem Ipsum",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
   };
-}); 
+});
 
 const initial = { email: "", name: "", phone: "", question: "" };
 
 const FAQPage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [inputs, setInputs] = useState(initial);
   const [isLoading, setIsLoading] = useState(false);
   const [dropdownListener, setDropdownListener] = useState(null);
 
   const postQuestion = async () => {
-    if (
-      inputs.email !== "" &&
-      inputs.name !== "" &&
-      inputs.phone !== "" &&
-      inputs.question !== ""
-    ) {
+    if (inputs.email !== "" && inputs.name !== "" && inputs.phone !== "" && inputs.question !== "") {
       setIsLoading(true);
       const obj = {
         data: {
@@ -47,7 +46,7 @@ const FAQPage = () => {
       const { ok, data } = await postFAQ(obj);
 
       if (ok) {
-        toast.success(`Query created`);
+        toast.success(dictionary.privateBusiness.faq[1][language]);
         setInputs(initial);
       } else {
         toast.error(`${data.error.message}`);
@@ -55,7 +54,7 @@ const FAQPage = () => {
 
       setIsLoading(false);
     } else {
-      toast.error(`Complete all fields`);
+      toast.error(dictionary.privateBusiness.faq[2][language]);
     }
   };
 
@@ -69,7 +68,7 @@ const FAQPage = () => {
 
           <div className="container">
             <div className="faq-container">
-              <h2>Frequently Asked Questions</h2>
+              <h2>{dictionary.privateBusiness.faq[0][language]}</h2>
               {questions.map((value, index) => {
                 return (
                   <FAQDropdown
@@ -87,48 +86,38 @@ const FAQPage = () => {
             </div>
 
             <div className="questions">
-              <h2>Tell us about your question</h2>
+              <h2>{dictionary.privateBusiness.faq[3][language]}</h2>
 
               <div className="form">
-                <DynamicInput
-                  id={"email"}
-                  state={[inputs, setInputs]}
-                  type="email"
-                  noIcon
-                  placeholder={"Work Email"}
-                />
+                <DynamicInput id={"email"} state={[inputs, setInputs]} type="email" noIcon placeholder={"Email"} />
                 <DynamicInput
                   id={"name"}
                   state={[inputs, setInputs]}
                   noIcon
-                  placeholder={"Full Name"}
+                  placeholder={dictionary.privateBusiness.faq[4][language]}
                 />
                 <DynamicInput
                   id={"phone"}
                   state={[inputs, setInputs]}
                   type="tel"
                   noIcon
-                  placeholder={"Phone Number"}
+                  placeholder={dictionary.privateBusiness.faq[5][language]}
                 />
                 <DynamicInput
                   id={"question"}
                   state={[inputs, setInputs]}
                   multiline
                   noIcon
-                  placeholder={"Tell us about your question here"}
+                  placeholder={dictionary.privateBusiness.faq[6][language]}
                 />
 
-                <button
-                  className="action-button"
-                  onClick={postQuestion}
-                  disabled={isLoading}
-                >
+                <button className="action-button" onClick={postQuestion} disabled={isLoading}>
                   {isLoading ? (
                     <>
-                      <SpinnerOfDoom /> Sending...
+                      <SpinnerOfDoom /> {dictionary.spinnerOfDoom[language]}
                     </>
                   ) : (
-                    "Send question"
+                    dictionary.privateBusiness.faq[7][language]
                   )}
                 </button>
               </div>

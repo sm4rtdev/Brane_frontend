@@ -118,7 +118,7 @@ const UserProfilePage = () => {
     }
   };
 
-  console.log(user, userData);
+  // console.log(user, userData);
 
   return (
     <div id="user-profile" className="page">

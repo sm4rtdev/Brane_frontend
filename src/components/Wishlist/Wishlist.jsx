@@ -10,11 +10,7 @@ const Wishlist = ({ id, name, imagen, numWishlist }) => {
   return (
     <Link to={`/wishlist/${id}`} className="wishlist">
       <div className="wishlist-image">
-        {imagen ? (
-          <img src={getImageLinkFrom(imagen[0].url)} alt="" />
-        ) : (
-          <ImageOutline />
-        )}
+        {imagen ? <img src={getImageLinkFrom(imagen[0].url)} alt="" /> : <ImageOutline />}
       </div>
       <div className="text-content">
         <strong>{name}</strong>

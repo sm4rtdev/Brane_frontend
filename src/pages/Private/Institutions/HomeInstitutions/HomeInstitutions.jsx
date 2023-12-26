@@ -9,31 +9,35 @@ import { Pie } from "react-chartjs-2";
 
 import "./HomeInstitutions.scss";
 
+import { CTAInstitutions } from "../../../../assets/images";
+
 import InstitutionHeader from "../../../../components/CustomHeaders/InstitutionHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
+import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import Footer from "../../../../components/Footer/Footer";
 import { getCoursesFromInstitution } from "../../../../api/getCoursesFromInstitution";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
-import { CTAInstitutions } from "../../../../assets/images";
-import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MyTable = ({ rows }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [initialRows, setInitialRows] = useState(null);
   const [filteredRows, setFilteredRows] = useState(null);
 
   const columnsByInstructor = [
-    { field: "id", headerName: "User ID" },
+    { field: "id", headerName: dictionary.privateIntitutions[8][language] },
     { field: "instructor", headerName: "Instructor", flex: 2 },
-    { field: "courses", headerName: "Courses", flex: 1 },
-    { field: "totalSales", headerName: "Total Sales", flex: 1 },
+    { field: "courses", headerName: dictionary.privateIntitutions[9][language], flex: 1 },
+    { field: "totalSales", headerName: dictionary.privateIntitutions[10][language], flex: 1 },
   ];
 
   const columnsByCourse = [
-    { field: "id", headerName: "Course ID" },
-    { field: "course", headerName: "Course Name", flex: 2 },
-    { field: "totalSales", headerName: "Total Sales", flex: 1 },
+    { field: "id", headerName: dictionary.privateIntitutions[11][language] },
+    { field: "course", headerName: dictionary.privateIntitutions[12][language], flex: 2 },
+    { field: "totalSales", headerName: dictionary.privateIntitutions[10][language], flex: 1 },
   ];
 
   const [coursesOptions, setCoursesOptions] = useState(null);
@@ -45,7 +49,7 @@ const MyTable = ({ rows }) => {
       let courses = [];
 
       rows.forEach((row) => {
-        console.log(row);
+        // console.log(row);
 
         row.courses.forEach((course) => {
           let obj = {
@@ -86,9 +90,7 @@ const MyTable = ({ rows }) => {
   useEffect(() => {
     if (courseValue) {
       let [temp] = rows.filter((row) => row.id === courseValue.searchID);
-      let second = temp.courses.filter(
-        (course) => course.id === courseValue.id
-      );
+      let second = temp.courses.filter((course) => course.id === courseValue.id);
 
       setFilteredRows(
         second.map((info) => {
@@ -100,9 +102,7 @@ const MyTable = ({ rows }) => {
         })
       );
     } else if (instructorValue) {
-      setFilteredRows(
-        initialRows.filter((row) => row.id === instructorValue.id)
-      );
+      setFilteredRows(initialRows.filter((row) => row.id === instructorValue.id));
     } else {
       setFilteredRows(initialRows);
     }
@@ -110,7 +110,7 @@ const MyTable = ({ rows }) => {
 
   return (
     <div style={{ height: 400, width: "100%" }} className="summary-data-table">
-      <h2>Resumen de ventas de tus instructores:</h2>
+      <h2>{dictionary.privateIntitutions[13][language]}</h2>
 
       <div className="filters">
         {coursesOptions && (
@@ -122,9 +122,7 @@ const MyTable = ({ rows }) => {
               setCourseValue(newValue);
             }}
             getOptionLabel={(option) => option.title}
-            renderInput={(params) => (
-              <TextField {...params} label="Filter by course" />
-            )}
+            renderInput={(params) => <TextField {...params} label={dictionary.privateIntitutions[14][language]} />}
           />
         )}
         {instructorsOptions && (
@@ -136,25 +134,21 @@ const MyTable = ({ rows }) => {
               setInstructorValue(newValue);
             }}
             getOptionLabel={(option) => option.title}
-            renderInput={(params) => (
-              <TextField {...params} label="Filter by instructor" />
-            )}
+            renderInput={(params) => <TextField {...params} label={dictionary.privateIntitutions[15][language]} />}
           />
         )}
       </div>
 
       {filteredRows && (
-        <DataGrid
-          autoHeight
-          rows={filteredRows}
-          columns={courseValue ? columnsByCourse : columnsByInstructor}
-        />
+        <DataGrid autoHeight rows={filteredRows} columns={courseValue ? columnsByCourse : columnsByInstructor} />
       )}
     </div>
   );
 };
 
 const HomeInstitutions = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
 
   const [rawData, setRawData] = useState(null);
@@ -166,10 +160,12 @@ const HomeInstitutions = () => {
     const getTableData = async () => {
       const { ok, data } = await getCoursesFromInstitution();
 
-      console.log(data);
+      // console.log(data);
 
       if (ok) {
-        if (data[0].length === 0) {
+        if (data.length === 0) {
+          setRawData([]);
+        } else if (data[0].length === 0) {
           setRawData([]);
         } else {
           setRawData(data);
@@ -198,8 +194,7 @@ const HomeInstitutions = () => {
 
         const obj = {
           id: currentInstructor.id,
-          instructor:
-            currentInstructor.nombre + " " + currentInstructor.apellidos,
+          instructor: currentInstructor.nombre + " " + currentInstructor.apellidos,
           courses: index,
           totalSales,
         };
@@ -249,14 +244,10 @@ const HomeInstitutions = () => {
 
                 if (dataset.data.length > 0) {
                   const currentValue = dataset.data[context.dataIndex];
-                  const total = dataset.data.reduce(
-                    (previousValue, currentValue) =>
-                      previousValue + currentValue
-                  );
+                  const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);
 
-                  const percentage =
-                    ((currentValue / total) * 100).toFixed(2) + "%";
-                  return `${percentage} (${currentValue} ${"Ventas"})`;
+                  const percentage = ((currentValue / total) * 100).toFixed(2) + "%";
+                  return `${percentage} (${currentValue} ${dictionary.privateIntitutions[0][language]})`;
                 }
 
                 return label;
@@ -268,7 +259,7 @@ const HomeInstitutions = () => {
 
       setGraphData({ data, options });
     }
-  }, [rows]);
+  }, [rows, language]);
 
   return (
     <div id="institutions-page" className="page">
@@ -277,18 +268,16 @@ const HomeInstitutions = () => {
 
         <div className="main">
           <strong>
-            Hello <strong>{userData.info.nombre}.</strong> Good to see you!
+            {dictionary.privateIntitutions[1][language]} <strong>{userData.info.nombre}.</strong>{" "}
+            {dictionary.privateIntitutions[2][language]}
           </strong>
           <div className="cta">
             <div className="container">
-              <strong>Inscribe profesores</strong>
-              <p>Genera ventas y reparte las ganancias.</p>
+              <strong>{dictionary.privateIntitutions[3][language]}</strong>
+              <p>{dictionary.privateIntitutions[4][language]}</p>
 
-              <Link
-                to={"/manage-instructors"}
-                className={"action-button black"}
-              >
-                Go now
+              <Link to={"/manage-instructors"} className={"action-button black"}>
+                {dictionary.privateIntitutions[5][language]}
               </Link>
             </div>
 
@@ -302,14 +291,12 @@ const HomeInstitutions = () => {
               {rows && <MyTable rows={rows} />}
 
               <div className="summary-graph">
-                <h2>Distribución de ganancias obtenidas por instructor:</h2>
+                <h2>{dictionary.privateIntitutions[6][language]}</h2>
 
                 {graphData && thereIsInfo ? (
                   <Pie data={graphData.data} options={graphData.options} />
                 ) : (
-                  <p className="no-data">
-                    Ninguno de tus instructores ha vendido un curso.
-                  </p>
+                  <p className="no-data">{dictionary.privateIntitutions[7][language]}</p>
                 )}
               </div>
             </div>

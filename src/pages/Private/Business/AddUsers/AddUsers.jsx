@@ -4,18 +4,22 @@ import { toast } from "react-toastify";
 
 import "./AddUsers.scss";
 
-import BusinessHeader from "../../../../components/CustomHeaders/BusinessHeader";
-import PageTransition from "../../../../components/PageTransition/PageTransition";
-import Footer from "../../../../components/Footer/Footer";
-import { getCompanyUsers } from "../../../../api/getCompanyUsers";
-import { UserDataContext } from "../../../../contexts/UserDataContext";
-import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import { TrashOutline } from "../../../../assets/icons";
+
+import PageTransition from "../../../../components/PageTransition/PageTransition";
+import BusinessHeader from "../../../../components/CustomHeaders/BusinessHeader";
+import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
-import { postCompanyUser } from "../../../../api/postCompanyUser";
+import Footer from "../../../../components/Footer/Footer";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
+import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { deleteCompanyUser } from "../../../../api/deleteCompanyUser";
+import { getCompanyUsers } from "../../../../api/getCompanyUsers";
+import { postCompanyUser } from "../../../../api/postCompanyUser";
 
 const AddUsers = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const { userData } = useContext(UserDataContext);
   const [users, setUsers] = useState(null);
 
@@ -24,8 +28,6 @@ const AddUsers = () => {
 
   const getUsers = async () => {
     const { ok, data } = await getCompanyUsers(userData.info.id);
-
-    console.log("My users", data);
 
     if (ok) {
       setUsers(data);
@@ -51,10 +53,8 @@ const AddUsers = () => {
 
     const { ok, data } = await postCompanyUser(obj);
 
-    console.log("New user", data);
-
     if (ok) {
-      toast.success(`User created`);
+      toast.success(dictionary.privateBusiness.addUsers[0][language]);
       getUsers();
       setInputs({ email: "", password: "" });
     } else {
@@ -68,7 +68,7 @@ const AddUsers = () => {
     const { ok, data } = await deleteCompanyUser(id);
 
     if (ok) {
-      toast.success(`User deleted`);
+      toast.success(dictionary.privateBusiness.addUsers[1][language]);
       getUsers();
     } else {
       toast.error(`${data.error.message}`);
@@ -80,9 +80,9 @@ const AddUsers = () => {
       <PageTransition>
         <BusinessHeader />
         <div className="main">
-          <h1>Manage employees</h1>
+          <h1>{dictionary.privateBusiness.addUsers[2][language]}</h1>
 
-          <h2>My employees</h2>
+          <h2>{dictionary.privateBusiness.addUsers[3][language]}</h2>
 
           {users ? (
             users.length > 0 ? (
@@ -98,11 +98,9 @@ const AddUsers = () => {
                           <span>Email:</span> <strong>{user.email}</strong>
                         </p>
                         {!user.name && !user.apellidos ? (
-                          <p>Nameless</p>
+                          <p>{dictionary.privateBusiness.addUsers[4][language]}</p>
                         ) : (
-                          <p>{`${user.nombre ? user.nombre : ""} ${
-                            user.apellidos ? user.apellidos : ""
-                          }`}</p>
+                          <p>{`${user.nombre ? user.nombre : ""} ${user.apellidos ? user.apellidos : ""}`}</p>
                         )}
                       </div>
                       <div className="action">
@@ -120,25 +118,17 @@ const AddUsers = () => {
                 })}
               </div>
             ) : (
-              <p className="no-data">You don't have users yet</p>
+              <p className="no-data">{dictionary.privateBusiness.addUsers[5][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone center />
           )}
 
-          <h2>Add employees</h2>
+          <h2>{dictionary.privateBusiness.addUsers[6][language]}</h2>
 
           <div className="add-section">
-            <DynamicInput
-              id={"email"}
-              state={[inputs, setInputs]}
-              type="email"
-            />
-            <DynamicInput
-              id={"password"}
-              state={[inputs, setInputs]}
-              type="password"
-            />
+            <DynamicInput id={"email"} state={[inputs, setInputs]} type="email" />
+            <DynamicInput id={"password"} state={[inputs, setInputs]} type="password" />
             <FormControl fullWidth id="role-simple-select">
               <Select
                 labelId="role-simple-select-label"
@@ -166,7 +156,7 @@ const AddUsers = () => {
                   },
                 }}
               >
-                <MenuItem value={1}>Student</MenuItem>
+                <MenuItem value={1}>{dictionary.privateBusiness.addUsers[7][language]}</MenuItem>
                 <MenuItem value={3}>Instructor</MenuItem>
               </Select>
             </FormControl>
@@ -179,10 +169,10 @@ const AddUsers = () => {
               {isLoading ? (
                 <>
                   <SpinnerOfDoom />
-                  Loading
+                  {dictionary.spinnerOfDoom[language]}
                 </>
               ) : (
-                "Add"
+                dictionary.privateBusiness.addUsers[8][language]
               )}
             </button>
           </div>

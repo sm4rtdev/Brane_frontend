@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
+import "./WishlistModal.scss";
+
 import { WishlistModalContext } from "../../contexts/WishlistModalContext";
 import { postWishlistAddDelete } from "../../api/postWishlistAddDelete";
 import { getMyWishlistFolders } from "../../api/getMyWishlistFolders";
+import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { postCreateWishlist } from "../../api/postCreateWishlist";
 
 import SpinnerOfDoom from "../SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../DynamicInput/DynamicInput";
 
-import "./WishlistModal.scss";
-
 const WishlistModal = ({ selectedCourseID }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { closeModal, closeOnClick } = useContext(WishlistModalContext);
 
   const [myFolders, setMyFolders] = useState(null);
@@ -31,8 +33,6 @@ const WishlistModal = ({ selectedCourseID }) => {
     const getMyFolders = async () => {
       const { ok, data } = await getMyWishlistFolders();
 
-      // console.log(data);
-
       if (ok) {
         setMyFolders(data);
       } else {
@@ -50,10 +50,10 @@ const WishlistModal = ({ selectedCourseID }) => {
 
     const { ok, data } = await postWishlistAddDelete(obj);
 
-    // console.log(data);
-
     if (ok) {
-      toast.success(data.message === "añadido" ? "Agregado" : "Eliminado");
+      toast.success(
+        data.message === "añadido" ? dictionary.wishlistModal[0][language] : dictionary.wishlistModal[1][language]
+      );
       closeModal();
     } else {
       toast.error(`${data.error.message}`);
@@ -67,31 +67,25 @@ const WishlistModal = ({ selectedCourseID }) => {
 
     const { ok, data } = await postCreateWishlist(obj);
 
-    // console.log(data);
-
     if (ok) {
       setMyFolders((c) => [...c, data]);
       setInput({ name: "" });
       setIsCreationOpen(false);
-      toast.success(`Lista de deseos creada`);
+      toast.success(dictionary.wishlistModal[2][language]);
     } else {
       toast.error(`${data.error.message}`);
     }
   };
 
   return (
-    <div
-      id="wishlist-modal-container"
-      onClick={closeOnClick}
-      ref={modalContainer}
-    >
+    <div id="wishlist-modal-container" onClick={closeOnClick} ref={modalContainer}>
       <div className="modal">
-        <strong>Guardar en...</strong>
+        <strong>{dictionary.wishlistModal[3][language]}</strong>
 
         <div className="container">
           {myFolders ? (
             myFolders.length === 0 ? (
-              <p className="no-data">No tienes listas</p>
+              <p className="no-data">{dictionary.wishlistModal[4][language]}</p>
             ) : (
               <div className="lists-container">
                 {myFolders.map((list) => {
@@ -118,38 +112,22 @@ const WishlistModal = ({ selectedCourseID }) => {
 
         {isCreationOpen && (
           <div className="add-list-section">
-            <DynamicInput
-              id={"name"}
-              state={[input, setInput]}
-              label="Nombre de la lista"
-              noIcon
-            />
+            <DynamicInput id={"name"} state={[input, setInput]} label={dictionary.wishlistModal[5][language]} noIcon />
           </div>
         )}
 
         <div className="button-group">
           {!isCreationOpen ? (
-            <button
-              className="action-button"
-              onClick={() => setIsCreationOpen(true)}
-            >
-              Agregar nueva lista
+            <button className="action-button" onClick={() => setIsCreationOpen(true)}>
+              {dictionary.wishlistModal[6][language]}
             </button>
           ) : (
-            <button
-              className="action-button"
-              disabled={input.name.length < 3}
-              onClick={createWishlist}
-            >
-              Crear lista
+            <button className="action-button" disabled={input.name.length < 3} onClick={createWishlist}>
+              {dictionary.wishlistModal[7][language]}
             </button>
           )}
-          <button
-            className="action-button"
-            disabled={selectedFolder === null}
-            onClick={addDelete}
-          >
-            Guardar
+          <button className="action-button" disabled={selectedFolder === null} onClick={addDelete}>
+            {dictionary.wishlistModal[8][language]}
           </button>
         </div>
       </div>

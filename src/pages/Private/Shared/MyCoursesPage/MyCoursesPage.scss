@@ -22,6 +22,141 @@
         @extend .text-lg;
       }
     }
+
+    .tabulation {
+      min-height: calc(var(--unit) * 70);
+      position: relative;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+
+        .courses {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          justify-items: center;
+
+          .course-card {
+            margin-bottom: 1rem;
+          }
+        }
+
+        .company {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+
+          h2 {
+            @extend .text;
+            color: $yellow;
+            padding-left: 1rem;
+            color: #ffb200;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            width: 100%;
+            text-align: left;
+          }
+
+          h3 {
+            @extend .text-md;
+            color: $black;
+            padding-left: 1rem;
+            color: $black;
+            font-weight: 700;
+            padding: 0 0 1rem;
+            border-bottom: 1px dashed $shadow;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 2rem;
+          }
+
+          .users {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 2rem;
+
+            .user-card {
+              padding: 1rem;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 1rem;
+              border: 1px solid $shadow;
+              border-radius: 8px;
+              margin-bottom: 1rem;
+              width: 100%;
+
+              .data {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                width: 100%;
+
+                p {
+                  margin-bottom: 0.25rem;
+                  @extend .text-sm;
+                  color: $dark-gray;
+
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: flex-start;
+
+                  span {
+                    margin-right: 0.5rem;
+                  }
+
+                  strong {
+                    @extend .text-sm;
+                    color: black;
+                    display: flex;
+                    font-weight: 600;
+                    word-break: break-all;
+                  }
+
+                  &:last-of-type {
+                    margin-bottom: 0;
+                    margin-top: 1rem;
+                  }
+                }
+              }
+
+              .action {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-shrink: 0;
+                margin-left: 1rem;
+
+                .action-button {
+                  width: max-content;
+                  padding: 0 2rem;
+                  height: 40px;
+                }
+              }
+            }
+          }
+        }
+
+        .spinner-of-doom {
+          width: 100%;
+        }
+      }
+
+      .standalone {
+        position: absolute;
+      }
+    }
   }
 
   .filters {
@@ -33,141 +168,6 @@
 
     .dynamic-input {
       max-width: 20rem;
-    }
-  }
-
-  .tabulation {
-    min-height: calc(var(--unit) * 70);
-    position: relative;
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      width: 100%;
-
-      .courses {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        justify-items: center;
-
-        .course-card {
-          margin-bottom: 1rem;
-        }
-      }
-
-      .company {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-
-        h2 {
-          @extend .text;
-          color: $yellow;
-          padding-left: 1rem;
-          color: #ffb200;
-          font-weight: 700;
-          margin-bottom: 1rem;
-          width: 100%;
-          text-align: left;
-        }
-
-        h3 {
-          @extend .text-md;
-          color: $black;
-          padding-left: 1rem;
-          color: $black;
-          font-weight: 700;
-          padding: 0 0 1rem;
-          border-bottom: 1px dashed $shadow;
-          width: 100%;
-          text-align: left;
-          margin-bottom: 2rem;
-        }
-
-        .users {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: center;
-          width: 100%;
-          margin-bottom: 2rem;
-
-          .user-card {
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid $shadow;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            width: 100%;
-
-            .data {
-              display: flex;
-              flex-direction: column;
-              justify-content: flex-start;
-              align-items: flex-start;
-              width: 100%;
-
-              p {
-                margin-bottom: 0.25rem;
-                @extend .text-sm;
-                color: $dark-gray;
-
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-
-                span {
-                  margin-right: 0.5rem;
-                }
-
-                strong {
-                  @extend .text-sm;
-                  color: black;
-                  display: flex;
-                  font-weight: 600;
-                  word-break: break-all;
-                }
-
-                &:last-of-type {
-                  margin-bottom: 0;
-                  margin-top: 1rem;
-                }
-              }
-            }
-
-            .action {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              flex-shrink: 0;
-              margin-left: 1rem;
-
-              .action-button {
-                width: max-content;
-                padding: 0 2rem;
-                height: 40px;
-              }
-            }
-          }
-        }
-      }
-
-      .spinner-of-doom {
-        width: 100%;
-      }
-    }
-
-    .standalone {
-      position: absolute;
     }
   }
 

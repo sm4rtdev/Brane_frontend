@@ -55,6 +55,7 @@ export const customFetch = async (pathname, method, object, temp) => {
         method,
         body: JSON.stringify(object),
       });
+
       const data = await response.json();
 
       return {

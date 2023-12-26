@@ -40,7 +40,9 @@ const InstitutionProfile = ({
 
       console.log(data);
       if (ok) {
-        if (data[0].length === 0) {
+        if (data.length === 0) {
+          setCourses([]);
+        } else if (data[0].length === 0) {
           setCourses([]);
         } else {
           let temp = [];
