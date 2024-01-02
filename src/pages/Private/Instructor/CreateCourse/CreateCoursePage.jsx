@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import "./CreateCoursePage.scss";
 
@@ -8,8 +8,11 @@ import Footer from "../../../../components/Footer/Footer";
 import CreateCourseInfo from "./CreateCourseInfo";
 import AddLessons from "./AddLessons";
 import { goUp } from "../../../../helpers/ScrollToTop";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const CreateCoursePage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [openTab, setOpenTab] = useState(0);
   const [courseID, setCourseID] = useState(null);
 
@@ -24,10 +27,10 @@ const CreateCoursePage = () => {
 
         <div className="status-bar">
           <div className={`block ${openTab === 0 ? "current" : ""}`}>
-            <p>Cuéntanos sobre tu curso</p>
+            <p>{dictionary.privateInstructor.createCoursePage[0][language]}</p>
           </div>
           <div className={`block ${openTab === 1 ? "current" : ""}`}>
-            <p>Añade lecciones a tu curso</p>
+            <p>{dictionary.privateInstructor.createCoursePage[1][language]}</p>
           </div>
         </div>
 
@@ -37,10 +40,7 @@ const CreateCoursePage = () => {
           </div>
 
           {openTab === 0 ? (
-            <CreateCourseInfo
-              setOpenTab={setOpenTab}
-              setCourseID={setCourseID}
-            />
+            <CreateCourseInfo setOpenTab={setOpenTab} setCourseID={setCourseID} />
           ) : (
             <AddLessons setOpenTab={setOpenTab} courseID={courseID} />
           )}

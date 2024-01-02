@@ -16,6 +16,7 @@ import { getChatByUserID } from "../../../../api/getChatByUserID";
 import { postChatMessage } from "../../../../api/postChatMessage";
 import { getMyMessages } from "../../../../api/getMyMessages";
 import { getMyTeachers } from "../../../../api/getMyTeachers";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const NewUserConversation = ({ handler, id, nombre, avatar }) => {
   return (
@@ -25,24 +26,14 @@ const NewUserConversation = ({ handler, id, nombre, avatar }) => {
         handler({
           id,
           name: nombre,
-          avatar: avatar
-            ? avatar.formats
-              ? avatar.formats.thumbnail.url
-              : avatar
-            : null,
+          avatar: avatar ? (avatar.formats ? avatar.formats.thumbnail.url : avatar) : null,
         });
       }}
     >
       <div className="avatar">
         {avatar ? (
           <FancyImage
-            src={getImageLinkFrom(
-              avatar
-                ? avatar.formats
-                  ? avatar.formats.thumbnail.url
-                  : avatar
-                : null
-            )}
+            src={getImageLinkFrom(avatar ? (avatar.formats ? avatar.formats.thumbnail.url : avatar) : null)}
           />
         ) : (
           <PersonOutline />
@@ -53,14 +44,7 @@ const NewUserConversation = ({ handler, id, nombre, avatar }) => {
   );
 };
 
-const UserConversation = ({
-  handler,
-  id,
-  nombre,
-  avatar,
-  comentario,
-  fecha_de_publicacion,
-}) => {
+const UserConversation = ({ handler, id, nombre, avatar, comentario, fecha_de_publicacion }) => {
   return (
     <div
       className="user-conversation"
@@ -72,59 +56,40 @@ const UserConversation = ({
         });
       }}
     >
-      <div className="avatar">
-        {avatar ? (
-          <FancyImage src={getImageLinkFrom(avatar)} />
-        ) : (
-          <PersonOutline />
-        )}
-      </div>
+      <div className="avatar">{avatar ? <FancyImage src={getImageLinkFrom(avatar)} /> : <PersonOutline />}</div>
 
       <div className="preview-body">
         <div className="name">{nombre}</div>
         <div className="message">{comentario}</div>
         <div className="time">
-          {formatRelative(
-            new Date(Date.parse(fecha_de_publicacion)),
-            new Date(),
-            {
-              includeSeconds: true,
-              addSuffix: true,
-            }
-          )}
+          {formatRelative(new Date(Date.parse(fecha_de_publicacion)), new Date(), {
+            includeSeconds: true,
+            addSuffix: true,
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-const BubbleMessage = ({
-  ourUserID,
-  comentario,
-  fecha_de_publicacion,
-  remitente,
-}) => {
+const BubbleMessage = ({ ourUserID, comentario, fecha_de_publicacion, remitente }) => {
   return (
-    <div
-      className={`bubble-message ${remitente.id === ourUserID ? "own" : ""}`}
-    >
+    <div className={`bubble-message ${remitente.id === ourUserID ? "own" : ""}`}>
       <p>{comentario}</p>
       <span>
-        {formatRelative(
-          new Date(Date.parse(fecha_de_publicacion)),
-          new Date(),
-          {
-            includeSeconds: true,
-            addSuffix: true,
-          }
-        )}
+        {formatRelative(new Date(Date.parse(fecha_de_publicacion)), new Date(), {
+          includeSeconds: true,
+          addSuffix: true,
+        })}
       </span>
     </div>
   );
 };
 
 const Chat = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
+
   const [students, setStudents] = useState(null);
   const [myTeachers, setMyTeachers] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
@@ -141,12 +106,8 @@ const Chat = () => {
     const getStudents = async () => {
       const { ok, data } = await getStudentsByInstructor(userData.info.slug);
 
-      // console.log("Students", data.data);
-
       if (ok) {
-        const withoutMe = data.data.filter(
-          (obj) => obj.id !== userData.info.id
-        );
+        const withoutMe = data.data.filter((obj) => obj.id !== userData.info.id);
 
         setStudents(withoutMe);
       } else {
@@ -156,12 +117,8 @@ const Chat = () => {
     const getTeachers = async () => {
       const { ok, data } = await getMyTeachers();
 
-      // console.log("Teacher", data.data);
-
       if (ok) {
-        const withoutMe = data.data.filter(
-          (obj) => obj.id !== userData.info.id
-        );
+        const withoutMe = data.data.filter((obj) => obj.id !== userData.info.id);
 
         setMyTeachers(withoutMe);
       } else {
@@ -171,8 +128,6 @@ const Chat = () => {
 
     const getPreviousChats = async () => {
       const { ok, data } = await getMyMessages();
-
-      // console.log("Previous Chats", data);
 
       if (ok) {
         setMyChats(data);
@@ -188,7 +143,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (students) {
-      if (searchInput.search) {
+      if (searchInput.search && myTeachers) {
         const newData = students.map((item) => ({
           // combina nombre y apellidos en una sola propiedad
           ...item,
@@ -206,9 +161,7 @@ const Chat = () => {
               return acc;
             }
           }, [])
-          .filter((item) =>
-            item.nombre.toLowerCase().includes(searchInput.search.toLowerCase())
-          );
+          .filter((item) => item.nombre.toLowerCase().includes(searchInput.search.toLowerCase()));
 
         setSearchResults(filteredData);
       } else {
@@ -223,8 +176,6 @@ const Chat = () => {
     if (selectedUser) {
       const getConversation = async () => {
         const { ok, data } = await getChatByUserID(selectedUser.id);
-
-        console.log("Conve", data);
 
         if (ok) {
           const orderedMessages = [...data].sort((a, b) => {
@@ -242,13 +193,11 @@ const Chat = () => {
 
           setConversation(orderedMessages);
           if (messageContainer.current) {
-            messageContainer.current.scrollTop =
-              messageContainer.current.scrollHeight;
+            messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
 
             setTimeout(() => {
               console.log(messageContainer.current);
-              messageContainer.current.scrollTop =
-                messageContainer.current.scrollHeight;
+              messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
             }, 300);
           }
           setLoadingConver(false);
@@ -277,11 +226,9 @@ const Chat = () => {
 
       const { ok, data } = await postChatMessage(obj);
 
-      console.log("Your message", data);
-
       if (ok) {
         setMsgInput({ message: "" });
-        toast.success(`Mensaje enviado`);
+        toast.success(dictionary.chat[0][language]);
         setLocalRefresh(Date.now());
       } else {
         toast.error(`${data.error.message}`);
@@ -296,9 +243,7 @@ const Chat = () => {
       <h1>Chat</h1>
 
       <p className="hint">
-        {userData.mode === "student"
-          ? "¡Chatea con tus instructores!"
-          : "¡Chatea con tus estudiantes!"}
+        {userData.mode === "student" ? dictionary.chat[1][language] : dictionary.chat[2][language]}
       </p>
 
       <div className="the-chat">
@@ -308,14 +253,14 @@ const Chat = () => {
               <DynamicInput
                 id={"search"}
                 state={[searchInput, setSearchInput]}
-                label={"Buscar usuarios"}
+                label={dictionary.chat[3][language]}
                 type="search"
               />
             </div>
 
             {searchResults !== null && (
               <div className="results">
-                <span>Resultados</span>
+                <span>{dictionary.chat[4][language]}</span>
 
                 {searchResults.length > 0 ? (
                   <div className="inner-container">
@@ -333,7 +278,7 @@ const Chat = () => {
                     })}
                   </div>
                 ) : (
-                  <p className="no-data">Sin datos</p>
+                  <p className="no-data">{dictionary.chat[5][language]}</p>
                 )}
               </div>
             )}
@@ -341,7 +286,7 @@ const Chat = () => {
           {searchResults === null &&
             (myChats !== null ? (
               <div className="my-chats">
-                <strong>Mis chats</strong>
+                <strong>{dictionary.chat[6][language]}</strong>
 
                 <div className="inner-container">
                   {myChats.length > 0 ? (
@@ -358,7 +303,7 @@ const Chat = () => {
                       );
                     })
                   ) : (
-                    <p className="no-data">Sin datos</p>
+                    <p className="no-data">{dictionary.chat[5][language]}</p>
                   )}
                 </div>
               </div>
@@ -370,11 +315,7 @@ const Chat = () => {
           <div className="the-conversation">
             <div className="conversation-header">
               <div className="avatar">
-                {selectedUser.avatar ? (
-                  <FancyImage src={getImageLinkFrom(selectedUser.avatar)} />
-                ) : (
-                  <PersonOutline />
-                )}
+                {selectedUser.avatar ? <FancyImage src={getImageLinkFrom(selectedUser.avatar)} /> : <PersonOutline />}
               </div>
               <strong>{selectedUser.name}</strong>
             </div>
@@ -383,13 +324,7 @@ const Chat = () => {
                 <div className="messages" ref={messageContainer}>
                   {conversation &&
                     conversation.map((message) => {
-                      return (
-                        <BubbleMessage
-                          key={message.id}
-                          {...message}
-                          ourUserID={userData.info.id}
-                        />
-                      );
+                      return <BubbleMessage key={message.id} {...message} ourUserID={userData.info.id} />;
                     })}
                 </div>
                 <div className="send-message">
@@ -397,13 +332,9 @@ const Chat = () => {
                     id={"message"}
                     state={[msgInput, setMsgInput]}
                     noIcon
-                    placeholder={"Escriba su mensaje aquí..."}
+                    placeholder={dictionary.chat[7][language]}
                   />
-                  <button
-                    className="small-button"
-                    onClick={sendMessage}
-                    disabled={!msgInput.message || sendingMesg}
-                  >
+                  <button className="small-button" onClick={sendMessage} disabled={!msgInput.message || sendingMesg}>
                     <Send />
                   </button>
                 </div>

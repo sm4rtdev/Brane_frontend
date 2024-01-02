@@ -12,11 +12,13 @@ import FancyImage from "../../../../components/FancyImage/FancyImage";
 import ListItem from "./ListItem";
 import { postUserProfileImage } from "../../../../api/postUserProfileImage";
 import { CategoriesContext } from "../../../../contexts/CategoriesContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { postNewCourse } from "../../../../api/postNewCourse";
 
 const feePercentage = 5;
 
 const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { categories } = useContext(CategoriesContext);
 
   // ------------ Manage course information
@@ -26,6 +28,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
     shortDescription: "",
     descripcion: "",
     idioma: "Español",
+    subTitles: [],
     whatYouWillLearn: "",
     requirements: "",
     whoIsThisCourseFor: "",
@@ -54,9 +57,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
   }, [inputs]);
 
   const deleteTextFromTextArray = (objectKey, text) => {
-    let filteredArray = JSON.parse(inputs[objectKey]).filter(
-      (el) => el !== text
-    );
+    let filteredArray = JSON.parse(inputs[objectKey]).filter((el) => el !== text);
 
     let value = null;
 
@@ -171,7 +172,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
     setUploadingFile(false);
 
     if (ok) {
-      toast.success("La imagen del curso ha sido cargada.");
+      toast.success(dictionary.privateInstructor.createCourseInfo[0][language]);
       setFile(null);
       setOpenTab(1);
     } else {
@@ -186,8 +187,9 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
         shortDescription: inputs.shortDescription,
         descripcion: inputs.descripcion,
         idioma: inputs.idioma,
+        subTitles: inputs.subTitles,
         whatYouWillLearn: JSON.parse(inputs.whatYouWillLearn),
-        requirements: JSON.parse(inputs.requirements),
+        requeriments: JSON.parse(inputs.requirements),
         whoIsThisCourseFor: JSON.parse(inputs.whoIsThisCourseFor),
         categoria: inputs.categoria,
         precio: inputs.precio,
@@ -200,7 +202,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
 
     if (ok) {
       const newID = data.data.id;
-      toast.success("El curso ha sido creado.");
+      toast.success(dictionary.privateInstructor.createCourseInfo[1][language]);
       setCourseID(newID);
       uploadFile(newID);
     } else {
@@ -210,27 +212,25 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
 
   const checkEverything = () => {
     if (inputs.name.length < 3) {
-      toast.error(
-        "El nombre del curso no puede estar vacío y debe tener al menos 3 letras"
-      );
+      toast.error(dictionary.privateInstructor.createCourseInfo[2][language]);
     } else if (inputs.shortDescription === "") {
-      toast.error("Introduzca una breve descripción");
+      toast.error(dictionary.privateInstructor.createCourseInfo[3][language]);
     } else if (inputs.descripcion === "") {
-      toast.error("Introduce una descripción");
+      toast.error(dictionary.privateInstructor.createCourseInfo[4][language]);
     } else if (inputs.idioma === "") {
-      toast.error("Selecciona un idioma");
+      toast.error(dictionary.privateInstructor.createCourseInfo[5][language]);
     } else if (inputs.whatYouWillLearn.length === 0) {
-      toast.error("Debes especificar qué aprenderás con el curso");
+      toast.error(dictionary.privateInstructor.createCourseInfo[6][language]);
     } else if (inputs.requirements.length === 0) {
-      toast.error(`Debes ingresar al menos 1 requerimiento`);
+      toast.error(dictionary.privateInstructor.createCourseInfo[7][language]);
     } else if (inputs.whoIsThisCourseFor.length === 0) {
-      toast.error("Debes especificar para quién es el curso");
+      toast.error(dictionary.privateInstructor.createCourseInfo[8][language]);
     } else if (inputs.categoria.length === null) {
-      toast.error("Debes seleccionar una categoría");
+      toast.error(dictionary.privateInstructor.createCourseInfo[9][language]);
     } else if (inputs.precio < 5) {
-      toast.error("El precio del curso no puede ser inferior a 5$");
+      toast.error(dictionary.privateInstructor.createCourseInfo[10][language]);
     } else if (file === null) {
-      toast.error("Falta una imagen del curso");
+      toast.error(dictionary.privateInstructor.createCourseInfo[11][language]);
     } else {
       setOngoingUpdate(true);
 
@@ -241,49 +241,45 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
   return (
     <div className="instructor-course-info">
       <div className="section">
-        <h2>Lo basico</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[12][language]}</h2>
 
         <>
-          <h3>Título del curso</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[13][language]}</h3>
           <DynamicInput
             id={"name"}
             state={[inputs, setInputs]}
             noIcon
-            placeholder={"Cómo..."}
+            placeholder={dictionary.privateInstructor.createCourseInfo[14][language]}
           />
-          <p className="hint">
-            Elija un título único que lo distinga de otros cursos
-          </p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[15][language]}</p>
         </>
 
         <>
-          <h3>Breve descripción del curso.</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[16][language]}</h3>
           <DynamicInput
             id={"shortDescription"}
             state={[inputs, setInputs]}
             multiline
             noIcon
-            placeholder={"Larga historia corta..."}
+            placeholder={dictionary.privateInstructor.createCourseInfo[17][language]}
           />
-          <p className="hint">
-            Una descripción que describe rápidamente de qué se trata el curso.
-          </p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[18][language]}</p>
         </>
 
         <>
-          <h3>Descripción del curso</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[19][language]}</h3>
           <DynamicInput
             id={"descripcion"}
             state={[inputs, setInputs]}
             noIcon
             multiline
-            placeholder={"Érase una vez..."}
+            placeholder={dictionary.privateInstructor.createCourseInfo[20][language]}
           />
-          <p className="hint">Una descripción completa del curso.</p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[21][language]}</p>
         </>
 
         <>
-          <h3>Idioma del curso</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[22][language]}</h3>
           <FormControl fullWidth>
             <Select
               value={inputs.idioma}
@@ -315,13 +311,49 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               <MenuItem value={"English"}>English</MenuItem>
             </Select>
           </FormControl>
-          <p className="hint">
-            El idioma hablado de las lecciones de tu curso.
-          </p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[23][language]}</p>
+        </>
+
+        {/* //------------- */}
+        <>
+          <h3>{dictionary.privateInstructor.createCourseInfo[53][language]}</h3>
+          <FormControl fullWidth>
+            <Select
+              value={inputs.subTitles}
+              style={{
+                borderRadius: "50px",
+                fontFamily: "Inter",
+                fontSize: "0.875rem",
+                height: "2.5rem",
+              }}
+              multiple
+              onChange={(e) => {
+                setInputs((c) => {
+                  return { ...c, subTitles: e.target.value };
+                });
+              }}
+              elevation={0}
+              inputProps={{
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      boxShadow: "0 0 8px #0f0e0e20",
+                      borderRadius: "1rem",
+                    },
+                  },
+                },
+              }}
+            >
+              <MenuItem value={"ES"}>Español</MenuItem>
+              <MenuItem value={"PT"}>Português</MenuItem>
+              <MenuItem value={"EN"}>English</MenuItem>
+            </Select>
+          </FormControl>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[54][language]}</p>
         </>
 
         <>
-          <h3>Certificado</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[24][language]}</h3>
           <FormControl fullWidth>
             <Select
               value={inputs.certificado}
@@ -348,37 +380,30 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
                 },
               }}
             >
-              <MenuItem value={true}>Sí</MenuItem>
+              <MenuItem value={true}>{dictionary.privateInstructor.createCourseInfo[25][language]}</MenuItem>
               <MenuItem value={false}>No</MenuItem>
             </Select>
           </FormControl>
-          <p className="hint">
-            ¿El curso debería emitir un certificado al finalizar?
-          </p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[26][language]}</p>
         </>
       </div>
 
       <div className="section">
-        <h2>Información específica</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[27][language]}</h2>
 
         <>
-          <h3>Lo que vas a aprender</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[28][language]}</h3>
           <div className="list-items">
-            {inputs.whatYouWillLearn !== null &&
-            inputs.whatYouWillLearn.length > 0 ? (
+            {inputs.whatYouWillLearn !== null && inputs.whatYouWillLearn.length > 0 ? (
               JSON.parse(inputs.whatYouWillLearn).map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"whatYouWillLearn"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"whatYouWillLearn"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[29][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -386,47 +411,37 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               id={"whatYouWillLearn"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Aprenderás..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[30][language]}
             />
-            <p className="hint">
-              Cuéntale a tu audiencia lo que aprenderán después de completar
-              este curso.
-            </p>
+            <p className="hint">{dictionary.privateInstructor.createCourseInfo[31][language]}</p>
             <button
               className="action-button"
               disabled={
                 internalInputs.whatYouWillLearn.length === 0 ||
-                alreadyExists(
-                  "whatYouWillLearn",
-                  internalInputs.whatYouWillLearn
-                )
+                alreadyExists("whatYouWillLearn", internalInputs.whatYouWillLearn)
               }
               onClick={() => {
                 addTextToATextArray("whatYouWillLearn");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[32][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Requerimientos</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[33][language]}</h3>
           <div className="list-items">
             {inputs.requirements !== null && inputs.requirements.length > 0 ? (
               JSON.parse(inputs.requirements).map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"requirements"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"requirements"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[29][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -434,45 +449,36 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               id={"requirements"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Necesitará..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[34][language]}
             />
-            <p className="hint">
-              Dile a tu audiencia qué experiencia o requisitos necesitan para
-              completar este curso.
-            </p>
+            <p className="hint">{dictionary.privateInstructor.createCourseInfo[35][language]}</p>
             <button
               className="action-button"
               disabled={
-                internalInputs.requirements.length === 0 ||
-                alreadyExists("requirements", internalInputs.requirements)
+                internalInputs.requirements.length === 0 || alreadyExists("requirements", internalInputs.requirements)
               }
               onClick={() => {
                 addTextToATextArray("requirements");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[32][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Para quién es este curso</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[36][language]}</h3>
           <div className="list-items">
-            {inputs.whoIsThisCourseFor !== null &&
-            inputs.whoIsThisCourseFor.length > 0 ? (
+            {inputs.whoIsThisCourseFor !== null && inputs.whoIsThisCourseFor.length > 0 ? (
               JSON.parse(inputs.whoIsThisCourseFor).map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"whoIsThisCourseFor"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"whoIsThisCourseFor"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[29][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -480,29 +486,26 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               id={"whoIsThisCourseFor"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Una persona..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[37][language]}
             />
-            <p className="hint">¿Quién puede utilizar tu curso?</p>
+            <p className="hint">{dictionary.privateInstructor.createCourseInfo[38][language]}</p>
             <button
               className="action-button"
               disabled={
                 internalInputs.whoIsThisCourseFor.length === 0 ||
-                alreadyExists(
-                  "whoIsThisCourseFor",
-                  internalInputs.whoIsThisCourseFor
-                )
+                alreadyExists("whoIsThisCourseFor", internalInputs.whoIsThisCourseFor)
               }
               onClick={() => {
                 addTextToATextArray("whoIsThisCourseFor");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[32][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Categorías</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[39][language]}</h3>
 
           {categories ? (
             <>
@@ -511,9 +514,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
                   return (
                     <button
                       key={cat.id}
-                      className={`cat ${
-                        inputs.categoria === cat.id ? "selected" : ""
-                      }`}
+                      className={`cat ${inputs.categoria === cat.id ? "selected" : ""}`}
                       onClick={() => {
                         toggleCategory(cat.id);
                       }}
@@ -523,10 +524,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
                   );
                 })}
               </div>
-              <p className="hint">
-                Selecciona la categoría que mejor define el contenido de tu
-                curso
-              </p>
+              <p className="hint">{dictionary.privateInstructor.createCourseInfo[40][language]}</p>
             </>
           ) : (
             <SpinnerOfDoom standalone />
@@ -535,7 +533,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
       </div>
 
       <div className="section">
-        <h2>El precio</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[41][language]}</h2>
 
         <>
           <div className="price-section">
@@ -545,7 +543,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               state={[inputs, setInputs]}
               noIcon
               price
-              label={"El precio para el público."}
+              label={dictionary.privateInstructor.createCourseInfo[42][language]}
             />
             <DynamicInput
               id={"fee"}
@@ -553,7 +551,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               noIcon
               price
               disabled
-              label={`Nuestra tarifa de servicio (${feePercentage}%)`}
+              label={`${dictionary.privateInstructor.createCourseInfo[43][language]} (${feePercentage}%)`}
             />
             <DynamicInput
               id={"net"}
@@ -561,19 +559,16 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
               noIcon
               price
               disabled
-              label={"Tus ganancias netas"}
+              label={dictionary.privateInstructor.createCourseInfo[44][language]}
             />
           </div>
-          <p className="hint">
-            Tus ganancias netas son las ganancias que obtendrás después de cada
-            venta de este curso.
-          </p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[45][language]}</p>
         </>
       </div>
 
       <div className="section">
         <div className="media-creation">
-          <h2>Imagen del curso</h2>
+          <h2>{dictionary.privateInstructor.createCourseInfo[46][language]}</h2>
 
           <input
             type="file"
@@ -588,14 +583,16 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
           </div>
 
           <button className="action-button" onClick={openFileSelection}>
-            {!preview ? "Añadir imagen" : "Cambiar imagen"}
+            {!preview
+              ? dictionary.privateInstructor.createCourseInfo[47][language]
+              : dictionary.privateInstructor.createCourseInfo[48][language]}
             <ImageOutline />
           </button>
         </div>
       </div>
 
       <div className="section action">
-        <h2>Salvar cambios</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[49][language]}</h2>
 
         <button
           className="action-button final"
@@ -608,16 +605,16 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
             uploadingFile ? (
               <>
                 <SpinnerOfDoom />
-                Subiendo archivo...
+                {dictionary.privateInstructor.createCourseInfo[50][language]}
               </>
             ) : (
               <>
                 <SpinnerOfDoom />
-                Guardando...
+                {dictionary.privateInstructor.createCourseInfo[51][language]}
               </>
             )
           ) : (
-            "Salvar"
+            dictionary.privateInstructor.createCourseInfo[52][language]
           )}
         </button>
       </div>

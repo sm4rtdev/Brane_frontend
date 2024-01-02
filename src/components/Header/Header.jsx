@@ -94,12 +94,13 @@ const Header = ({ black, title, progress }) => {
           </>
         ) : (
           <>
-            {progress && progress > 0 && (
+            {progress !== null && progress > 0 && (
               <div className="trophy">
                 <span>{progress}</span>
                 <Trophy />
               </div>
             )}
+
             <Link to="/my-courses" className="small-button">
               <LogOutOutline />
             </Link>

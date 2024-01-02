@@ -1,14 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import ReactPlayer from "react-player";
 import { toast } from "react-toastify";
 
-import { ImageOutline, Videocam } from "../../../../assets/icons";
+import { ImageOutline, TrashOutline, Videocam } from "../../../../assets/icons";
 
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import LinkItem from "./LinkItem";
 import { postUserProfileImage } from "../../../../api/postUserProfileImage";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { postNewLesson } from "../../../../api/postNewLesson";
+import { postSubtitle } from "../../../../api/postSubtitle";
 import { goUp } from "../../../../helpers/ScrollToTop";
 
 const initialState = {
@@ -16,6 +19,7 @@ const initialState = {
   descripcion: "",
   duracion: "",
   additionalResources: null,
+  subLabel: "EN",
 };
 
 const initialResources = {
@@ -23,6 +27,8 @@ const initialResources = {
 };
 
 const LessonAggregator = ({ courseID, setUpdater }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [inputs, setInputs] = useState(initialState);
   const [internalInputs, setInternalInputs] = useState(initialResources);
   const [moreIsOpen, setMoreIsOpen] = useState(false);
@@ -112,10 +118,52 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
     };
   }, [file]);
 
+  // ------------ Manage subtitles
+
+  const inputSubs = useRef(null);
+  const [subs, setSubs] = useState([]);
+  const [tempSub, setTempSub] = useState(null);
+
+  const openSubsSelection = () => {
+    inputSubs.current.click();
+  };
+
+  const handleSubsChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setTempSub(e.target.files[0]);
+    }
+  };
+
+  const addToSubs = () => {
+    let obj = {
+      id: Date.now(),
+      filename: tempSub.name,
+      label: inputs.subLabel,
+      sub: tempSub,
+    };
+
+    setInputs((c) => {
+      return { ...c, subLabel: "EN" };
+    });
+
+    setTempSub(null);
+
+    setSubs((c) => {
+      return [...c, obj];
+    });
+  };
+
+  const deleteFromSubs = (id) => {
+    let newArray = subs.filter((el) => el.id !== id);
+
+    setSubs(newArray);
+  };
+
   // ------------ Update lesson
 
   const [currentLessonID, setCurrentLessonID] = useState(null);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [uploadingSubs, setUploadingSubs] = useState(false);
   const [ongoingUpdate, setOngoingUpdate] = useState(false);
 
   useEffect(() => {
@@ -127,7 +175,34 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
         setFile(null);
         setCurrentLessonID(null);
         setUpdater(Date.now());
+        setTempSub(null);
+        setSubs([]);
         goUp();
+      };
+
+      const uploadSubs = async () => {
+        setUploadingSubs(true);
+
+        const formData = new FormData();
+
+        formData.append("clase", currentLessonID);
+
+        subs.forEach((obj, index) => {
+          formData.append(`subtitles[${index}][file]`, obj.sub);
+          formData.append(`subtitles[${index}][lang]`, obj.label);
+        });
+
+        const { ok, data } = await postSubtitle(formData);
+
+        if (ok) {
+          toast.success(dictionary.privateInstructor.lessonAggregator[18][language]);
+          setOngoingUpdate(false);
+          clearALL();
+        } else {
+          toast.error(`${data.error.message}`);
+        }
+
+        setUploadingSubs(false);
       };
 
       const uploadFile = async () => {
@@ -143,11 +218,16 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
         const { ok, data } = await postUserProfileImage(formData);
 
         if (ok) {
-          toast.success("Se han subido los medios de la lección.");
+          toast.success(dictionary.privateInstructor.lessonAggregator[0][language]);
 
           setUploadingFile(false);
-          setOngoingUpdate(false);
-          clearALL();
+
+          if (subs.length > 0) {
+            uploadSubs();
+          } else {
+            setOngoingUpdate(false);
+            clearALL();
+          }
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -163,33 +243,29 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
         nombre: inputs.nombre,
         descripcion: inputs.descripcion,
         duracion: inputs.duracion,
-        additionalResources: inputs.additionalResources,
+        additionalResources: JSON.parse(inputs.additionalResources),
         curso: courseID,
       },
     };
 
-    // Create
+    const { ok, data } = await postNewLesson(obj);
 
-    console.log(obj);
-    // const { ok, data } = await postNewLesson(obj);
+    if (ok) {
+      toast.success(dictionary.privateInstructor.lessonAggregator[1][language]);
 
-    // if (ok) {
-    //   toast.success("La lección ha sido creada.");
-
-    //   // console.log(data.data.id);
-    //   setCurrentLessonID(data.data.id);
-    // } else {
-    //   toast.error(`${data.error.message}`);
-    // }
+      setCurrentLessonID(data.data.id);
+    } else {
+      toast.error(`${data.error.message}`);
+    }
   };
 
   const checkEverything = () => {
     if (inputs.nombre.length < 3) {
-      toast.error(`El nombre de la lección no puede estar vacío y debe tener al menos 3 letras.`);
+      toast.error(dictionary.privateInstructor.lessonAggregator[2][language]);
     } else if (inputs.descripcion === "") {
-      toast.error(`Falta descripción en nueva lección`);
+      toast.error(dictionary.privateInstructor.lessonAggregator[3][language]);
     } else if (!file) {
-      toast.error(`Video faltante en nueva lección`);
+      toast.error(dictionary.privateInstructor.lessonAggregator[4][language]);
     } else {
       setOngoingUpdate(true);
 
@@ -199,18 +275,29 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
 
   return (
     <div className="lesson-aggregator">
-      <strong>Nueva lección</strong>
+      <strong>{dictionary.privateInstructor.lessonAggregator[5][language]}</strong>
 
       <div className="inner-container">
         <div className="basic-stuff">
-          <DynamicInput id={"nombre"} state={[inputs, setInputs]} label="Título" noIcon />
-          <DynamicInput id={"descripcion"} state={[inputs, setInputs]} label="Descripción" multiline noIcon />
+          <DynamicInput
+            id={"nombre"}
+            state={[inputs, setInputs]}
+            label={dictionary.privateInstructor.lessonAggregator[6][language]}
+            noIcon
+          />
+          <DynamicInput
+            id={"descripcion"}
+            state={[inputs, setInputs]}
+            label={dictionary.privateInstructor.lessonAggregator[7][language]}
+            multiline
+            noIcon
+          />
         </div>
 
         <div className="additional-resources">
           {moreIsOpen ? (
             <>
-              <h3>Recursos adicionales</h3>
+              <h2>{dictionary.privateInstructor.lessonAggregator[8][language]}</h2>
               <div className="links">
                 {inputs.additionalResources !== null && inputs.additionalResources.length > 0 ? (
                   JSON.parse(inputs.additionalResources).map((text, index) => {
@@ -225,14 +312,14 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
                     );
                   })
                 ) : (
-                  <p className="no-items">Añadir algo</p>
+                  <p className="no-items">{dictionary.privateInstructor.lessonAggregator[9][language]}</p>
                 )}
               </div>
 
               <DynamicInput
                 id={"additionalResources"}
                 state={[internalInputs, setInternalInputs]}
-                label="Agregar recurso"
+                label={dictionary.privateInstructor.lessonAggregator[10][language]}
                 noIcon
               />
               <button
@@ -241,7 +328,7 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
                   addTextToATextArray("additionalResources");
                 }}
               >
-                Agregar recurso
+                {dictionary.privateInstructor.lessonAggregator[10][language]}
               </button>
             </>
           ) : (
@@ -251,13 +338,13 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
                 setMoreIsOpen(true);
               }}
             >
-              Agregar recursos adicionales
+              {dictionary.privateInstructor.lessonAggregator[11][language]}
             </button>
           )}
         </div>
 
         <div className="media-creation">
-          <h2>Medios de lección</h2>
+          <h2>{dictionary.privateInstructor.lessonAggregator[12][language]}</h2>
 
           <input type="file" id="media" onChange={handleFileChange} ref={inputFile} accept="video/*" />
 
@@ -280,11 +367,97 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
               <ImageOutline />
             )}
           </div>
-
           <button className="action-button" onClick={openFileSelection}>
-            {!preview ? "Agregar video" : "Cambiar video"}
+            {!preview
+              ? dictionary.privateInstructor.lessonAggregator[13][language]
+              : dictionary.privateInstructor.lessonAggregator[14][language]}
             <Videocam />
           </button>
+
+          {/* ------------------------------------------------------------- */}
+
+          <div className="subtitles-section">
+            <h2>{dictionary.privateInstructor.lessonAggregator[19][language]}</h2>
+
+            <div className="subtitles">
+              {subs.length > 0 ? (
+                subs.map((sub, index) => {
+                  return (
+                    <div className="subtitle-item" key={index}>
+                      <p>
+                        {sub.label} ({sub.filename})
+                      </p>
+
+                      <button
+                        className="small-button"
+                        onClick={() => {
+                          deleteFromSubs(sub.id);
+                        }}
+                      >
+                        <TrashOutline />
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="no-items">{dictionary.privateInstructor.lessonAggregator[20][language]}</p>
+              )}
+            </div>
+
+            <input type="file" id="media" onChange={handleSubsChange} ref={inputSubs} accept="text/vtt" multiple />
+
+            <div className="add-sub-box">
+              <label htmlFor="select-subs-form">{dictionary.privateInstructor.lessonAggregator[21][language]}</label>
+
+              <FormControl fullWidth style={{ maxWidth: "256px" }}>
+                <Select
+                  id="select-subs-form"
+                  value={inputs.subLabel}
+                  style={{
+                    borderRadius: "50px",
+                    fontFamily: "Inter",
+                    fontSize: "0.875rem",
+                    height: "2.5rem",
+                    backgroundColor: "#fff",
+                  }}
+                  onChange={(e) => {
+                    setInputs((c) => {
+                      return { ...c, subLabel: e.target.value };
+                    });
+                  }}
+                  elevation={0}
+                  inputProps={{
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          boxShadow: "0 0 8px #0f0e0e20",
+                          borderRadius: "1rem",
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem value={"ES"}>{dictionary.privateInstructor.lessonAggregator[22][language]}</MenuItem>
+                  <MenuItem value={"EN"}>{dictionary.privateInstructor.lessonAggregator[23][language]}</MenuItem>
+                  <MenuItem value={"PT"}>{dictionary.privateInstructor.lessonAggregator[24][language]}</MenuItem>
+                </Select>
+              </FormControl>
+
+              <button className="action-button" onClick={openSubsSelection}>
+                {tempSub
+                  ? dictionary.privateInstructor.lessonAggregator[25][language]
+                  : dictionary.privateInstructor.lessonAggregator[26][language]}
+              </button>
+            </div>
+
+            {tempSub && inputs.subLabel !== "" && (
+              <button className="action-button" onClick={addToSubs}>
+                {dictionary.privateInstructor.lessonAggregator[27][language]}
+              </button>
+            )}
+          </div>
+
+          {/* ------------------------------------------------------------- */}
 
           <button
             className="action-button final"
@@ -297,16 +470,18 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
               uploadingFile ? (
                 <>
                   <SpinnerOfDoom />
-                  Subiendo archivo...
+                  {dictionary.privateInstructor.lessonAggregator[15][language]}
                 </>
+              ) : uploadingSubs ? (
+                <>{dictionary.privateInstructor.lessonAggregator[28][language]}</>
               ) : (
                 <>
                   <SpinnerOfDoom />
-                  Salvando...
+                  {dictionary.privateInstructor.lessonAggregator[16][language]}
                 </>
               )
             ) : (
-              "Agregar nueva lección"
+              dictionary.privateInstructor.lessonAggregator[17][language]
             )}
           </button>
         </div>

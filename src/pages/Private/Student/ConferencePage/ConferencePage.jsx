@@ -1,21 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { formatDistance, formatRelative } from "date-fns";
+import { toast } from "react-toastify";
+import { formatRelative } from "date-fns";
 
 import "../LessonPage/LessonPage.scss";
 
-import { AlertCircleOutline, LinkOutline, PersonOutline, Star } from "../../../../assets/icons";
+import { AlertCircleOutline, PersonOutline, Star } from "../../../../assets/icons";
 
 import InternalHeader from "../../../../components/InternalHeader/InternalHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
 import HeaderToggler from "../../../../components/HeaderToggler/HeaderToggler";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
-import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
 import Tabulation from "../../../../components/Tabulation/Tabulation";
 import Footer from "../../../../components/Footer/Footer";
-import Meeting from "./Meeting";
+
+import { ReportModalContext } from "../../../../contexts/ReportModalContext";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getReviewByCourse } from "../../../../api/getReviewByCourse";
@@ -23,10 +23,13 @@ import { getJoinConference } from "../../../../api/getJoinConference";
 import { getMyConference } from "../../../../api/getMyConference";
 import { getUserBySlug } from "../../../../api/getUserBySlug";
 
+// import Meeting from "./Meeting";
+
 function ConferencePage() {
   const { conferenceID } = useParams();
   const navigate = useNavigate();
 
+  const { openReportModal } = useContext(ReportModalContext);
   const { userData } = useContext(UserDataContext);
 
   const [conference, setConference] = useState(null);
@@ -43,7 +46,6 @@ function ConferencePage() {
         if (data.data.length === 1) {
           let response = data.data[0].attributes.curso.data.attributes;
 
-          // console.log(response);
           setConference(response);
         } else {
           navigate("/", { replace: true });
@@ -70,6 +72,7 @@ function ConferencePage() {
       const { ok, data } = await getJoinConference(conferenceID);
 
       if (ok) {
+        console.log(data);
         setJoinData(data);
       } else {
         toast.error(`${data.error.message}`);
@@ -112,11 +115,47 @@ function ConferencePage() {
               />
             </HeaderToggler>
 
-            <div className="main">
+            <div className="main conference">
               <div className="inner-container">
-                <div className="player">{joinData && <Meeting joinData={joinData} />}</div>
-
                 <h1>{conference.name}</h1>
+
+                {joinData ? (
+                  <div className="conference-box">
+                    <div className="box">
+                      <strong>Detalles de la conferencia:</strong>
+                      <ul>
+                        <li>
+                          Fecha y hora de inicio: <span>8929829</span>
+                        </li>
+                        <li>
+                          Duración estimada: <span>asdasdasd min</span>
+                        </li>
+                        <li>
+                          Tu nombre como participante: <span>asasd</span>
+                        </li>
+                      </ul>
+
+                      <button
+                        className="action-button"
+                        onClick={() => {
+                          window.joinDataTemp = JSON.stringify(joinData);
+
+                          let win = window.open("/conference/join", "_blank", {
+                            popup: true,
+                          });
+
+                          win.focus();
+                        }}
+                      >
+                        Entrar a la conferencia
+                      </button>
+
+                      <span>Tras hacer clic en el botón se te abrirá una ventana emergente.</span>
+                    </div>
+                  </div>
+                ) : (
+                  <SpinnerOfDoom />
+                )}
 
                 <Tabulation tabs={["Description", "Reviews"]} options={{ type: "bubble", color: "black" }}>
                   <>
@@ -191,71 +230,19 @@ function ConferencePage() {
                 )}
 
                 <div className="report-section">
-                  <strong>¿Algún problema con el vídeo?</strong>
+                  <strong>¿Algún problema con la conferencia?</strong>
 
-                  {/* <button
-                  className="report-button"
-                  onClick={() =>
-                    openReportModal({
-                      courseID: course.id,
-                      lessonID: currentLesson.id,
-                    })
-                  }
-                >
-                  Informar de un problema <AlertCircleOutline />
-                </button> */}
-                </div>
-
-                {/* <div className="comments-section">
-                <h2>Comentarios de la lección</h2>
-
-                <div className="container" ref={commentsContainer}>
-                  {comments && comments.length > 0 ? (
-                    comments.map((comment) => {
-                      return (
-                        <div className="comment" key={comment.id}>
-                          <Link to={`/user/${comment.attributes.autor.data.attributes.slug}`}>
-                            {`${comment.attributes.autor.data.attributes.nombre} ${comment.attributes.autor.data.attributes.apellidos}`}
-                          </Link>
-                          <span>
-                            {formatDistance(new Date(Date.parse(comment.attributes.createdAt)), new Date(), {
-                              includeSeconds: true,
-                              addSuffix: true,
-                            })}
-                          </span>
-                          <p>{comment.attributes.comentario}</p>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <p className="no-comments">Sin comentarios aún</p>
-                  )}
-                </div>
-
-                <div className="add-new-comment">
-                  <DynamicInput id={"comment"} state={[inputs, setInputs]} label="Leave a comment" noIcon />
-                  <button className="action-button" disabled={inputs.comment === "" || loading} onClick={sendComment}>
-                    {loading ? "Sending..." : "Send"}
+                  <button
+                    className="report-button"
+                    onClick={() =>
+                      openReportModal({
+                        courseID: conferenceID,
+                        lessonID: 0,
+                      })
+                    }
+                  >
+                    Informar de un problema <AlertCircleOutline />
                   </button>
-                </div>
-              </div> */}
-              </div>
-
-              <div className="content-list">
-                <div className="report-section">
-                  {/* <strong>¿Algún problema con el vídeo?</strong> */}
-
-                  {/* <button
-                  className="report-button"
-                  onClick={() =>
-                    openReportModal({
-                      courseID: course.id,
-                      lessonID: currentLesson.id,
-                    })
-                  }
-                >
-                  Informar de un problema <AlertCircleOutline />
-                </button> */}
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { formatDistance, formatRelative } from "date-fns";
 import ReactPlayer from "react-player";
 import { toast } from "react-toastify";
 
@@ -23,26 +24,24 @@ import FancyImage from "../../../../components/FancyImage/FancyImage";
 import Tabulation from "../../../../components/Tabulation/Tabulation";
 import Footer from "../../../../components/Footer/Footer";
 import { getCommentsFromLesson } from "../../../../api/getCommentsFromLesson";
+import { ReportModalContext } from "../../../../contexts/ReportModalContext";
 import { postCommentInLesson } from "../../../../api/postCommentInLesson";
+import { getMyCourseProgress } from "../../../../api/getMyCourseProgress";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
+import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getReviewByCourse } from "../../../../api/getReviewByCourse";
 import { postCompleteClass } from "../../../../api/postCompleteClass";
 import { getCourseBySlug } from "../../../../api/getCourseBySlug";
+import { getCertificate } from "../../../../api/getCertificate";
 import { getUserBySlug } from "../../../../api/getUserBySlug";
 import { getClass } from "../../../../api/getClass";
 
-// import SUB from "./sub.en.vtt";
-import videoSubtitles from "./subtitles.en.vtt";
-import { formatDistance, formatRelative } from "date-fns";
-import { UserDataContext } from "../../../../contexts/UserDataContext";
-import { getMyCourseProgress } from "../../../../api/getMyCourseProgress";
-import { ReportModalContext } from "../../../../contexts/ReportModalContext";
-
 const LessonPage = () => {
+  const navigate = useNavigate();
+  const { slug, lessonId } = useParams();
+
   const { openReportModal } = useContext(ReportModalContext);
   const { userData } = useContext(UserDataContext);
-  const { slug, lessonId } = useParams();
-  const navigate = useNavigate();
   const commentsContainer = useRef(null);
 
   const [inputs, setInputs] = useState({
@@ -62,10 +61,10 @@ const LessonPage = () => {
 
   const [currentPositionInArrayOfLessons, setCurrentPositionInArrayOfLessons] = useState(null);
 
+  const [captions, setCaptions] = useState([]);
+
   const getCourse = async () => {
     const { ok, data } = await getCourseBySlug(slug);
-
-    console.log(data.data);
 
     if (ok) {
       const index = data.data.clases.findIndex((el) => el.id === Number(lessonId));
@@ -90,8 +89,16 @@ const LessonPage = () => {
       const { ok, data } = await getClass(lessonId);
 
       if (ok) {
+        let { clase, subtitles } = data.data;
+
         setCurrentLesson(data.data);
-        setCurrentLessonVideoID(data.data.attributes.clase.data ? data.data.attributes.clase.data.id : null);
+        setCurrentLessonVideoID(clase ? clase.id : null);
+
+        setCaptions(
+          subtitles.map((sub) => {
+            return { kind: "subtitles", src: getImageLinkFrom(sub.url), label: sub.lang };
+          })
+        );
       } else {
         toast.error(`${data.error.message}`);
 
@@ -150,8 +157,6 @@ const LessonPage = () => {
   }, [currentLessonVideoID]);
 
   useEffect(() => {
-    console.log(localVideo);
-
     return () => {
       console.log("URL removed");
       URL.revokeObjectURL(localVideo);
@@ -173,8 +178,6 @@ const LessonPage = () => {
       const getReviews = async () => {
         const { ok, data } = await getReviewByCourse(course.id);
 
-        // console.log(data.data);
-
         if (ok) {
           setReviews(data.data);
         } else {
@@ -186,7 +189,7 @@ const LessonPage = () => {
         const { ok, data } = await getMyCourseProgress(course.id);
 
         if (ok) {
-          setCourseProgress(data.data[0].attributes.progress);
+          setCourseProgress(data.data[0].attributes);
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -198,16 +201,8 @@ const LessonPage = () => {
     }
   }, [course]);
 
-  useEffect(() => {
-    if (courseProgress === 100) {
-      // generate certificate
-    }
-  }, [courseProgress]);
-
   const getComments = async () => {
     const { ok, data } = await getCommentsFromLesson(currentLesson.id);
-
-    // console.log(data.data);
 
     if (ok) {
       setComments(data.data);
@@ -273,8 +268,6 @@ const LessonPage = () => {
 
     const { ok, data } = await postCommentInLesson(obj);
 
-    // console.log(data);
-
     if (ok) {
       getComments();
       setInputs({ comment: "" });
@@ -287,45 +280,48 @@ const LessonPage = () => {
     setLoading(false);
   };
 
-  const [captions_arr, setCaptions] = useState([
-    {
-      kind: "subtitles",
-      src: videoSubtitles,
-      srcLang: "en",
-      default: true,
-    },
-  ]);
+  const [loadingCertificate, setLoadingCertificate] = useState(false);
 
-  var mySubtitle_arr = captions_arr.map((v) => ({
-    kind: v.kind,
-    src: v.src,
-    srcLang: v.en,
-  }));
+  const loadCertificate = async () => {
+    setLoadingCertificate(true);
+
+    const { ok, data } = await getCertificate(course.id);
+
+    if (ok) {
+      window.open(data.url, "_blank");
+    } else {
+      toast.warning(`${data.error.message}`);
+    }
+
+    setLoadingCertificate(false);
+  };
 
   return (
     <div className="page lesson-page-like">
       <PageTransition margin>
         {lessons && currentLesson ? (
           <>
-            <HeaderToggler black title={currentLesson.attributes.nombre} progress={courseProgress}>
+            <HeaderToggler
+              black
+              title={currentLesson.nombre}
+              progress={courseProgress ? courseProgress.progress : null}
+            >
               <InternalHeader
                 options={{
                   backButton: true,
                   cart: true,
                   longTitle: true,
                 }}
-                title={currentLesson.attributes.nombre}
+                title={currentLesson.nombre}
               />
             </HeaderToggler>
 
             <div className="main">
               <div className="inner-container">
                 <div className="player">
-                  {currentLesson.attributes.clase.data ? (
+                  {currentLesson.clase ? (
                     <ReactPlayer
-                      url={
-                        localVideo ? localVideo : getImageLinkFrom(currentLesson.attributes.clase.data.attributes.url)
-                      }
+                      url={localVideo ? localVideo : getImageLinkFrom(currentLesson.clase.url)}
                       width={"100%"}
                       height={"100%"}
                       controls
@@ -337,14 +333,7 @@ const LessonPage = () => {
                           attributes: {
                             crossOrigin: "true",
                           },
-                          tracks: [
-                            {
-                              kind: "subtitles",
-                              src: videoSubtitles,
-                              srcLang: "en",
-                              default: true,
-                            },
-                          ],
+                          tracks: captions,
                         },
                       }}
                     />
@@ -360,7 +349,25 @@ const LessonPage = () => {
                   </div>
                 )}
 
-                <h1>{currentLesson.attributes.nombre}</h1>
+                <h1>{currentLesson.nombre}</h1>
+
+                {courseProgress && courseProgress.completado && (
+                  <div className="completed-course-box">
+                    <strong>Has completado este curso!</strong>
+
+                    {course && course.certificado && (
+                      <button className="action-button" onClick={loadCertificate} disabled={loadingCertificate}>
+                        {loadingCertificate ? (
+                          <>
+                            <SpinnerOfDoom /> Cargando
+                          </>
+                        ) : (
+                          "Descargar certificado"
+                        )}
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 <div className="buttons-bar">
                   {currentPositionInArrayOfLessons !== 0 ? (
@@ -399,8 +406,8 @@ const LessonPage = () => {
                   options={{ type: "bubble", color: "black" }}
                 >
                   <>
-                    {currentLesson.attributes.descripcion ? (
-                      <p className="description">{currentLesson.attributes.descripcion}</p>
+                    {currentLesson.descripcion ? (
+                      <p className="description">{currentLesson.descripcion}</p>
                     ) : (
                       <p className="no-data">Esta clase no tiene descripción</p>
                     )}
@@ -448,13 +455,13 @@ const LessonPage = () => {
                     )}
                   </>
                   <>
-                    {currentLesson.attributes.additionalResources !== null ? (
+                    {currentLesson.additionalResources !== null ? (
                       <>
                         <div className="additional-resources">
                           <h2>Recursos adicionales</h2>
 
                           <div className="links">
-                            {JSON.parse(currentLesson.attributes.additionalResources).map((el, index) => {
+                            {currentLesson.additionalResources.map((el, index) => {
                               return (
                                 <div key={index} className="link">
                                   <LinkOutline />

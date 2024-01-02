@@ -40,6 +40,100 @@
       }
     }
 
+    .conference-box {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 6px solid $yellow;
+      border-radius: 1rem;
+      box-shadow: $box-shadow;
+
+      .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        max-width: 32rem;
+
+        ul {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 0.5rem;
+          margin-bottom: 2rem;
+
+          li {
+            width: 100%;
+            text-align: left;
+            @extend .text;
+            font-weight: 600;
+            color: $black;
+
+            span {
+              font-weight: 400;
+            }
+          }
+        }
+      }
+
+      strong {
+        @extend .display;
+        font-weight: 600;
+        color: $black;
+        letter-spacing: 1px;
+        margin-bottom: 2rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .action-button {
+        margin: 1rem;
+        width: max-content;
+        padding: 0 2rem;
+      }
+
+      span {
+        width: 100%;
+        text-align: center;
+        @extend .text-sm;
+        font-weight: 400;
+        color: $gray;
+        font-weight: 400;
+      }
+    }
+
+    .completed-course-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 1rem;
+      box-shadow: $box-shadow;
+
+      gap: 2rem;
+      width: 100%;
+      padding: 2rem;
+      margin-bottom: 2rem;
+
+      strong {
+        @extend .text;
+        font-weight: 600;
+        color: $black;
+      }
+
+      .action-button {
+        width: max-content;
+        padding: 0 3rem;
+      }
+    }
+
     .offline-msg {
       display: flex;
       justify-content: flex-start;
@@ -656,6 +750,18 @@
         svg {
           color: $grayish;
         }
+      }
+    }
+
+    &.conference {
+      grid-template-columns: 1fr;
+
+      .report-section {
+        display: flex;
+      }
+
+      .content-list {
+        display: none;
       }
     }
   }

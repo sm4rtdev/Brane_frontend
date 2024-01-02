@@ -15,7 +15,6 @@ const LinkItem = ({ index, text, objectKey, deleteFromInputs }) => {
       <button
         className="small-button"
         onClick={() => {
-          console.log(objectKey, text);
           deleteFromInputs(objectKey, text);
         }}
       >

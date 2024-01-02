@@ -1,36 +1,50 @@
-import React, { useEffect, useRef } from "react";
-import ZoomMtgEmbedded from "@zoom/meetingsdk/embedded";
+import React, { useEffect } from "react";
 
-const client = ZoomMtgEmbedded.createClient();
-
-const Meeting = ({ joinData }) => {
-  const element = useRef(null);
-
-  console.log(joinData);
-
+const Meeting = () => {
   useEffect(() => {
-    if (element.current !== null) {
-      client.init({ zoomAppRoot: element.current, language: "en-US" });
+    let data = JSON.parse(window.opener.joinDataTemp);
+
+    if (data !== null) {
+      import("@zoomus/websdk").then(({ ZoomMtg }) => {
+        ZoomMtg.setZoomJSLib("https://source.zoom.us/2.18.2/lib", "/av");
+        ZoomMtg.preLoadWasm();
+        ZoomMtg.prepareWebSDK();
+        // loads language files, also passes any error messages to the ui
+        ZoomMtg.i18n.load("en-US");
+        ZoomMtg.i18n.reload("en-US");
+        var registrantToken = "";
+        var zakToken = "";
+        var leaveUrl = "brane.es/my-courses";
+        ZoomMtg.init({
+          leaveUrl: leaveUrl,
+          success: (success) => {
+            console.log(success);
+            ZoomMtg.join({
+              signature: data.signature,
+              sdkKey: data.sdkKey,
+              meetingNumber: data.meetingNumber,
+              passWord: data.meetingPassword,
+              userName: data.userName,
+              userEmail: data.userEmail,
+              tk: registrantToken,
+              zak: zakToken,
+              success: (success) => {
+                console.log("success", success);
+              },
+              error: (error) => {
+                console.log(error);
+              },
+            });
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+      });
     }
-  }, [element]);
+  }, []);
 
-  useEffect(() => {
-    client.join({
-      role: 0,
-      sdkKey: joinData.sdkKey,
-      signature: joinData.signature,
-      meetingNumber: joinData.meetingNumber,
-      password: joinData.meetingPassword,
-      userName: joinData.userName,
-      // userEmail: joinData.userEmail,
-    });
-  }, [joinData]);
-
-  return (
-    <div id="meetingSDKElement" ref={element}>
-      Zoom Meeting SDK Rendered Here
-    </div>
-  );
+  return <div>Loading Zoom Meeting...</div>;
 };
 
 export default Meeting;

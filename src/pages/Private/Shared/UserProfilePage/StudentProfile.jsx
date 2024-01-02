@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import {
-  PersonOutline,
-  ImageOutline,
-  Settings,
-} from "../../../../assets/icons";
+import { PersonOutline, ImageOutline, Settings } from "../../../../assets/icons";
 import { BGProfile } from "../../../../assets/images";
 
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
@@ -14,11 +11,64 @@ import CourseCard from "../../../../components/CourseCard/CourseCard";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
 import Tabulation from "../../../../components/Tabulation/Tabulation";
 import { getOtherStudentCourses } from "../../../../api/getOtherStudentCourses";
+import { getUserPurchaseHistory } from "../../../../api/getUserPurchaseHistory";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
+import { UserDataContext } from "../../../../contexts/UserDataContext";
+import { getCurrentCredits } from "../../../../api/getCurrentCredits";
+import { putUserMetadata } from "../../../../api/putUserMetadata";
 import { calculateAge } from "../../../../helpers/calculateAge";
 import { getMyCourses } from "../../../../api/getMyCourses";
-import { UserDataContext } from "../../../../contexts/UserDataContext";
-import { putUserMetadata } from "../../../../api/putUserMetadata";
+
+const MyTable = ({ data }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
+  const [rows, setRows] = useState(null);
+
+  const columns = [
+    { field: "id", headerName: "#" },
+    { field: "courses", headerName: dictionary.studentProfile[0][language], flex: 4 },
+    { field: "total", headerName: "Total", flex: 1 },
+    { field: "discount", headerName: dictionary.studentProfile[1][language], flex: 1 },
+    { field: "paymentMethod", headerName: dictionary.studentProfile[2][language], flex: 1 },
+    { field: "date", headerName: dictionary.studentProfile[3][language], flex: 2 },
+  ];
+
+  useEffect(() => {
+    let table = [];
+
+    for (let i = 0; i < data.length; i++) {
+      let courseNames = [];
+
+      for (let j = 0; j < data[i].cursos.length; j++) {
+        const element = data[i].cursos[j];
+
+        courseNames.push(element.name);
+      }
+
+      if (courseNames.length === 0) continue;
+
+      const obj = {
+        id: i + 1,
+        paymentMethod: data[i].metodo_de_pago,
+        total: data[i].total,
+        discount: data[i].descuento,
+        date: new Date(data[i].fecha_de_creacion),
+        courses: courseNames.join(", "),
+      };
+
+      table.push(obj);
+    }
+
+    setRows(table);
+  }, [data]);
+
+  return (
+    <div style={{ height: 400, width: "100%" }} className="summary-data-table">
+      {rows && <DataGrid autoHeight rows={rows} columns={columns} />}
+    </div>
+  );
+};
 
 const StudentProfile = ({
   user,
@@ -30,21 +80,26 @@ const StudentProfile = ({
   isLoading,
   file,
 }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData, setMetadataRefresh } = useContext(UserDataContext);
+
   const [courses, setCourses] = useState(null);
+
   const [notifications, setNotifications] = useState({
     messages: userData.meta.notificacion_mensajes,
     promotions: userData.meta.notificacion_promocion,
     instructorAnnouncement: userData.meta.notificacion_anuncios_instructores,
   });
 
+  const [credits, setCredits] = useState(null);
+  const [userPurchaseHistory, setUserPurchaseHistory] = useState(null);
+
   useEffect(() => {
     setCourses(null);
+    setCredits(null);
 
     const getUserCourses = async () => {
       const { ok, data } = await getMyCourses(true);
-
-      // console.log(data.data);
 
       if (ok) {
         setCourses(data.data);
@@ -53,10 +108,28 @@ const StudentProfile = ({
       }
     };
 
+    const getUserCredits = async () => {
+      const { ok, data } = await getCurrentCredits();
+
+      if (ok) {
+        setCredits(data.quantity);
+      } else {
+        toast.error(`${data.error.message}`);
+      }
+    };
+
+    const getUserHistory = async () => {
+      const { ok, data } = await getUserPurchaseHistory();
+
+      if (ok) {
+        setUserPurchaseHistory(data.data);
+      } else {
+        toast.error(`${data.error.message}`);
+      }
+    };
+
     const getOtherUserCourses = async () => {
       const { ok, data } = await getOtherStudentCourses(user.info.slug);
-
-      // console.log(data.data);
 
       if (ok) {
         setCourses(data.data);
@@ -67,6 +140,8 @@ const StudentProfile = ({
 
     if (user.me) {
       getUserCourses();
+      getUserCredits();
+      getUserHistory();
     } else {
       getOtherUserCourses();
     }
@@ -86,7 +161,7 @@ const StudentProfile = ({
 
     if (ok) {
       setMetadataRefresh(Date.now());
-      toast.success("Your notification settings have been updated");
+      toast.success(dictionary.studentProfile[4][language]);
     } else {
       toast.error(`${data.error.message}`);
     }
@@ -105,7 +180,7 @@ const StudentProfile = ({
       <div className="banner">
         <BGProfile />
 
-        <span>Perfil de estudiante</span>
+        <span>{dictionary.studentProfile[5][language]}</span>
 
         {user.me && (
           <Link to="/edit-profile" className="small-button">
@@ -116,12 +191,7 @@ const StudentProfile = ({
 
       <div className="user">
         <div className="profile-picture">
-          <input
-            type="file"
-            id="media"
-            onChange={onFileChange}
-            ref={inputFile}
-          />
+          <input type="file" id="media" onChange={onFileChange} ref={inputFile} />
 
           <div className="container">
             <div className="img-container">
@@ -147,17 +217,13 @@ const StudentProfile = ({
           </div>
 
           {file && (
-            <button
-              className="action-button"
-              onClick={uploadProfilePicture}
-              disabled={isLoading}
-            >
+            <button className="action-button" onClick={uploadProfilePicture} disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <SpinnerOfDoom /> Cargando
+                  <SpinnerOfDoom /> {dictionary.spinnerOfDoom[language]}
                 </>
               ) : (
-                "Cambiar avatar"
+                dictionary.studentProfile[6][language]
               )}
             </button>
           )}
@@ -174,44 +240,44 @@ const StudentProfile = ({
 
           {user.meta && user.me ? (
             <>
-              <p>Edad: {calculateAge(user.meta.birthday)}</p>
-              <p>Dirección: {user.meta.address}</p>
-              <p>Ocupación: {user.meta.profesion}</p>
+              <p>
+                {dictionary.studentProfile[7][language]}: {calculateAge(user.meta.birthday)}
+              </p>
+              <p>
+                {dictionary.studentProfile[8][language]}: {user.meta.address}
+              </p>
+              <p>
+                {dictionary.studentProfile[9][language]}: {user.meta.profesion}
+              </p>
             </>
           ) : (
             <>
-              <p>Edad: {calculateAge(user.info.metaData.birthday)}</p>
-              <p>Dirección: {user.info.metaData.address}</p>
-              <p>Ocupación: {user.info.metaData.profesion}</p>
+              <p>
+                {dictionary.studentProfile[7][language]}: {calculateAge(user.info.metaData.birthday)}
+              </p>
+              <p>
+                {dictionary.studentProfile[8][language]}: {user.info.metaData.address}
+              </p>
+              <p>
+                {dictionary.studentProfile[9][language]}: {user.info.metaData.profesion}
+              </p>
             </>
           )}
         </div>
 
         {user.me && (
           <div className="quick-settings">
-            <div
-              className={`checkbox ${notifications.messages ? "checked" : ""}`}
-            >
-              <p>Notificaciones de mensajes</p>
+            <div className={`checkbox ${notifications.messages ? "checked" : ""}`}>
+              <p>{dictionary.studentProfile[10][language]}</p>
               <button onClick={() => toggleSetting("messages")}></button>
             </div>
-            <div
-              className={`checkbox ${
-                notifications.promotions ? "checked" : ""
-              }`}
-            >
-              <p>Notificación de promociones</p>
+            <div className={`checkbox ${notifications.promotions ? "checked" : ""}`}>
+              <p>{dictionary.studentProfile[11][language]}</p>
               <button onClick={() => toggleSetting("promotions")}></button>
             </div>
-            <div
-              className={`checkbox ${
-                notifications.instructorAnnouncement ? "checked" : ""
-              }`}
-            >
-              <p>Notificaciones de anuncios del instructor</p>
-              <button
-                onClick={() => toggleSetting("instructorAnnouncement")}
-              ></button>
+            <div className={`checkbox ${notifications.instructorAnnouncement ? "checked" : ""}`}>
+              <p>{dictionary.studentProfile[12][language]}</p>
+              <button onClick={() => toggleSetting("instructorAnnouncement")}></button>
             </div>
           </div>
         )}
@@ -221,25 +287,26 @@ const StudentProfile = ({
         <div className="resume">
           <div className="stat">
             <strong>{courses.length}</strong>
-            <span>Cursos inscritos</span>
+            <span>{dictionary.studentProfile[13][language]}</span>
+          </div>
+          <div className="stat">
+            <strong>{courses.filter((course) => course.attributes.completado).length}</strong>
+            <span>{dictionary.studentProfile[14][language]}</span>
           </div>
           <div className="stat">
             <strong>
-              {courses.filter((course) => course.attributes.completado).length}
+              {
+                courses
+                  .filter((course) => course.attributes.completado)
+                  .filter((course) => course.attributes.certificado.data !== null).length
+              }
             </strong>
-            <span>Cursos completados</span>
-          </div>
-          <div className="stat">
-            <strong>0</strong>
-            <span>Certificados obtenidos</span>
+            <span>{dictionary.studentProfile[15][language]}</span>
           </div>
         </div>
       )}
 
-      <Tabulation
-        tabs={["Cursos", "Proyectos"]}
-        options={{ type: "bubble", color: "black" }}
-      >
+      <Tabulation tabs={[dictionary.studentProfile[16][language]]} options={{ type: "bubble", color: "black" }}>
         <>
           {courses ? (
             <>
@@ -248,7 +315,6 @@ const StudentProfile = ({
                   courses.length > 0 ? (
                     <>
                       {courses.map((course) => {
-                        console.log(course);
                         return (
                           <CourseCard
                             key={`me-${course.id}`}
@@ -260,7 +326,7 @@ const StudentProfile = ({
                       })}
                     </>
                   ) : (
-                    <p className="no-data">Aún no has comprado cursos</p>
+                    <p className="no-data">{dictionary.studentProfile[17][language]}</p>
                   )
                 ) : courses.length > 0 ? (
                   courses.map((course) => {
@@ -277,12 +343,12 @@ const StudentProfile = ({
                     );
                   })
                 ) : (
-                  <p className="no-data">El usuario no ha comprado cursos.</p>
+                  <p className="no-data">{dictionary.studentProfile[18][language]}</p>
                 )}
               </div>
               {courses.length > 0 && (
                 <Link to={"/my-courses"} className="action-button">
-                  Ver más
+                  {dictionary.studentProfile[19][language]}
                 </Link>
               )}
             </>
@@ -290,29 +356,25 @@ const StudentProfile = ({
             <SpinnerOfDoom standalone />
           )}
         </>
-        <>
-          <div className="projects">
-            {user.me ? (
-              <p className="no-data">No has completado ningún proyecto</p>
-            ) : (
-              <p className="no-data">
-                Este usuario no ha completado ningún proyecto.
-              </p>
-            )}
-          </div>
-        </>
       </Tabulation>
 
       {user.me && (
         <Tabulation
-          tabs={["Historial de compras", "Créditos U"]}
+          tabs={[dictionary.studentProfile[23][language], dictionary.studentProfile[24][language]]}
           options={{ type: "bubble", color: "black" }}
         >
           <>
-            <p className="no-data">Sin datos</p>
+            <p className="credits no-data">
+              {dictionary.studentProfile[20][language]}: <strong>{credits}</strong>{" "}
+              {dictionary.studentProfile[21][language]}
+            </p>
           </>
           <>
-            <p className="no-data">Sin datos</p>
+            {userPurchaseHistory !== null ? (
+              <MyTable data={userPurchaseHistory} />
+            ) : (
+              <p className="no-data">{dictionary.studentProfile[22][language]}</p>
+            )}
           </>
         </Tabulation>
       )}

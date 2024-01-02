@@ -9,12 +9,14 @@ import InstructorHeader from "../../../../components/CustomHeaders/InstructorHea
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import Tabulation from "../../../../components/Tabulation/Tabulation";
 import Footer from "../../../../components/Footer/Footer";
-import TabCourse from "./TabCourse";
-import { UserDataContext } from "../../../../contexts/UserDataContext";
-import { getCourseForEdition } from "../../../../api/getCourseForEdition";
 import TabLessons from "./TabLessons";
+import TabCourse from "./TabCourse";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
+import { getCourseForEdition } from "../../../../api/getCourseForEdition";
+import { UserDataContext } from "../../../../contexts/UserDataContext";
 
 const EditCoursePage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const [courseInfo, setCourseInfo] = useState(null);
   const { courseID } = useParams();
@@ -22,44 +24,18 @@ const EditCoursePage = () => {
   // Get course info
   useEffect(() => {
     if (courseID) {
-      const getCourseInfo = async () => {
-        const { ok, data } = await getCourseForEdition(
-          userData.info.id,
-          courseID
-        );
+      (async () => {
+        const { ok, data } = await getCourseForEdition(userData.info.id, courseID);
 
         if (ok) {
-          console.log("getCourseInfo", data.data[0]);
           setCourseInfo(data.data[0].attributes);
+          console.log(data.data[0].attributes);
         } else {
           toast.error(`${data.error.message}`);
         }
-      };
-
-      getCourseInfo();
+      })();
     }
   }, [userData, courseID]);
-
-  // const publish = async () => {
-  //   setIsPublishing(true);
-
-  //   const obj = {
-  //     data: { status: "published" },
-  //   };
-
-  //   const { ok, data } = await putCourse(courseID, obj);
-
-  //   console.log(data);
-
-  //   if (ok) {
-  //     toast.success("The course has been published");
-  //     navigate("/");
-  //   } else {
-  //     toast.error(`${data.error.message}`);
-  //   }
-
-  //   setIsPublishing(false);
-  // };
 
   return (
     <div id="edit-course-page" className="page">
@@ -69,20 +45,18 @@ const EditCoursePage = () => {
         {courseInfo ? (
           <>
             <h1>
-              Editar{" "}
-              {courseInfo.tipo === "conferencia" ? "conferencia" : "curso"}
+              {dictionary.privateInstructor.editCoursePage[0][language]}{" "}
+              {courseInfo.tipo === "conferencia"
+                ? dictionary.privateInstructor.editCoursePage[1][language]
+                : dictionary.privateInstructor.editCoursePage[2][language]}
             </h1>
             <Tabulation
               {...(courseInfo.tipo === "conferencia"
                 ? { tabs: ["Info"] }
-                : { tabs: ["Info", "Lessons"] })}
+                : { tabs: ["Info", dictionary.privateInstructor.editCoursePage[3][language]] })}
               options={{ type: "bubble", color: "yellow" }}
             >
-              <TabCourse
-                courseID={courseID}
-                courseInfo={courseInfo}
-                conference={courseInfo.tipo === "conferencia"}
-              />
+              <TabCourse courseID={courseID} courseInfo={courseInfo} conference={courseInfo.tipo === "conferencia"} />
               <TabLessons courseID={courseID} />
             </Tabulation>
           </>

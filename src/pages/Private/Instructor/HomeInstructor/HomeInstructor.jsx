@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Audience,
-  Camera,
+  ForegroundCtaInstructor,
   Conferences,
+  Instructors,
   CtaVector1,
   CtaVector2,
+  Audience,
+  Camera,
   Faster,
-  ForegroundCtaInstructor,
-  Instructors,
   News,
 } from "../../../../assets/images";
 
@@ -19,9 +19,12 @@ import Footer from "../../../../components/Footer/Footer";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 
 import "./HomeInstructor.scss";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const HomeInstructor = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
+
   return (
     <div id="home-instructor" className="page">
       <PageTransition>
@@ -29,7 +32,8 @@ const HomeInstructor = () => {
 
         <div className="main">
           <h1>
-            Hola <strong>{userData.info.nombre}.</strong> ¡Que bueno verte!
+            {dictionary.privateInstructor.home[0][language]} <strong>{userData.info.nombre}.</strong>{" "}
+            {dictionary.privateInstructor.home[1][language]}
           </h1>
 
           <div className="cta">
@@ -40,54 +44,54 @@ const HomeInstructor = () => {
             </div>
 
             <div className="container">
-              <strong>¿Qué curso vamos a crear hoy?</strong>
-              <p>Enseña y benefíciate de ello.</p>
+              <strong>{dictionary.privateInstructor.home[2][language]}</strong>
+              <p>{dictionary.privateInstructor.home[3][language]}</p>
 
               <Link to={"/create-course"} className={"action-button black"}>
-                Crear un nuevo curso
+                {dictionary.privateInstructor.home[4][language]}
               </Link>
             </div>
           </div>
 
           <div className="section">
-            <h2>Creemos que estos recursos te serán útiles</h2>
+            <h2>{dictionary.privateInstructor.home[5][language]}</h2>
 
             <div className="grid">
               <div className="resource">
                 <div className="icon">
                   <Camera />
                 </div>
-                <p>Cursos</p>
+                <p>{dictionary.privateInstructor.home[6][language]}</p>
               </div>
               <div className="resource">
                 <div className="icon">
                   <Audience />
                 </div>
-                <p>Cómo construir tu audiencia</p>
+                <p>{dictionary.privateInstructor.home[7][language]}</p>
               </div>
               <div className="resource">
                 <div className="icon">
                   <Faster />
                 </div>
-                <p>¡Cómo lanzar tu primer curso más rápido!</p>
+                <p>{dictionary.privateInstructor.home[8][language]}</p>
               </div>
               <div className="resource">
                 <div className="icon">
                   <News />
                 </div>
-                <p>Noticias</p>
+                <p>{dictionary.privateInstructor.home[9][language]}</p>
               </div>
               <div className="resource">
                 <div className="icon">
                   <Conferences />
                 </div>
-                <p>Conferencias</p>
+                <p>{dictionary.privateInstructor.home[10][language]}</p>
               </div>
               <div className="resource">
                 <div className="icon">
                   <Instructors />
                 </div>
-                <p>Instructores</p>
+                <p>{dictionary.privateInstructor.home[11][language]}</p>
               </div>
             </div>
           </div>

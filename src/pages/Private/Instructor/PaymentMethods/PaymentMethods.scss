@@ -65,4 +65,22 @@
       padding: 0 3rem;
     }
   }
+
+  @media screen and (max-width: $tablet-lg) {
+    .method {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 2rem;
+
+      p {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
 }

@@ -2509,10 +2509,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zoom/meetingsdk@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@zoom/meetingsdk/-/meetingsdk-3.0.1.tgz#c122cc2e11401f45472e7ab7be1f8370e27727f6"
-  integrity sha512-g0/kweILHj5KtKwPAubGDuvIqEzKoWOA1+zvyxoz+3qOa1bqoO9cSkVXiqz3b3sYLUcwWKIxyoMmdQaGD6k6TQ==
+"@zoomus/websdk@^2.18.2":
+  version "2.18.2"
+  resolved "https://registry.yarnpkg.com/@zoomus/websdk/-/websdk-2.18.2.tgz#629c0487c643853236598bbde782aee70d8fdf99"
+  integrity sha512-XFfjk3W3yYgjo8Bm8CxfdOchOECs0m71RO9vXyWyQjzN8b35ngcpbs3DyexIjO3TN/9gUXfYy+edJ5lhPibY+A==
   dependencies:
     lodash "^4.17.21"
     react "16.14.0"

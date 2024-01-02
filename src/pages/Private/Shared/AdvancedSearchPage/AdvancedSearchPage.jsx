@@ -13,11 +13,13 @@ import SearchHeader from "../../../../components/SearchHeader/SearchHeader";
 import Categories from "../../../../components/Categories/Categories";
 import CourseCard from "../../../../components/CourseCard/CourseCard";
 import Footer from "../../../../components/Footer/Footer";
-import { getCoursesByCategoryAndName } from "../../../../api/getCoursesByCategoryAndName";
-import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getConferencesByCategoryAndName } from "../../../../api/getConferencesByCategoryAndName";
+import { getCoursesByCategoryAndName } from "../../../../api/getCoursesByCategoryAndName";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
+import { UserDataContext } from "../../../../contexts/UserDataContext";
 
 const AdvancedSearchPage = ({ conference }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const [input, setInput] = useState({
     query: "",
@@ -34,12 +36,7 @@ const AdvancedSearchPage = ({ conference }) => {
     setCourses(null);
 
     const getCourses = async () => {
-      const { ok, data } = await getCoursesByCategoryAndName(
-        subcategory ? subcategory : category,
-        input.query
-      );
-
-      // console.log(data.data);
+      const { ok, data } = await getCoursesByCategoryAndName(subcategory ? subcategory : category, input.query);
 
       if (ok) {
         if (data.data.length > 0) {
@@ -55,12 +52,7 @@ const AdvancedSearchPage = ({ conference }) => {
       }
     };
     const getConferences = async () => {
-      const { ok, data } = await getConferencesByCategoryAndName(
-        subcategory ? subcategory : category,
-        input.query
-      );
-
-      // console.log(data.data);
+      const { ok, data } = await getConferencesByCategoryAndName(subcategory ? subcategory : category, input.query);
 
       if (ok) {
         if (data.data.length > 0) {
@@ -87,12 +79,7 @@ const AdvancedSearchPage = ({ conference }) => {
 
   useEffect(() => {
     if (courses) {
-      let sorted = courses
-        .slice()
-        .sort(
-          (a, b) =>
-            b.attributes.cantidadEstudiantes - a.attributes.cantidadEstudiantes
-        );
+      let sorted = courses.slice().sort((a, b) => b.attributes.cantidadEstudiantes - a.attributes.cantidadEstudiantes);
 
       setPopular(sorted.slice(0, 10));
     }
@@ -175,15 +162,9 @@ const AdvancedSearchPage = ({ conference }) => {
     }
 
     if (activeThumb === 0) {
-      setStarRange([
-        Math.min(newValue[0], starRange[1] - minDistance),
-        starRange[1],
-      ]);
+      setStarRange([Math.min(newValue[0], starRange[1] - minDistance), starRange[1]]);
     } else {
-      setStarRange([
-        starRange[0],
-        Math.max(newValue[1], starRange[0] + minDistance),
-      ]);
+      setStarRange([starRange[0], Math.max(newValue[1], starRange[0] + minDistance)]);
     }
   };
 
@@ -197,15 +178,9 @@ const AdvancedSearchPage = ({ conference }) => {
     }
 
     if (activeThumb === 0) {
-      setPriceRange([
-        Math.min(newValue[0], priceRange[1] - minDistance),
-        priceRange[1],
-      ]);
+      setPriceRange([Math.min(newValue[0], priceRange[1] - minDistance), priceRange[1]]);
     } else {
-      setPriceRange([
-        priceRange[0],
-        Math.max(newValue[1], priceRange[0] + minDistance),
-      ]);
+      setPriceRange([priceRange[0], Math.max(newValue[1], priceRange[0] + minDistance)]);
     }
   };
 
@@ -215,19 +190,11 @@ const AdvancedSearchPage = ({ conference }) => {
     if (courses) {
       let filteredByStars = courses
         .slice()
-        .filter(
-          (el) =>
-            el.attributes.averageScore >= starRange[0] &&
-            el.attributes.averageScore <= starRange[1]
-        );
+        .filter((el) => el.attributes.averageScore >= starRange[0] && el.attributes.averageScore <= starRange[1]);
 
       let filteredByPrice = filteredByStars
         .slice()
-        .filter(
-          (el) =>
-            el.attributes.precio >= priceRange[0] &&
-            el.attributes.precio <= priceRange[1]
-        );
+        .filter((el) => el.attributes.precio >= priceRange[0] && el.attributes.precio <= priceRange[1]);
 
       setFilteredCourses(filteredByPrice);
     }
@@ -257,46 +224,35 @@ const AdvancedSearchPage = ({ conference }) => {
             <>
               <div className="popular">
                 <h2>
-                  Popular en:{" "}
-                  {courses[0].attributes.categoria.data.attributes.nombre}
+                  {dictionary.advancedSearchPage[0][language]}: {courses[0].attributes.categoria.data.attributes.nombre}
                 </h2>
 
                 <div className="carousel">
                   <button className="move-left small-button" onClick={moveLeft}>
                     <ChevronForward />
                   </button>
-                  <button
-                    className="move-right small-button"
-                    onClick={moveRight}
-                  >
+                  <button className="move-right small-button" onClick={moveRight}>
                     <ChevronForward />
                   </button>
 
                   <div className="container" ref={element}>
                     {popular &&
                       popular.map((course) => {
-                        return (
-                          <CourseCard
-                            key={course.id}
-                            {...course}
-                            type="standard"
-                          />
-                        );
+                        return <CourseCard key={course.id} {...course} type="standard" />;
                       })}
                   </div>
                 </div>
               </div>
 
               <h2>
-                Todos los cursos:{" "}
-                {courses[0].attributes.categoria.data.attributes.nombre}
+                {dictionary.advancedSearchPage[1][language]}: {courses[0].attributes.categoria.data.attributes.nombre}
               </h2>
 
               <div className="filterable">
                 <div className="filter">
-                  <h2>Filtros</h2>
+                  <h2>{dictionary.advancedSearchPage[2][language]}</h2>
 
-                  <h3>Estrellas</h3>
+                  <h3>{dictionary.advancedSearchPage[3][language]}</h3>
                   <div className="slider">
                     <Slider
                       value={starRange}
@@ -316,7 +272,7 @@ const AdvancedSearchPage = ({ conference }) => {
                       }}
                     />
                   </div>
-                  <h3>Precio</h3>
+                  <h3>{dictionary.advancedSearchPage[4][language]}</h3>
                   <div className="slider">
                     <Slider
                       value={priceRange}
@@ -336,27 +292,20 @@ const AdvancedSearchPage = ({ conference }) => {
                       }}
                     />
                   </div>
-                  {/* <h3>Language</h3> */}
                 </div>
                 <div className="list">
                   {filteredCourses && filteredCourses.length > 0 ? (
                     filteredCourses.map((course) => {
-                      return (
-                        <CourseCard
-                          key={course.id}
-                          {...course}
-                          type="related"
-                        />
-                      );
+                      return <CourseCard key={course.id} {...course} type="related" />;
                     })
                   ) : (
-                    <p className="no-data">No hay resultados</p>
+                    <p className="no-data">{dictionary.advancedSearchPage[5][language]}</p>
                   )}
                 </div>
               </div>
             </>
           ) : noResults ? (
-            <p className="no-results">No hay resultados</p>
+            <p className="no-results">{dictionary.advancedSearchPage[5][language]}</p>
           ) : (
             <SpinnerOfDoom standalone center />
           )}

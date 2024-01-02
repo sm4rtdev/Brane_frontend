@@ -29,8 +29,6 @@ const ManageInstructors = () => {
   const getUsers = async () => {
     const { ok, data } = await getInstitutionUsers(userData.info.id);
 
-    // console.log("My users", data);
-
     if (ok) {
       setUsers(data);
     } else {
@@ -54,8 +52,6 @@ const ManageInstructors = () => {
     };
 
     const { ok, data } = await postCreateInstitutionUser(obj);
-
-    // console.log("New user", data);
 
     if (ok) {
       toast.success(dictionary.privateIntitutionsManage[0][language]);

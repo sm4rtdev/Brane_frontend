@@ -6,8 +6,8 @@ import "../CreateCourse/InstructorCourseLessons.scss";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import LessonAggregator from "./LessonAggregator";
 import SingleLesson from "./SingleLesson";
-import { deleteLesson } from "../../../../api/deleteLesson";
 import { getLessonsByCourseID } from "../../../../api/getLessonsByCourseID";
+import { deleteLesson } from "../../../../api/deleteLesson";
 
 const TabLessons = ({ courseID }) => {
   const [lessons, setLessons] = useState(null);
@@ -19,7 +19,6 @@ const TabLessons = ({ courseID }) => {
     const { ok, data } = await getLessonsByCourseID(courseID);
 
     if (ok) {
-      // console.log("getLessons", data.data);
       setLessons(data.data);
     } else {
       toast.error(`${data.error.message}`);
@@ -38,13 +37,9 @@ const TabLessons = ({ courseID }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false);
 
   const requestLessonRemoval = async (lessonID) => {
-    console.log(lessonID);
-
     const { ok, data } = await deleteLesson(lessonID);
-
     if (ok) {
       toast.success(`Lección eliminada exitosamente`);
-
       setLessons(null);
       getLessons();
     } else {
@@ -58,14 +53,7 @@ const TabLessons = ({ courseID }) => {
         {lessons ? (
           lessons.length > 0 ? (
             lessons.map((lesson, index) => {
-              return (
-                <SingleLesson
-                  key={lesson.id}
-                  {...lesson}
-                  index={index}
-                  deleteLesson={requestLessonRemoval}
-                />
-              );
+              return <SingleLesson key={lesson.id} {...lesson} index={index} deleteLesson={requestLessonRemoval} />;
             })
           ) : (
             <p className="no-data">Sin datos</p>

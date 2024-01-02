@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Ellipse, TrashOutline } from "../../../../assets/icons";
 
 const ListItem = ({ children, objectKey, deleteFromInputs }) => {

@@ -50,6 +50,7 @@ import Policy from "../pages/Public/PolicyTerms/Policy";
 import Terms from "../pages/Public/PolicyTerms/Terms";
 import CreateConferencePage from "../pages/Private/Instructor/CreateConference/CreateConferencePage";
 import ConferencePage from "../pages/Private/Student/ConferencePage/ConferencePage";
+import Meeting from "../pages/Private/Student/ConferencePage/Meeting";
 
 const AppRouter = () => {
   const { userData, loadingInfo } = useContext(UserDataContext);
@@ -159,36 +160,40 @@ const AppRouter = () => {
                   </Route>
                 ) : (
                   // Student
-                  <Route path="/" element={<SupraContainer mode={"student"} />}>
-                    <Route index element={<DiscoverPage />} />
+                  <>
+                    <Route path="conference/join" element={<Meeting />} />
 
-                    <Route path="conference/:conferenceID" element={<ConferencePage />} />
+                    <Route path="/" element={<SupraContainer mode={"student"} />}>
+                      <Route index element={<DiscoverPage />} />
 
-                    <Route path="course/:slug" element={<CoursePage />} />
-                    <Route path="course/:slug/learn" element={<LearnPage />} />
-                    <Route path="course/:slug/learn/lesson/:lessonId" element={<LessonPage />} />
+                      <Route path="conference/:conferenceID" element={<ConferencePage />} />
 
-                    <Route path="courses" element={<SearchPage />} />
-                    <Route path="courses/:category" element={<AdvancedSearchPage />} />
-                    <Route path="courses/:category/:subcategory" element={<AdvancedSearchPage />} />
+                      <Route path="course/:slug" element={<CoursePage />} />
+                      <Route path="course/:slug/learn" element={<LearnPage />} />
+                      <Route path="course/:slug/learn/lesson/:lessonId" element={<LessonPage />} />
 
-                    <Route path="conferences" element={<SearchPage />} />
-                    <Route path="conferences/:category" element={<AdvancedSearchPage conference />} />
-                    <Route path="conferences/:category/:subcategory" element={<AdvancedSearchPage conference />} />
+                      <Route path="courses" element={<SearchPage />} />
+                      <Route path="courses/:category" element={<AdvancedSearchPage />} />
+                      <Route path="courses/:category/:subcategory" element={<AdvancedSearchPage />} />
 
-                    <Route path="cart" element={<CartPage />} />
-                    <Route path="my-courses" element={<MyCoursesPage />} />
-                    <Route path="search" element={<SearchPage />} />
-                    <Route path="user/:slug" element={<UserProfilePage />} />
-                    <Route path="edit-profile" element={<EditProfilePage />} />
-                    <Route path="wishlist" element={<WishlistPage />} />
-                    <Route path="wishlist/:listID" element={<WishlistPage />} />
-                    <Route path="notifications" element={<NotificationsPage />} />
-                    <Route path="payment-failure" element={<PaymentFailure />} />
-                    <Route path="successful-purchase" element={<SuccessfulPurchase />} />
-                    <Route path="chat" element={<ChatPage />} />
-                    <Route path="*" element={<Navigate to={"/"} />} />
-                  </Route>
+                      <Route path="conferences" element={<SearchPage />} />
+                      <Route path="conferences/:category" element={<AdvancedSearchPage conference />} />
+                      <Route path="conferences/:category/:subcategory" element={<AdvancedSearchPage conference />} />
+
+                      <Route path="cart" element={<CartPage />} />
+                      <Route path="my-courses" element={<MyCoursesPage />} />
+                      <Route path="search" element={<SearchPage />} />
+                      <Route path="user/:slug" element={<UserProfilePage />} />
+                      <Route path="edit-profile" element={<EditProfilePage />} />
+                      <Route path="wishlist" element={<WishlistPage />} />
+                      <Route path="wishlist/:listID" element={<WishlistPage />} />
+                      <Route path="notifications" element={<NotificationsPage />} />
+                      <Route path="payment-failure" element={<PaymentFailure />} />
+                      <Route path="successful-purchase" element={<SuccessfulPurchase />} />
+                      <Route path="chat" element={<ChatPage />} />
+                      <Route path="*" element={<Navigate to={"/"} />} />
+                    </Route>
+                  </>
                 )}
               </>
             )}

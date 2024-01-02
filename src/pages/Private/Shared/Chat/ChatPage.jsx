@@ -16,10 +16,7 @@ const ChatPage = () => {
         <div className="main">
           <Chat />
         </div>
-        <Footer
-          unique
-          {...(userData.mode === "instructor" && { instructor: true })}
-        />
+        <Footer unique {...(userData.mode === "instructor" && { instructor: true })} />
       </PageTransition>
     </div>
   );

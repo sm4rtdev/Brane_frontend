@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import LessonAggregator from "../EditCourse/LessonAggregator";
 import { getLessonsByCourseID } from "../../../../api/getLessonsByCourseID";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { putCourse } from "../../../../api/putCourse";
 
-const AddLessons = ({ courseID }) => {
+const AddLessons = ({ courseID = 14 }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const navigate = useNavigate();
 
   const [lessons, setLessons] = useState(null);
@@ -19,7 +22,6 @@ const AddLessons = ({ courseID }) => {
     const { ok, data } = await getLessonsByCourseID(courseID);
 
     if (ok) {
-      // console.log("getLessons", data.data);
       setLessons(data.data);
     } else {
       toast.error(`${data.error.message}`);
@@ -50,7 +52,7 @@ const AddLessons = ({ courseID }) => {
       const { ok, data } = await putCourse(courseID, obj);
 
       if (ok) {
-        toast.success("El curso ha sido publicado.");
+        toast.success(dictionary.privateInstructor.addLessons[0][language]);
         setRequesting(false);
         navigate("/my-courses");
       } else {
@@ -62,24 +64,20 @@ const AddLessons = ({ courseID }) => {
       const { ok, data } = await getLessonsByCourseID(courseID);
 
       if (ok) {
-        // console.log("getLessons", data.data);
         const lessons = data.data;
-        console.log(lessons);
 
         if (lessons.length > 0) {
-          const error = lessons.filter(
-            (lesson) => lesson.attributes.clase.data === null
-          );
+          const error = lessons.filter((lesson) => lesson.attributes.clase.data === null);
 
           if (error.length === 0) {
             updateCourseStatus();
           } else {
             console.log(error);
-            toast.error("Una de las lecciones del curso no tiene vídeo.");
+            toast.error(dictionary.privateInstructor.addLessons[1][language]);
             setRequesting(false);
           }
         } else {
-          toast.error("El curso debe tener al menos una lección.");
+          toast.error(dictionary.privateInstructor.addLessons[2][language]);
           setRequesting(false);
         }
       } else {
@@ -93,7 +91,7 @@ const AddLessons = ({ courseID }) => {
 
   return (
     <div className="instructor-course-lessons">
-      <h1>Agregar lecciones</h1>
+      <h1>{dictionary.privateInstructor.addLessons[3][language]}</h1>
 
       <div className="section">
         <LessonAggregator courseID={courseID} setUpdater={setUpdater} />
@@ -101,11 +99,11 @@ const AddLessons = ({ courseID }) => {
 
       {lessons && (
         <div className="section">
-          <h2>Lecciones creadas</h2>
+          <h2>{dictionary.privateInstructor.addLessons[4][language]}</h2>
           {lessons.map((lesson, index) => {
             return (
               <div className="individual" key={index}>
-                <strong>{`Lesson ${index + 1}: `}</strong>
+                <strong>{`# ${index + 1}: `}</strong>
 
                 <p>{lesson.attributes.nombre}</p>
               </div>
@@ -116,20 +114,16 @@ const AddLessons = ({ courseID }) => {
 
       {lessons && lessons.length > 0 && (
         <div className="section final">
-          <h2>Acciones</h2>
+          <h2>{dictionary.privateInstructor.addLessons[5][language]}</h2>
 
-          <button
-            className="action-button extended"
-            onClick={checkLessons}
-            disabled={requesting}
-          >
+          <button className="action-button extended" onClick={checkLessons} disabled={requesting}>
             {requesting ? (
               <>
                 <SpinnerOfDoom />
-                Publicando...
+                {dictionary.privateInstructor.addLessons[6][language]}
               </>
             ) : (
-              "Finalizar y publicar el curso"
+              dictionary.privateInstructor.addLessons[7][language]
             )}
           </button>
         </div>

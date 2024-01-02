@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import "./CartPage.scss";
 
 import LogoCardnet from "../../../../assets/images/logo-cardnet.png";
-import { ChevronForward } from "../../../../assets/icons";
 import { LogoPaypal, LogoStripe } from "../../../../assets/images";
+import { ChevronForward, LogoBrane } from "../../../../assets/icons";
 
 import InternalHeader from "../../../../components/InternalHeader/InternalHeader";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
@@ -20,8 +20,10 @@ import Footer from "../../../../components/Footer/Footer";
 import { postRequestPaymentCardnet } from "../../../../api/postRequestPaymentCardnet";
 import { postRequestPaymentStripe } from "../../../../api/postRequestPaymentStripe";
 import { postRequestPaymentPaypal } from "../../../../api/postRequestPaymentPaypal";
+import { postRequestPaymentBrane } from "../../../../api/postRequestPaymentBrane";
 import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
+import { getCurrentCredits } from "../../../../api/getCurrentCredits";
 import { getSearchCoupon } from "../../../../api/getSearchCoupon";
 import { CartContext } from "../../../../contexts/CartContext";
 import { getCourseById } from "../../../../api/getCourseById";
@@ -32,6 +34,8 @@ const CartPage = () => {
   const { cart, removeFromCart } = useContext(CartContext);
 
   const [courses, setCourses] = useState(null);
+
+  const [myCredits, setMyCredits] = useState(0);
   const [total, setTotal] = useState(0);
   const [isCouponBoxOpen, setIsCouponBoxOpen] = useState(false);
   const [input, setInput] = useState({
@@ -88,6 +92,15 @@ const CartPage = () => {
         }
       };
 
+      //Get my credits
+      (async () => {
+        const { ok, data } = await getCurrentCredits();
+
+        if (ok) {
+          setMyCredits(data.quantity);
+        }
+      })();
+
       cart.forEach((id) => {
         getCourses(id);
       });
@@ -95,6 +108,8 @@ const CartPage = () => {
       setCourses([]);
       setTotal(0);
     }
+
+    //eslint-disable-next-line
   }, [cart]);
 
   useEffect(() => {
@@ -144,6 +159,7 @@ const CartPage = () => {
       paypal: postRequestPaymentPaypal,
       stripe: postRequestPaymentStripe,
       cardnet: postRequestPaymentCardnet,
+      brane: postRequestPaymentBrane,
     };
 
     const { ok, data } = await paymentProviders[selectedProvider](obj);
@@ -153,6 +169,8 @@ const CartPage = () => {
 
       if (selectedProvider !== "cardnet") {
         window.location.href = data.url;
+      } else if (selectedProvider === "brane") {
+        //
       } else {
         // Crear un formulario oculto
         const form = document.createElement("form");
@@ -299,8 +317,17 @@ const CartPage = () => {
               className={`option ${selectedProvider === "cardnet" ? "selected" : ""}`}
               onClick={() => setSelectedProvider("cardnet")}
             >
-              <img src={LogoCardnet} alt="cardnet" srcset="" />
+              <img src={LogoCardnet} alt="cardnet" />
             </button>
+            {myCredits > 0 && (
+              <button
+                className={`option ${selectedProvider === "brane" ? "selected" : ""}`}
+                onClick={() => setSelectedProvider("brane")}
+              >
+                <LogoBrane />
+                {dictionary.cartPage[9][language]}
+              </button>
+            )}
           </div>
 
           <p className="remember">{dictionary.cartPage[7][language]}</p>

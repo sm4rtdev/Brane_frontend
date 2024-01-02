@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import "./PaymentMethods.scss";
@@ -10,11 +10,14 @@ import PageTransition from "../../../../components/PageTransition/PageTransition
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import Footer from "../../../../components/Footer/Footer";
 import { getAvailablePaymentMethods } from "../../../../api/getAvailablePaymentMethods";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { getLinkToStripe } from "../../../../api/getLinkToStripe";
 import { getLinkToPaypal } from "../../../../api/getLinkToPaypal";
 import { getUserMetadata } from "../../../../api/getUserMetadata";
 
 const PaymentMethods = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
+
   const [isLoading, setIsLoading] = useState({
     ip: true,
     meta: true,
@@ -37,11 +40,7 @@ const PaymentMethods = () => {
       const { ok, data } = await getUserMetadata();
 
       if (ok) {
-        // console.log(data.data.attributes);
-
-        const { stripe_account_id_state, paypal_account_id } =
-          data.data.attributes;
-        // console.log(stripe_account_id_state, paypal_account_id);
+        const { stripe_account_id_state, paypal_account_id } = data.data.attributes;
 
         setLinkedMethods({ stripe_account_id_state, paypal_account_id });
       } else {
@@ -73,7 +72,8 @@ const PaymentMethods = () => {
     const { ok, data } = await getLinkToPaypal();
 
     if (ok) {
-      toast.success(`Success`);
+      toast.success(dictionary.privateInstructor.payment[0][language]);
+      window.location.reload();
     } else {
       toast.error(`${data.error.message}`);
     }
@@ -97,31 +97,25 @@ const PaymentMethods = () => {
     <div id="payment-methods" className="page">
       <PageTransition>
         <InstructorHeader />
-
         <div className="main">
-          <h1>Métodos de pago</h1>
+          <h1>{dictionary.privateInstructor.payment[1][language]}</h1>
 
           {isLoading.meta || isLoading.ip ? (
             <SpinnerOfDoom standalone full />
           ) : (
             <>
-              {(linkedMethods.paypal_account_id !== null ||
-                availableMethods.paypal) && (
+              {(linkedMethods.paypal_account_id !== null || availableMethods.paypal) && (
                 <div className="method">
                   <div className="image">
                     <LogoPaypal />
                   </div>
 
                   <div className="text">
-                    <p>
-                      Al hacer clic en el botón, el correo de PayPal se
-                      configurará automáticamente con la misma dirección de
-                      correo que tu cuenta de Brane.
-                    </p>
+                    <p>{dictionary.privateInstructor.payment[2][language]}</p>
 
                     {linkedMethods.paypal_account_id && (
                       <p>
-                        Actualmente el correo configurado es:
+                        {dictionary.privateInstructor.payment[3][language]}
                         <strong>{` ${linkedMethods.paypal_account_id}`}</strong>
                       </p>
                     )}
@@ -130,21 +124,17 @@ const PaymentMethods = () => {
                   <button
                     className="action-button black"
                     onClick={linkToPaypal}
-                    disabled={
-                      linkedMethods.paypal_account_id !== null ||
-                      isLoading.paypal
-                    }
+                    disabled={linkedMethods.paypal_account_id !== null || isLoading.paypal}
                   >
                     {isLoading.paypal && <SpinnerOfDoom />}
                     {linkedMethods.paypal_account_id !== null
-                      ? "Vinculado"
-                      : "Vincular"}
+                      ? dictionary.privateInstructor.payment[4][language]
+                      : dictionary.privateInstructor.payment[5][language]}
                   </button>
                 </div>
               )}
 
-              {(linkedMethods.stripe_account_id_state === "completed" ||
-                availableMethods.stripe) && (
+              {(linkedMethods.stripe_account_id_state === "completed" || availableMethods.stripe) && (
                 <div className="method">
                   <div className="image">
                     <LogoStripe />
@@ -153,22 +143,18 @@ const PaymentMethods = () => {
                   <button
                     className="action-button black"
                     onClick={linkToStripe}
-                    disabled={
-                      linkedMethods.stripe_account_id_state === "completed" ||
-                      isLoading.stripe
-                    }
+                    disabled={linkedMethods.stripe_account_id_state === "completed" || isLoading.stripe}
                   >
                     {isLoading.stripe && <SpinnerOfDoom />}
                     {linkedMethods.stripe_account_id_state === "completed"
-                      ? "Vinculado"
-                      : "Vincular"}
+                      ? dictionary.privateInstructor.payment[4][language]
+                      : dictionary.privateInstructor.payment[5][language]}
                   </button>
                 </div>
               )}
             </>
           )}
         </div>
-
         <Footer unique instructor />
       </PageTransition>
     </div>

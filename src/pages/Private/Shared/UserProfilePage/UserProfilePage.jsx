@@ -11,16 +11,18 @@ import HeaderToggler from "../../../../components/HeaderToggler/HeaderToggler";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import OptionsMenu from "../../../../components/OptionsMenu/OptionsMenu";
 import Footer from "../../../../components/Footer/Footer";
+import InstitutionProfile from "./InstitutionProfile";
 import InstructorProfile from "./InstructorProfile";
+import BusinessProfile from "./BusinessProfile";
 import StudentProfile from "./StudentProfile";
 import { postUserProfileImage } from "../../../../api/postUserProfileImage";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getUserBySlug } from "../../../../api/getUserBySlug";
-import BusinessProfile from "./BusinessProfile";
-import InstitutionProfile from "./InstitutionProfile";
 
 const UserProfilePage = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { slug } = useParams();
 
   const { userData, setRefresh } = useContext(UserDataContext);
@@ -44,8 +46,6 @@ const UserProfilePage = () => {
 
           const getUser = async () => {
             const { ok, data } = await getUserBySlug(slug);
-
-            console.log(data);
 
             if (ok) {
               setUser({
@@ -85,7 +85,7 @@ const UserProfilePage = () => {
     setIsLoading(false);
 
     if (ok) {
-      toast.success("La foto del perfil ha sido actualizada.");
+      toast.success(dictionary.userProfilePage[0][language]);
 
       setImage(getImageLinkFrom(data[0].formats.thumbnail.url));
       setRefresh(Date.now());
@@ -118,8 +118,6 @@ const UserProfilePage = () => {
     }
   };
 
-  // console.log(user, userData);
-
   return (
     <div id="user-profile" className="page">
       <PageTransition margin>
@@ -138,12 +136,12 @@ const UserProfilePage = () => {
                     }}
                     title={
                       user.info.role.id === 1
-                        ? "Student profile"
+                        ? dictionary.userProfilePage[1][language]
                         : user.info.role.id === 3
-                        ? "Instructor profile"
+                        ? dictionary.userProfilePage[2][language]
                         : user.info.role.id === 4
-                        ? "Business profile"
-                        : "Institution profile"
+                        ? dictionary.userProfilePage[3][language]
+                        : dictionary.userProfilePage[4][language]
                     }
                     {...(user.me && {
                       openOptionsMenu,
@@ -156,14 +154,12 @@ const UserProfilePage = () => {
                       bigTitle: true,
                       settings: false,
                     }}
-                    title={"User profile"}
+                    title={dictionary.userProfilePage[5][language]}
                   />
                 )}
               </HeaderToggler>
             )}
-            {isOptionsMenuOpen && (
-              <OptionsMenu closeOptionsMenu={closeOptionsMenu} />
-            )}
+            {isOptionsMenuOpen && <OptionsMenu closeOptionsMenu={closeOptionsMenu} />}
 
             {user ? (
               // User exists
@@ -282,16 +278,15 @@ const UserProfilePage = () => {
               ) : (
                 <div className="no-user">
                   <strong>Error 404</strong>
-                  <p>El usuario "{slug}" no existe</p>
+                  <p>
+                    {dictionary.userProfilePage[6][language]} "{slug}" {dictionary.userProfilePage[7][language]}
+                  </p>
                 </div>
               )
             ) : (
               <SpinnerOfDoom standalone center />
             )}
-            <Footer
-              unique
-              {...(userData.mode === "instructor" && { instructor: true })}
-            />
+            <Footer unique {...(userData.mode === "instructor" && { instructor: true })} />
           </>
         )}
       </PageTransition>

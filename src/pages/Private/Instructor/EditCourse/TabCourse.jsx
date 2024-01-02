@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "../CreateCourse/InstructorCourseInfo.scss";
@@ -10,17 +11,18 @@ import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
 import ListItem from "../CreateCourse/ListItem";
 import { postUserProfileImage } from "../../../../api/postUserProfileImage";
+import { getLessonsByCourseID } from "../../../../api/getLessonsByCourseID";
 import { CategoriesContext } from "../../../../contexts/CategoriesContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
+import { deleteCourse } from "../../../../api/deleteCourse";
 import { ImageOutline } from "../../../../assets/icons";
 import { putCourse } from "../../../../api/putCourse";
-import { deleteCourse } from "../../../../api/deleteCourse";
-import { useNavigate } from "react-router-dom";
-import { getLessonsByCourseID } from "../../../../api/getLessonsByCourseID";
 
 const feePercentage = 5;
 
 const TabCourse = ({ courseID, courseInfo, conference }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { categories } = useContext(CategoriesContext);
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     shortDescription: "",
     descripcion: "",
     idioma: "",
+    subTitles: [],
     whatYouWillLearn: "",
     requirements: "",
     whoIsThisCourseFor: "",
@@ -56,21 +59,17 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
       setInputs({
         name: courseInfo.name ? courseInfo.name : "",
-        shortDescription: courseInfo.shortDescription
-          ? courseInfo.shortDescription
-          : "",
+        shortDescription: courseInfo.shortDescription ? courseInfo.shortDescription : "",
         descripcion: courseInfo.descripcion ? courseInfo.descripcion : "",
         idioma: courseInfo.idioma ? courseInfo.idioma : "",
-        whatYouWillLearn: courseInfo.whatYouWillLearn
-          ? courseInfo.whatYouWillLearn
-          : "",
-        requirements: courseInfo.requirements ? courseInfo.requirements : "",
-        whoIsThisCourseFor: courseInfo.whoIsThisCourseFor
-          ? courseInfo.whoIsThisCourseFor
-          : "",
+        subTitles: courseInfo.subTitles ? courseInfo.subTitles.map((obj) => obj.text) : [],
+        whatYouWillLearn: courseInfo.whatYouWillLearn ? courseInfo.whatYouWillLearn.map((obj) => obj.text) : "",
+        requirements: courseInfo.requeriments ? courseInfo.requeriments.map((obj) => obj.text) : "",
+        whoIsThisCourseFor: courseInfo.whoIsThisCourseFor ? courseInfo.whoIsThisCourseFor.map((obj) => obj.text) : "",
         categoria: cat ? cat.id : null,
         precio: courseInfo.precio ? courseInfo.precio : "",
         status: courseInfo.status ? courseInfo.status : "draft",
+        certificado: courseInfo.certificado ? courseInfo.certificado : false,
       });
 
       if (courseInfo.imagen.data) {
@@ -91,16 +90,14 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
   }, [inputs]);
 
   const deleteTextFromTextArray = (objectKey, text) => {
-    let filteredArray = JSON.parse(inputs[objectKey]).filter(
-      (el) => el !== text
-    );
+    let filteredArray = inputs[objectKey].filter((el) => el !== text);
 
     let value = null;
 
     if (filteredArray.length === 0) {
       value = "";
     } else {
-      value = JSON.stringify(filteredArray);
+      value = filteredArray;
     }
 
     setInputs((c) => {
@@ -110,7 +107,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
   const alreadyExists = (objectKey, text) => {
     if (inputs[objectKey] !== null && inputs[objectKey].length > 0) {
-      let array = JSON.parse(inputs[objectKey]);
+      let array = inputs[objectKey];
 
       for (let i = 0; i < array.length; i++) {
         const element = array[i];
@@ -130,7 +127,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
     if (text.length > 0) {
       if (inputs[objectKey] !== null && inputs[objectKey].length > 0) {
-        newArray = JSON.parse(inputs[objectKey]);
+        newArray = inputs[objectKey];
 
         if (!alreadyExists(objectKey, text)) {
           newArray.push(text);
@@ -140,7 +137,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
       }
 
       setInputs((c) => {
-        return { ...c, [objectKey]: JSON.stringify(newArray) };
+        return { ...c, [objectKey]: newArray };
       });
       setInternalInputs((c) => {
         return { ...c, [objectKey]: "" };
@@ -201,9 +198,10 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
         shortDescription: inputs.shortDescription,
         descripcion: inputs.descripcion,
         idioma: inputs.idioma,
-        whatYouWillLearn: JSON.parse(inputs.whatYouWillLearn),
-        requirements: JSON.parse(inputs.requirements),
-        whoIsThisCourseFor: JSON.parse(inputs.whoIsThisCourseFor),
+        subTitles: inputs.subTitles,
+        whatYouWillLearn: inputs.whatYouWillLearn,
+        requeriments: inputs.requirements,
+        whoIsThisCourseFor: inputs.whoIsThisCourseFor,
         categoria: inputs.categoria,
         precio: inputs.precio,
         certificado: inputs.certificado,
@@ -215,11 +213,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
     if (ok) {
       if (!revision) {
-        toast.success(
-          `La información ${
-            conference ? "de la conferencia" : "del curso"
-          } ha sido actualizada.`
-        );
+        toast.success(`La información ${conference ? "de la conferencia" : "del curso"} ha sido actualizada.`);
       }
 
       setOngoingUpdate(false);
@@ -243,19 +237,12 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     formData.append("field", "imagen");
     formData.append("files", file, file.name);
 
-    const { ok, data } = await postUserProfileImage(
-      formData,
-      savedImageID ? savedImageID : null
-    );
+    const { ok, data } = await postUserProfileImage(formData, savedImageID ? savedImageID : null);
 
     setUploadingFile(false);
 
     if (ok) {
-      toast.success(
-        `La imagen ${
-          conference ? "de la conferencia" : "del curso"
-        }  ha sido cargada.`
-      );
+      toast.success(`La imagen ${conference ? "de la conferencia" : "del curso"}  ha sido cargada.`);
       setFile(null);
 
       updateCourse(revision);
@@ -278,27 +265,15 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     } else if (inputs.idioma === "") {
       toast.error("Selecciona un idioma");
     } else if (inputs.whatYouWillLearn.length === 0) {
-      toast.error(
-        `Debes especificar qué aprenderás con ${
-          conference ? "la conferencia" : "el curso"
-        }`
-      );
+      toast.error(`Debes especificar qué aprenderás con ${conference ? "la conferencia" : "el curso"}`);
     } else if (inputs.requirements.length === 0) {
       toast.error(`Debes ingresar al menos 1 requerimiento`);
     } else if (inputs.whoIsThisCourseFor.length === 0) {
-      toast.error(
-        `Debes especificar para quién es ${
-          conference ? "la conferencia" : "el curso"
-        }`
-      );
+      toast.error(`Debes especificar para quién es ${conference ? "la conferencia" : "el curso"}`);
     } else if (inputs.categoria.length === null) {
       toast.error("Debes seleccionar una categoría");
     } else if (inputs.precio < 5) {
-      toast.error(
-        `El precio ${
-          conference ? "de la conferencia" : "del curso"
-        } no puede ser inferior a 5$`
-      );
+      toast.error(`El precio ${conference ? "de la conferencia" : "del curso"} no puede ser inferior a 5$`);
     } else if (preview === null) {
       toast.error("Falta una imagen");
     } else {
@@ -318,9 +293,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     const { ok, data } = await deleteCourse(courseID);
 
     if (ok) {
-      toast.success(
-        `Se ha sido eliminado ${conference ? "la conferencia" : "el curso"}.`
-      );
+      toast.success(`Se ha sido eliminado ${conference ? "la conferencia" : "el curso"}.`);
 
       navigate("/my-courses");
     } else {
@@ -331,6 +304,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
   // ------------ Publish course
 
   const [requesting, setRequesting] = useState(false);
+  const [published, setPublished] = useState(false);
 
   const checkLessons = () => {
     const updateCourseStatus = async () => {
@@ -343,9 +317,8 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
       const { ok, data } = await putCourse(courseID, obj);
 
       if (ok) {
-        toast.success(
-          `Se ha publicado ${conference ? "la conferencia" : "el curso"}.`
-        );
+        toast.success(`Se ha publicado ${conference ? "la conferencia" : "el curso"}.`);
+        setPublished(true);
         setRequesting(false);
       } else {
         toast.error(`${data.error.message}`);
@@ -361,9 +334,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
         console.log(lessons);
 
         if (lessons.length > 0) {
-          const error = lessons.filter(
-            (lesson) => lesson.attributes.clase.data === null
-          );
+          const error = lessons.filter((lesson) => lesson.attributes.clase.data === null);
 
           if (error.length === 0) {
             updateCourseStatus();
@@ -395,22 +366,14 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
         <>
           <h3>Título {conference ? "de la conferencia" : "del curso"}</h3>
-          <DynamicInput
-            id={"name"}
-            state={[inputs, setInputs]}
-            noIcon
-            placeholder={"Cómo..."}
-          />
+          <DynamicInput id={"name"} state={[inputs, setInputs]} noIcon placeholder={"Cómo..."} />
           <p className="hint">
-            Elija un título único que lo distinga de{" "}
-            {conference ? "otras conferencias" : "otros cursos"}
+            Elija un título único que lo distinga de {conference ? "otras conferencias" : "otros cursos"}
           </p>
         </>
 
         <>
-          <h3>
-            Breve descripción {conference ? "de la conferencia" : "del curso"}
-          </h3>
+          <h3>Breve descripción {conference ? "de la conferencia" : "del curso"}</h3>
           <DynamicInput
             id={"shortDescription"}
             state={[inputs, setInputs]}
@@ -419,8 +382,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
             placeholder={"Larga historia corta..."}
           />
           <p className="hint">
-            Una descripción que describe rápidamente de qué se trata{" "}
-            {conference ? "la conferencia" : "el curso"}.
+            Una descripción que describe rápidamente de qué se trata {conference ? "la conferencia" : "el curso"}.
           </p>
         </>
 
@@ -433,10 +395,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
             multiline
             placeholder={"Once upon a time..."}
           />
-          <p className="hint">
-            Una descripción completa{" "}
-            {conference ? "de la conferencia" : "del curso"}.
-          </p>
+          <p className="hint">Una descripción completa {conference ? "de la conferencia" : "del curso"}.</p>
         </>
 
         <>
@@ -472,10 +431,45 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               <MenuItem value={"English"}>English</MenuItem>
             </Select>
           </FormControl>
-          <p className="hint">
-            El idioma hablado de{" "}
-            {conference ? "la conferencia" : "las lecciones de tu curso"}.
-          </p>
+          <p className="hint">El idioma hablado de {conference ? "la conferencia" : "las lecciones de tu curso"}.</p>
+        </>
+
+        {/* //------------- */}
+        <>
+          <h3>{dictionary.privateInstructor.createCourseInfo[53][language]}</h3>
+          <FormControl fullWidth>
+            <Select
+              value={inputs.subTitles}
+              style={{
+                borderRadius: "50px",
+                fontFamily: "Inter",
+                fontSize: "0.875rem",
+                height: "2.5rem",
+              }}
+              multiple
+              onChange={(e) => {
+                setInputs((c) => {
+                  return { ...c, subTitles: e.target.value };
+                });
+              }}
+              elevation={0}
+              inputProps={{
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      boxShadow: "0 0 8px #0f0e0e20",
+                      borderRadius: "1rem",
+                    },
+                  },
+                },
+              }}
+            >
+              <MenuItem value={"ES"}>Español</MenuItem>
+              <MenuItem value={"PT"}>Português</MenuItem>
+              <MenuItem value={"EN"}>English</MenuItem>
+            </Select>
+          </FormControl>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[54][language]}</p>
         </>
 
         {!conference && (
@@ -511,9 +505,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 <MenuItem value={false}>No</MenuItem>
               </Select>
             </FormControl>
-            <p className="hint">
-              ¿El curso debería emitir un certificado al finalizar?
-            </p>
+            <p className="hint">¿El curso debería emitir un certificado al finalizar?</p>
           </>
         )}
       </div>
@@ -524,15 +516,10 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
         <>
           <h3>Lo que vas a aprender</h3>
           <div className="list-items">
-            {inputs.whatYouWillLearn !== null &&
-            inputs.whatYouWillLearn.length > 0 ? (
-              JSON.parse(inputs.whatYouWillLearn).map((text, index) => {
+            {inputs.whatYouWillLearn !== null && inputs.whatYouWillLearn.length > 0 ? (
+              inputs.whatYouWillLearn.map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"whatYouWillLearn"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"whatYouWillLearn"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
@@ -556,10 +543,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               className="action-button"
               disabled={
                 internalInputs.whatYouWillLearn.length === 0 ||
-                alreadyExists(
-                  "whatYouWillLearn",
-                  internalInputs.whatYouWillLearn
-                )
+                alreadyExists("whatYouWillLearn", internalInputs.whatYouWillLearn)
               }
               onClick={() => {
                 addTextToATextArray("whatYouWillLearn");
@@ -574,13 +558,9 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
           <h3>Requerimientos</h3>
           <div className="list-items">
             {inputs.requirements !== null && inputs.requirements.length > 0 ? (
-              JSON.parse(inputs.requirements).map((text, index) => {
+              inputs.requirements.map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"requirements"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"requirements"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
@@ -597,14 +577,13 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               placeholder={"Necesitará..."}
             />
             <p className="hint">
-              Dile a tu audiencia qué experiencia o requisitos necesitan para
-              completar {conference ? "esta conferencia" : "este curso"}.
+              Dile a tu audiencia qué experiencia o requisitos necesitan para completar{" "}
+              {conference ? "esta conferencia" : "este curso"}.
             </p>
             <button
               className="action-button"
               disabled={
-                internalInputs.requirements.length === 0 ||
-                alreadyExists("requirements", internalInputs.requirements)
+                internalInputs.requirements.length === 0 || alreadyExists("requirements", internalInputs.requirements)
               }
               onClick={() => {
                 addTextToATextArray("requirements");
@@ -618,15 +597,10 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
         <>
           <h3>Para quién es este curso</h3>
           <div className="list-items">
-            {inputs.whoIsThisCourseFor !== null &&
-            inputs.whoIsThisCourseFor.length > 0 ? (
-              JSON.parse(inputs.whoIsThisCourseFor).map((text, index) => {
+            {inputs.whoIsThisCourseFor !== null && inputs.whoIsThisCourseFor.length > 0 ? (
+              inputs.whoIsThisCourseFor.map((text, index) => {
                 return (
-                  <ListItem
-                    key={index}
-                    objectKey={"whoIsThisCourseFor"}
-                    deleteFromInputs={deleteTextFromTextArray}
-                  >
+                  <ListItem key={index} objectKey={"whoIsThisCourseFor"} deleteFromInputs={deleteTextFromTextArray}>
                     {text}
                   </ListItem>
                 );
@@ -642,17 +616,12 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               noIcon
               placeholder={"Una persona..."}
             />
-            <p className="hint">
-              ¿Quién puede utilizar tu {conference ? "conferencia" : "curso"}?
-            </p>
+            <p className="hint">¿Quién puede utilizar tu {conference ? "conferencia" : "curso"}?</p>
             <button
               className="action-button"
               disabled={
                 internalInputs.whoIsThisCourseFor.length === 0 ||
-                alreadyExists(
-                  "whoIsThisCourseFor",
-                  internalInputs.whoIsThisCourseFor
-                )
+                alreadyExists("whoIsThisCourseFor", internalInputs.whoIsThisCourseFor)
               }
               onClick={() => {
                 addTextToATextArray("whoIsThisCourseFor");
@@ -673,9 +642,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                   return (
                     <button
                       key={cat.id}
-                      className={`cat ${
-                        inputs.categoria === cat.id ? "selected" : ""
-                      }`}
+                      className={`cat ${inputs.categoria === cat.id ? "selected" : ""}`}
                       onClick={() => {
                         toggleCategory(cat.id);
                       }}
@@ -717,18 +684,11 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               disabled
               label={`Nuestra tarifa de servicio (${feePercentage}%)`}
             />
-            <DynamicInput
-              id={"net"}
-              state={[fees, setFees]}
-              noIcon
-              price
-              disabled
-              label={"Tus ganancias netas"}
-            />
+            <DynamicInput id={"net"} state={[fees, setFees]} noIcon price disabled label={"Tus ganancias netas"} />
           </div>
           <p className="hint">
-            Tus ganancias netas son las ganancias que obtendrás después de cada
-            venta de {conference ? "esta conferencia" : "este curso"}.
+            Tus ganancias netas son las ganancias que obtendrás después de cada venta de{" "}
+            {conference ? "esta conferencia" : "este curso"}.
           </p>
         </>
       </div>
@@ -783,7 +743,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
           )}
         </button>
 
-        {courseInfo && inputs.status === "draft" && (
+        {courseInfo && inputs.status === "draft" && !published && (
           <button
             className="action-button final request"
             onClick={() => {
@@ -806,11 +766,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
       <div className="section action">
         <h2>Eliminar (Acción No Reversible)</h2>
 
-        <button
-          className="action-button final red"
-          onClick={eraseCourse}
-          disabled={deleting}
-        >
+        <button className="action-button final red" onClick={eraseCourse} disabled={deleting}>
           {deleting ? (
             <>
               <SpinnerOfDoom />

@@ -259,6 +259,7 @@ const HomeInstitutions = () => {
 
       setGraphData({ data, options });
     }
+    //eslint-disable-next-line
   }, [rows, language]);
 
   return (

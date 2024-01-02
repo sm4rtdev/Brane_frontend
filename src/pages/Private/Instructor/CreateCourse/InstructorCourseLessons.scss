@@ -30,25 +30,37 @@
       justify-content: flex-start;
       align-items: center;
 
-      & > strong {
-        @extend .text;
-        color: $dark-gray;
-        text-align: left;
-        font-weight: 700;
+      .lesson-title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         width: 100%;
-        padding-left: 1rem;
-        margin-bottom: 1rem;
-      }
+        gap: 2rem;
 
-      & > .action-button {
-        width: max-content;
-        border-radius: 1rem;
-        margin-bottom: 1rem;
-        border: none;
-        background-color: $red;
-        padding: 0 2rem;
-        height: 40px;
-        cursor: pointer;
+        & > strong {
+          @extend .text;
+          color: $dark-gray;
+          text-align: left;
+          font-weight: 700;
+          padding-left: 1rem;
+          margin-bottom: 1rem;
+          text-align: left;
+        }
+
+        & > .action-button {
+          width: max-content;
+          border-radius: 1rem;
+          margin-bottom: 1rem;
+          border: none;
+          background-color: $red;
+          padding: 0 3rem;
+          height: 40px;
+          cursor: pointer;
+
+          &:disabled {
+            background-color: $gray;
+          }
+        }
       }
 
       .inner-container {
@@ -79,7 +91,6 @@
         .basic-stuff {
           width: 100%;
           margin-bottom: 1rem;
-          border-bottom: 1px dashed $white;
         }
 
         .additional-resources {
@@ -89,11 +100,14 @@
           align-items: center;
           width: 100%;
           margin-bottom: 2rem;
+          border-top: 1px dashed $white;
+          border-bottom: 1px dashed $white;
+          padding: 2rem 0;
 
-          h3 {
-            @extend .text;
+          h2 {
+            @extend .text-md;
             color: $white;
-            font-weight: 500;
+            font-weight: 700;
             margin-bottom: 0.5rem;
           }
 
@@ -177,6 +191,76 @@
           text-align: center;
         }
 
+        .subtitles-section {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          border-top: 1px dashed $white;
+          border-bottom: 1px dashed $white;
+          margin-top: 2rem;
+          padding: 2rem 0;
+
+          .subtitles {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1rem;
+
+            .subtitle-item {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 1rem;
+              background-color: $yellow;
+              padding: 0.5rem 0.5rem 0.5rem 2rem;
+              border-radius: $rounded;
+
+              p {
+                margin-bottom: 0;
+                color: $black;
+                font-weight: 700;
+              }
+
+              .small-button {
+                margin-bottom: 0 !important;
+
+                svg {
+                  margin-left: 0 !important;
+                }
+              }
+            }
+
+            p {
+              @extend .text;
+              color: $white;
+              font-weight: 400;
+              width: 100%;
+              text-align: center;
+            }
+          }
+
+          .add-sub-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 2rem;
+            margin-bottom: 1rem;
+
+            label {
+              @extend .text-sm;
+              color: $white;
+              font-weight: 700;
+              text-align: center;
+            }
+          }
+        }
+
         .final {
           margin-top: 2rem;
           padding: 0 4rem !important;
@@ -225,6 +309,26 @@
         @extend .text;
         color: $dark-gray;
       }
+    }
+  }
+
+  @media screen and (max-width: $desktop-sm) {
+    .section .lesson-aggregator .inner-container .subtitles-section .add-sub-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  @media screen and (max-width: $tablet-sm) {
+    .section .lesson-aggregator .lesson-title {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
     }
   }
 }

@@ -259,6 +259,10 @@
 
     .tabulation {
       margin-bottom: 2rem;
+
+      .credits {
+        @extend .text-lg;
+      }
     }
 
     .instructor {

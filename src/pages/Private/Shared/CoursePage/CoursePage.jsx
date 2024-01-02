@@ -13,11 +13,9 @@ import {
   Checkmark,
   Videocam,
   Ellipse,
-  Hammer,
   People,
   Book,
   Cart,
-  Flag,
   Star,
   ImageOutline,
 } from "../../../../assets/icons";
@@ -43,9 +41,10 @@ import Footer from "../../../../components/Footer/Footer";
 const CoursePage = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
+
   const { openWishlistModal } = useContext(WishlistModalContext);
-  const { cart, addToCart } = useContext(CartContext);
   const { userData, changeMode } = useContext(UserDataContext);
+  const { cart, addToCart } = useContext(CartContext);
 
   const [currentCourse, setCurrentCourse] = useState(null);
   const [currentCourseLessons, setCurrentCourseLessons] = useState(null);
@@ -59,11 +58,10 @@ const CoursePage = () => {
     const getCurrentCourse = async () => {
       const { ok, data } = await getCourseBySlug(slug);
 
-      console.log(data.data);
-
       if (ok) {
         setCurrentCourse(data.data.curso);
         setCurrentCourseLessons(data.data.clases);
+        console.log(data.data.curso);
       } else {
         toast.error(`${data.error.message}`);
       }
@@ -121,12 +119,9 @@ const CoursePage = () => {
 
   useEffect(() => {
     if (currentCourse && coursesAsInstructor) {
-      // console.log(coursesAsInstructor);
       const coincidences = coursesAsInstructor.filter((course) => {
         return course.id === currentCourse.id;
       });
-
-      // console.log(coincidences);
 
       setCourseMadeByMe(coincidences.length > 0);
     }
@@ -286,55 +281,58 @@ const CoursePage = () => {
 
                 <Tabulation tabs={["Detalles", "Contenido"]} options={{ type: "bubble", color: "black" }}>
                   <>
-                    <h2>Lo que vas a aprender:</h2>
-                    <ul>
-                      {currentCourse.whatYouWillLearn.map((el, index) => {
-                        return (
-                          <li key={`what-${index}`}>
-                            <Checkmark />
-                            {el}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    {/* <h2>Course projects</h2>
-                      <div className="projects">
-                        {course.projects.map((el, index) => {
-                          return (
-                            <div key={index} className="el">
-                              <img src={el.img} alt="" />
+                    {currentCourse.whatYouWillLearn !== null && currentCourse.whatYouWillLearn.length > 0 && (
+                      <>
+                        <h2>Lo que vas a aprender:</h2>
+                        <ul>
+                          {currentCourse.whatYouWillLearn.map((el, index) => {
+                            return (
+                              <li key={`what-${index}`}>
+                                <Checkmark />
+                                {el}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </>
+                    )}
 
-                              <span>{el.description}</span>
-                            </div>
-                          );
-                        })}
-                      </div> */}
-                    <h2>Requisitos:</h2>
-                    <ul className="requirements">
-                      {currentCourse.requirements.map((el, index) => {
-                        return (
-                          <li key={`requirement-${index}`}>
-                            <Ellipse />
-                            {el}
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    {currentCourse.requeriments !== null && currentCourse.requeriments.length > 0 && (
+                      <>
+                        <h2>Requisitos:</h2>
+                        <ul className="requirements">
+                          {currentCourse.requeriments.map((el, index) => {
+                            return (
+                              <li key={`requirement-${index}`}>
+                                <Ellipse />
+                                {el}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </>
+                    )}
 
                     <h2>Descripción:</h2>
                     <p className="description">{currentCourse.descripcion}</p>
 
-                    <h2>Para quién es {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}:</h2>
-                    <ul className="requirements">
-                      {JSON.parse(currentCourse.whoIsThisCourseFor).map((el, index) => {
-                        return (
-                          <li key={`requirement-${index}`}>
-                            <Ellipse />
-                            {el}
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    {currentCourse.whoIsThisCourseFor !== null && currentCourse.whoIsThisCourseFor.length > 0 && (
+                      <>
+                        <h2>
+                          Para quién es {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}:
+                        </h2>
+                        <ul className="requirements">
+                          {currentCourse.whoIsThisCourseFor.map((el, index) => {
+                            return (
+                              <li key={`requirement-${index}`}>
+                                <Ellipse />
+                                {el}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </>
+                    )}
                   </>
                   <>
                     <h2>Resumen:</h2>
@@ -357,14 +355,14 @@ const CoursePage = () => {
                             <Book />
                             {currentCourse.summary[0].additionalResources} Recursos adicionales
                           </li>
-                          <li>
+                          {/* <li>
                             <Hammer />
                             {currentCourse.summary[0].cantidadProjects} Practicas
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <Flag />
                             Proyecto final del curso
-                          </li>
+                          </li> */}
                         </>
                       )}
                     </ul>

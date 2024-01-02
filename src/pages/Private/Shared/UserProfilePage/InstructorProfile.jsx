@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -21,6 +21,7 @@ import { getCoursesByInstructor } from "../../../../api/getCoursesByInstructor";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { calculateAge } from "../../../../helpers/calculateAge";
 import { BGProfileIns } from "../../../../assets/images";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const InstructorProfile = ({
   user,
@@ -32,14 +33,13 @@ const InstructorProfile = ({
   isLoading,
   file,
 }) => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const [courses, setCourses] = useState(null);
   const [students, setStudents] = useState(null);
 
   useEffect(() => {
     const getCourse = async () => {
       const { ok, data } = await getCoursesByInstructor(user.info.id);
-
-      // console.log(data.data);
 
       if (ok) {
         setCourses(data.data);
@@ -49,8 +49,6 @@ const InstructorProfile = ({
     };
     const getStudents = async () => {
       const { ok, data } = await getStudentsByInstructor(user.info.slug);
-
-      // console.log(data.data);
 
       if (ok) {
         setStudents(data.data);
@@ -79,12 +77,7 @@ const InstructorProfile = ({
 
       <div className="instructor">
         <div className="profile-picture">
-          <input
-            type="file"
-            id="media"
-            onChange={onFileChange}
-            ref={inputFile}
-          />
+          <input type="file" id="media" onChange={onFileChange} ref={inputFile} />
 
           <div className="container">
             <div className="img-container">
@@ -110,11 +103,7 @@ const InstructorProfile = ({
           </div>
 
           {file && (
-            <button
-              className="action-button"
-              onClick={uploadProfilePicture}
-              disabled={isLoading}
-            >
+            <button className="action-button" onClick={uploadProfilePicture} disabled={isLoading}>
               {isLoading ? (
                 <>
                   <SpinnerOfDoom /> Cargando
@@ -162,29 +151,17 @@ const InstructorProfile = ({
                 <p>{user.meta.biografia}</p>
                 <div className="social">
                   {user.meta.facebook && (
-                    <a
-                      href={user.meta.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.meta.facebook} target="_blank" rel="noopener noreferrer">
                       <LogoFacebook />
                     </a>
                   )}
                   {user.meta.instagram && (
-                    <a
-                      href={user.meta.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.meta.instagram} target="_blank" rel="noopener noreferrer">
                       <LogoInstagram />
                     </a>
                   )}
                   {user.meta.linkedin && (
-                    <a
-                      href={user.meta.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.meta.linkedin} target="_blank" rel="noopener noreferrer">
                       <LogoLinkedin />
                     </a>
                   )}
@@ -196,29 +173,17 @@ const InstructorProfile = ({
                 <p>{user.info.metaData.biografia}</p>
                 <div className="social">
                   {user.info.metaData.facebook && (
-                    <a
-                      href={user.info.metaData.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.info.metaData.facebook} target="_blank" rel="noopener noreferrer">
                       <LogoFacebook />
                     </a>
                   )}
                   {user.info.metaData.instagram && (
-                    <a
-                      href={user.info.metaData.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.info.metaData.instagram} target="_blank" rel="noopener noreferrer">
                       <LogoInstagram />
                     </a>
                   )}
                   {user.info.metaData.linkedin && (
-                    <a
-                      href={user.info.metaData.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={user.info.metaData.linkedin} target="_blank" rel="noopener noreferrer">
                       <LogoLinkedin />
                     </a>
                   )}
@@ -227,17 +192,12 @@ const InstructorProfile = ({
             )}
       </div>
 
-      <Tabulation
-        tabs={["Cursos", "Estudiantes"]}
-        options={{ type: "bubble", color: "black" }}
-      >
+      <Tabulation tabs={["Cursos", "Estudiantes"]} options={{ type: "bubble", color: "black" }}>
         <>
           {courses ? (
             courses.length > 0 ? (
               courses.map((course, index) => {
-                return (
-                  <CourseCard key={index} {...course} type="related download" />
-                );
+                return <CourseCard key={index} {...course} type="related download" />;
               })
             ) : (
               <p className="no-data">Sin datos</p>

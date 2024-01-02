@@ -12,6 +12,7 @@ import DynamicInput from "../../../../../components/DynamicInput/DynamicInput";
 import CourseCard from "../../../../../components/CourseCard/CourseCard";
 import { getCoursesByInstructor } from "../../../../../api/getCoursesByInstructor";
 import { getCommentsFromLesson } from "../../../../../api/getCommentsFromLesson";
+import { DictionaryContext } from "../../../../../contexts/DictionaryContext";
 import { postCommentInLesson } from "../../../../../api/postCommentInLesson";
 import { getImageLinkFrom } from "../../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../../contexts/UserDataContext";
@@ -19,6 +20,7 @@ import { getAllClasses } from "../../../../../api/getAllClasses";
 import { getClass } from "../../../../../api/getClass";
 
 const Comments = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const [courses, setCourses] = useState(null);
   const [lessons, setLessons] = useState(null);
@@ -37,19 +39,15 @@ const Comments = () => {
   const [loadingLessons, setLoadingLessons] = useState(false);
 
   useEffect(() => {
-    const getCourse = async () => {
+    (async () => {
       const { ok, data } = await getCoursesByInstructor(userData.info.id);
-
-      console.log("Courses", data.data);
 
       if (ok) {
         setCourses(data.data);
       } else {
         toast.error(`${data.error.message}`);
       }
-    };
-
-    getCourse();
+    })();
   }, [userData]);
 
   useEffect(() => {
@@ -58,8 +56,6 @@ const Comments = () => {
 
       const getLessons = async () => {
         const { ok, data } = await getAllClasses(selectedCourseSlug);
-
-        console.log(data.data);
 
         if (ok) {
           setLessons(data.data);
@@ -76,8 +72,6 @@ const Comments = () => {
   const getComments = async () => {
     const { ok, data } = await getCommentsFromLesson(selectedLessonID);
 
-    console.log(data.data);
-
     if (ok) {
       setComments(data.data);
     } else {
@@ -92,8 +86,6 @@ const Comments = () => {
     if (selectedLessonID) {
       const getVideo = async () => {
         const { ok, data } = await getClass(selectedLessonID);
-
-        // console.log(data.data);
 
         if (ok) {
           setLesson({
@@ -122,13 +114,11 @@ const Comments = () => {
 
     const { ok, data } = await postCommentInLesson(obj);
 
-    // console.log(data);
-
     if (ok) {
       getComments();
       setInputs({ comment: "" });
 
-      toast.success(`Has enviado el comentario.`);
+      toast.success(dictionary.privateInstructor.messages[1][language]);
     } else {
       toast.warning(`${data.error.message}`);
     }
@@ -138,14 +128,14 @@ const Comments = () => {
 
   return (
     <div id="comments-page">
-      <h1>Comentarios</h1>
+      <h1>{dictionary.privateInstructor.messages[0][language]}</h1>
 
       {!lessons ? (
         courses ? (
           !loadingLessons ? (
             courses.length > 0 ? (
               <>
-                <h2>Selecciona uno de tus cursos</h2>
+                <h2>{dictionary.privateInstructor.messages[2][language]}</h2>
 
                 <div className="courses">
                   {courses.map((course) => {
@@ -163,7 +153,7 @@ const Comments = () => {
                 </div>
               </>
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.privateInstructor.messages[3][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone center />
@@ -173,7 +163,7 @@ const Comments = () => {
         )
       ) : lessons.length > 0 ? (
         <>
-          <h2>Selecciona una lección para ver sus comentarios</h2>
+          <h2>{dictionary.privateInstructor.messages[4][language]}</h2>
 
           <div className="lessons">
             {lessons.map((lesson, index) => {
@@ -185,7 +175,9 @@ const Comments = () => {
                     setSelectedLessonID(lesson.id);
                   }}
                 >
-                  <h2>Lección {index + 1}</h2>
+                  <h2>
+                    {dictionary.privateInstructor.messages[5][language]} {index + 1}
+                  </h2>
 
                   <div className="lesson-card">
                     <div className="middle">
@@ -204,13 +196,15 @@ const Comments = () => {
           </div>
         </>
       ) : (
-        <p>Sin datos</p>
+        <p>{dictionary.privateInstructor.messages[3][language]}</p>
       )}
 
       {selectedLessonID &&
         (lesson ? (
           <div className="general">
-            <h2>Lección: {lesson.name}</h2>
+            <h2>
+              {dictionary.privateInstructor.messages[5][language]}: {lesson.name}
+            </h2>
 
             <div className="player">
               <ReactPlayer
@@ -232,16 +226,14 @@ const Comments = () => {
             </div>
 
             <div className="comments-section">
-              <h2>Comentarios de la lección</h2>
+              <h2>{dictionary.privateInstructor.messages[6][language]}</h2>
 
               <div className="container" ref={commentsContainer}>
                 {comments && comments.length > 0 ? (
                   comments.map((comment) => {
                     return (
                       <div className="comment" key={comment.id}>
-                        <Link
-                          to={`/user/${comment.attributes.autor.data.attributes.slug}`}
-                        >
+                        <Link to={`/user/${comment.attributes.autor.data.attributes.slug}`}>
                           {`${comment.attributes.autor.data.attributes.nombre} ${comment.attributes.autor.data.attributes.apellidos}`}
                         </Link>
                         <span>{comment.attributes.createdAt}</span>
@@ -250,7 +242,7 @@ const Comments = () => {
                     );
                   })
                 ) : (
-                  <p className="no-comments">Sin comentarios aún</p>
+                  <p className="no-comments">{dictionary.privateInstructor.messages[7][language]}</p>
                 )}
               </div>
 
@@ -258,15 +250,13 @@ const Comments = () => {
                 <DynamicInput
                   id={"comment"}
                   state={[inputs, setInputs]}
-                  label="Deja un comentario"
+                  label={dictionary.privateInstructor.messages[8][language]}
                   noIcon
                 />
-                <button
-                  className="action-button"
-                  disabled={inputs.comment === "" || loading}
-                  onClick={sendComment}
-                >
-                  {loading ? "Enviando..." : "Enviado"}
+                <button className="action-button" disabled={inputs.comment === "" || loading} onClick={sendComment}>
+                  {loading
+                    ? dictionary.privateInstructor.messages[9][language]
+                    : dictionary.privateInstructor.messages[10][language]}
                 </button>
               </div>
             </div>

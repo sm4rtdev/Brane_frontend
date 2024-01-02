@@ -66,11 +66,7 @@ const SignupBox = () => {
   };
 
   useEffect(() => {
-    if (
-      inputs.email !== "" &&
-      inputs.password === inputs.repeatedPassword &&
-      inputs.password !== ""
-    ) {
+    if (inputs.email !== "" && inputs.password === inputs.repeatedPassword && inputs.password !== "") {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
@@ -83,21 +79,12 @@ const SignupBox = () => {
         <>
           <h1>{dictionary.signup[0][language]}</h1>
           <p className="not-first-time">
-            {dictionary.signup[1][language]}{" "}
-            <Link to="/auth/login">{dictionary.signup[2][language]}</Link>
+            {dictionary.signup[1][language]} <Link to="/auth/login">{dictionary.signup[2][language]}</Link>
           </p>
 
           <form>
-            <DynamicInput
-              id={"email"}
-              type={"email"}
-              state={[inputs, setInputs]}
-            />
-            <DynamicInput
-              id={"password"}
-              type={"password"}
-              state={[inputs, setInputs]}
-            />
+            <DynamicInput id={"email"} type={"email"} state={[inputs, setInputs]} />
+            <DynamicInput id={"password"} type={"password"} state={[inputs, setInputs]} />
             <DynamicInput
               id={"repeatedPassword"}
               type={"password"}
@@ -105,21 +92,15 @@ const SignupBox = () => {
               placeholder={dictionary.signup[3][language]}
             />
 
-            <button
-              className="action-button"
-              onClick={handleClick}
-              disabled={isLoading || isDisabled}
-            >
+            <button className="action-button" onClick={handleClick} disabled={isLoading || isDisabled}>
               {isLoading && <SpinnerOfDoom />}
               {dictionary.signup[4][language]}
             </button>
           </form>
 
           <p className="conditions">
-            {dictionary.signup[5][language]}{" "}
-            <Link to={"/terms"}>{dictionary.signup[6][language]}</Link>{" "}
-            {dictionary.signup[7][language]}{" "}
-            <Link to={"/privacy"}>{dictionary.signup[8][language]}</Link>.
+            {dictionary.signup[5][language]} <Link to={"/terms"}>{dictionary.signup[6][language]}</Link>{" "}
+            {dictionary.signup[7][language]} <Link to={"/privacy"}>{dictionary.signup[8][language]}</Link>.
           </p>
 
           <div className="separator">
@@ -134,11 +115,6 @@ const SignupBox = () => {
           <button className="continue-with-facebook">
             <LogoFacebook />
             <p>{dictionary.signup[10][language]}</p>
-          </button>
-
-          <button className="continue-with-apple">
-            <LogoApple />
-            <p>{dictionary.signup[11][language]}</p>
           </button>
         </>
       ) : (

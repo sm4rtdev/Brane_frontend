@@ -6,11 +6,7 @@ import "./LoginBox.scss";
 
 import { LogoApple, LogoFacebook, LogoGoogle } from "../../../../assets/icons";
 
-import {
-  removeFromLocal,
-  getFromLocal,
-  updateLocal,
-} from "../../../../helpers/localStorage";
+import { removeFromLocal, getFromLocal, updateLocal } from "../../../../helpers/localStorage";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
 import DynamicInput from "../../../../components/DynamicInput/DynamicInput";
 import { getInstitutionMetadata } from "../../../../api/getInstitutionMetadata";
@@ -197,16 +193,10 @@ const LoginBox = ({ institutions }) => {
     // Company
     if (screen === 2) {
       const newSlug = {
-        slug: `${userInfo.nombre.toLowerCase()}${(
-          Math.random() * 1000
-        ).toFixed()}`,
+        slug: `${userInfo.nombre.toLowerCase()}${(Math.random() * 1000).toFixed()}`,
       };
 
-      const { ok: PUTState, data: PUTData } = await putUser(
-        userID,
-        newSlug,
-        true
-      );
+      const { ok: PUTState, data: PUTData } = await putUser(userID, newSlug, true);
 
       if (PUTState) {
         const objMetadata = {
@@ -244,16 +234,10 @@ const LoginBox = ({ institutions }) => {
     // Institution
     else if (screen === 3) {
       const newSlug = {
-        slug: `${userInfo.nombre.toLowerCase()}${(
-          Math.random() * 1000
-        ).toFixed()}`,
+        slug: `${userInfo.nombre.toLowerCase()}${(Math.random() * 1000).toFixed()}`,
       };
 
-      const { ok: PUTState, data: PUTData } = await putUser(
-        userID,
-        newSlug,
-        true
-      );
+      const { ok: PUTState, data: PUTData } = await putUser(userID, newSlug, true);
 
       if (PUTState) {
         const objMetadata = {
@@ -402,25 +386,13 @@ const LoginBox = ({ institutions }) => {
           <p className="below">{dictionary.login.box[1][language]}</p>
 
           <form>
-            <DynamicInput
-              id={"email"}
-              type={"email"}
-              state={[inputs, setInputs]}
-            />
-            <DynamicInput
-              id={"password"}
-              type={"password"}
-              state={[inputs, setInputs]}
-            />
+            <DynamicInput id={"email"} type={"email"} state={[inputs, setInputs]} />
+            <DynamicInput id={"password"} type={"password"} state={[inputs, setInputs]} />
             <Link className="recover-password" to="/auth/account-recovery">
               {dictionary.login.box[2][language]}
             </Link>
 
-            <button
-              className="action-button"
-              onClick={handleClick}
-              disabled={isLoading || isDisabled}
-            >
+            <button className="action-button" onClick={handleClick} disabled={isLoading || isDisabled}>
               {isLoading && <SpinnerOfDoom />}
               {dictionary.login.box[3][language]}
             </button>
@@ -428,9 +400,7 @@ const LoginBox = ({ institutions }) => {
 
           <p className="first-time">
             {dictionary.login.box[4][language]}{" "}
-            <Link to={institutions ? "/ins-auth/signup" : "/auth/signup"}>
-              {dictionary.login.box[5][language]}
-            </Link>
+            <Link to={institutions ? "/ins-auth/signup" : "/auth/signup"}>{dictionary.login.box[5][language]}</Link>
           </p>
 
           <div className="separator">
@@ -445,11 +415,6 @@ const LoginBox = ({ institutions }) => {
           <button className="continue-with-facebook">
             <LogoFacebook />
             <p>{dictionary.login.box[7][language]}</p>
-          </button>
-
-          <button className="continue-with-apple">
-            <LogoApple />
-            <p>{dictionary.login.box[8][language]}</p>
           </button>
         </>
       ) : screen === 1 ? (
@@ -494,11 +459,7 @@ const LoginBox = ({ institutions }) => {
               label={dictionary.login.box[15][language]}
             />
 
-            <button
-              className="action-button"
-              onClick={handleClickPost}
-              disabled={isLoading || isDisabledPost}
-            >
+            <button className="action-button" onClick={handleClickPost} disabled={isLoading || isDisabledPost}>
               {isLoading && <SpinnerOfDoom />}
               {dictionary.login.box[16][language]}
             </button>

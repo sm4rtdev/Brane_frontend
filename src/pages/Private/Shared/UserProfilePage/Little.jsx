@@ -10,11 +10,7 @@ const Little = ({ apellidos, nombre, avatar, slug }) => {
   return (
     <Link to={`/user/${slug}`} className="little">
       <div className="profile-picture">
-        {avatar && avatar.url ? (
-          <FancyImage src={getImageLinkFrom(avatar.url)} />
-        ) : (
-          <PersonOutline />
-        )}
+        {avatar && avatar.url ? <FancyImage src={getImageLinkFrom(avatar.url)} /> : <PersonOutline />}
       </div>
 
       <strong>{`${nombre} ${apellidos}`}</strong>
