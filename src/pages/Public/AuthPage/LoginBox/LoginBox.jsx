@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import "./LoginBox.scss";
 
-import { LogoApple, LogoFacebook, LogoGoogle } from "../../../../assets/icons";
+import { LogoFacebook, LogoGoogle } from "../../../../assets/icons";
 
 import { removeFromLocal, getFromLocal, updateLocal } from "../../../../helpers/localStorage";
 import SpinnerOfDoom from "../../../../components/SpinnerOfDoom/SpinnerOfDoom";
@@ -193,7 +193,7 @@ const LoginBox = ({ institutions }) => {
     // Company
     if (screen === 2) {
       const newSlug = {
-        slug: `${userInfo.nombre.toLowerCase()}${(Math.random() * 1000).toFixed()}`,
+        slug: `${userInfo.nombre.toLowerCase().trim().replace(/\s/g, "")}-${Date.now()}`,
       };
 
       const { ok: PUTState, data: PUTData } = await putUser(userID, newSlug, true);
@@ -234,7 +234,7 @@ const LoginBox = ({ institutions }) => {
     // Institution
     else if (screen === 3) {
       const newSlug = {
-        slug: `${userInfo.nombre.toLowerCase()}${(Math.random() * 1000).toFixed()}`,
+        slug: `${userInfo.nombre.toLowerCase().trim().replace(/\s/g, "")}-${Date.now()}`,
       };
 
       const { ok: PUTState, data: PUTData } = await putUser(userID, newSlug, true);
@@ -382,6 +382,7 @@ const LoginBox = ({ institutions }) => {
     <div id="login-box" className="auth-box" ref={boxContainer}>
       {screen === 0 ? (
         <>
+          {/* Normal login */}
           <h1>{dictionary.login.box[0][language]}</h1>
           <p className="below">{dictionary.login.box[1][language]}</p>
 
@@ -419,6 +420,7 @@ const LoginBox = ({ institutions }) => {
         </>
       ) : screen === 1 ? (
         <>
+          {/* Post register for users */}
           <h2>{dictionary.login.box[9][language]}</h2>
           <p className="below">{dictionary.login.box[10][language]}</p>
 
@@ -467,9 +469,9 @@ const LoginBox = ({ institutions }) => {
         </>
       ) : screen === 2 ? (
         <>
+          {/* Post register for business */}
           <h2>{dictionary.login.box[9][language]}</h2>
           <p className="below">{dictionary.login.box[10][language]}</p>
-
           <form autoComplete="off">
             <DynamicInput
               id={"description"}
@@ -520,6 +522,7 @@ const LoginBox = ({ institutions }) => {
         </>
       ) : (
         <>
+          {/* Post register for institutions */}
           <h2>{dictionary.login.box[9][language]}</h2>
           <p className="below">{dictionary.login.box[10][language]}</p>
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./CourseCard.scss";
 
@@ -24,6 +24,7 @@ const CourseCard = ({
   selectedCourse,
   openEdit,
 }) => {
+  const navigate = useNavigate();
   const { dictionary, language } = useContext(DictionaryContext);
 
   const { userData } = useContext(UserDataContext);
@@ -56,23 +57,33 @@ const CourseCard = ({
     }
   }, [attributes]); //eslint-disable-line
 
+  console.log(temp);
   return (
     <div className={`course-card ${type} ${selectedCourse === id ? "selected" : ""}`}>
-      {!type.includes("big") &&
+      {temp &&
+        !type.includes("big") &&
         !type.includes("download") &&
         !type.includes("cart") &&
         !userData.company &&
-        !userData.institution && (
+        !userData.institution &&
+        userData.info &&
+        userData.info.id !== temp.instructor.id && (
           <button className="save-to-wish-list small-button" onClick={() => openWishlistModal(id)}>
             <HeartOutline />
           </button>
         )}
 
+      {temp && temp.tipo === "conferencia" && userData.info && userData.info.id === temp.instructor.id && (
+        <button className="enter-conference-btn small-button" onClick={() => navigate(`/conference/${temp.slug}`)}>
+          {dictionary.courseCard[5][language]}
+          <ChevronForward />
+        </button>
+      )}
+
       {type.includes("cart") && (
         <button
           className="cart-button small-button"
           onClick={() => {
-            // console.log(id);
             removeFromCart(id);
           }}
         >
@@ -91,7 +102,7 @@ const CourseCard = ({
               ? `/edit-course/${id}`
               : type.includes("big")
               ? temp.tipo === "conferencia"
-                ? `/conference/${id}`
+                ? `/conference/${temp.slug}`
                 : `/course/${temp.slug}/learn`
               : `/course/${temp.slug}`
           }

@@ -57,42 +57,42 @@ const HomeInstructor = () => {
             <h2>{dictionary.privateInstructor.home[5][language]}</h2>
 
             <div className="grid">
-              <div className="resource">
+              <Link className="resource" to={"/courses"}>
                 <div className="icon">
                   <Camera />
                 </div>
                 <p>{dictionary.privateInstructor.home[6][language]}</p>
-              </div>
-              <div className="resource">
+              </Link>
+              <Link className="resource" to={"/blog"}>
                 <div className="icon">
                   <Audience />
                 </div>
                 <p>{dictionary.privateInstructor.home[7][language]}</p>
-              </div>
-              <div className="resource">
+              </Link>
+              <Link className="resource" to={"/blog"}>
                 <div className="icon">
                   <Faster />
                 </div>
                 <p>{dictionary.privateInstructor.home[8][language]}</p>
-              </div>
-              <div className="resource">
+              </Link>
+              <Link className="resource" to={"/blog"}>
                 <div className="icon">
                   <News />
                 </div>
                 <p>{dictionary.privateInstructor.home[9][language]}</p>
-              </div>
-              <div className="resource">
+              </Link>
+              <Link className="resource" to={"conferences"}>
                 <div className="icon">
                   <Conferences />
                 </div>
                 <p>{dictionary.privateInstructor.home[10][language]}</p>
-              </div>
-              <div className="resource">
+              </Link>
+              <Link className="resource" to={"/courses"}>
                 <div className="icon">
                   <Instructors />
                 </div>
                 <p>{dictionary.privateInstructor.home[11][language]}</p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

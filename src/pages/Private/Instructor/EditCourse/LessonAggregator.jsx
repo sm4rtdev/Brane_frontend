@@ -18,7 +18,7 @@ const initialState = {
   nombre: "",
   descripcion: "",
   duracion: "",
-  additionalResources: null,
+  additionalResources: "",
   subLabel: "EN",
 };
 
@@ -243,10 +243,12 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
         nombre: inputs.nombre,
         descripcion: inputs.descripcion,
         duracion: inputs.duracion,
-        additionalResources: JSON.parse(inputs.additionalResources),
+        additionalResources: inputs.additionalResources !== "" ? JSON.parse(inputs.additionalResources) : [],
         curso: courseID,
       },
     };
+
+    console.log(obj);
 
     const { ok, data } = await postNewLesson(obj);
 
@@ -256,6 +258,8 @@ const LessonAggregator = ({ courseID, setUpdater }) => {
       setCurrentLessonID(data.data.id);
     } else {
       toast.error(`${data.error.message}`);
+      console.log(data.error);
+      setOngoingUpdate(false);
     }
   };
 

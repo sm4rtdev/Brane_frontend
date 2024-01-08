@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "./CartPage.scss";
@@ -29,6 +29,8 @@ import { CartContext } from "../../../../contexts/CartContext";
 import { getCourseById } from "../../../../api/getCourseById";
 
 const CartPage = () => {
+  const navigate = useNavigate();
+
   const { dictionary, language } = useContext(DictionaryContext);
   const { userData } = useContext(UserDataContext);
   const { cart, removeFromCart } = useContext(CartContext);
@@ -165,13 +167,9 @@ const CartPage = () => {
     const { ok, data } = await paymentProviders[selectedProvider](obj);
 
     if (ok) {
-      // console.log(data.url);
+      console.log(data, selectedProvider);
 
-      if (selectedProvider !== "cardnet") {
-        window.location.href = data.url;
-      } else if (selectedProvider === "brane") {
-        //
-      } else {
+      if (selectedProvider === "cardnet") {
         // Crear un formulario oculto
         const form = document.createElement("form");
         form.method = "post";
@@ -188,6 +186,10 @@ const CartPage = () => {
         // Agregar el formulario al documento y enviarlo
         document.body.appendChild(form);
         form.submit();
+      } else if (selectedProvider === "brane") {
+        navigate("/successful-purchase");
+      } else {
+        window.location.href = data.url;
       }
     } else {
       toast.error(`${data.error.message}`);

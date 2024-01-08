@@ -818,6 +818,10 @@ const dictionary = {
       es: "Eres el autor de este curso",
       en: "Eres el autor de este curso",
     },
+    {
+      es: "Entrar",
+      en: "Get in",
+    },
   ],
   specialCourseCard: [
     { es: "Administrar descargas", en: "Manage downloads" },
@@ -1035,6 +1039,10 @@ const dictionary = {
       { es: "Guardando...", en: "Saving..." },
       { es: "Guardar", en: "Save" },
       { es: "Cuéntanos sobre tu conferencia", en: "Tell us about your conference" },
+      {
+        es: "Contraseña invalida. La contraseña debe tener solo letras, números, guion bajo, guion medio o punto. Máximo 10 caracteres",
+        en: "Invalid password. The password must contain only letters, numbers, underscore, hyphen, or period. Maximum 10 characters",
+      },
     ],
     createCoupons: [
       { es: "Descuento", en: "Discount" },

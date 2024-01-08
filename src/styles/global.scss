@@ -295,6 +295,15 @@
   text-align: center;
 }
 
+.full-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
 .page {
   display: flex;
   flex-direction: column;

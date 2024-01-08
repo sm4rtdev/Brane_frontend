@@ -38,6 +38,33 @@
       background-color: $light-gray-2;
     }
   }
+  .enter-conference-btn {
+    position: absolute;
+    top: 1.125rem;
+    right: 1.125rem;
+    z-index: 10;
+
+    background-color: $white;
+    height: 2rem;
+    width: max-content;
+    padding: 0 1rem 0 2rem;
+    gap: 0.5rem;
+    box-shadow: 0 0 8px $shadow;
+
+    @extend .text-sm;
+    color: $gray;
+    font-weight: 500;
+
+    &:hover {
+      transition: none;
+      background-color: $light-gray;
+    }
+
+    &:active {
+      transition: none;
+      background-color: $light-gray-2;
+    }
+  }
 
   .cart-button {
     position: absolute;

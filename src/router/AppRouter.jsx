@@ -51,6 +51,7 @@ import Terms from "../pages/Public/PolicyTerms/Terms";
 import CreateConferencePage from "../pages/Private/Instructor/CreateConference/CreateConferencePage";
 import ConferencePage from "../pages/Private/Student/ConferencePage/ConferencePage";
 import Meeting from "../pages/Private/Student/ConferencePage/Meeting";
+import Close from "../pages/Private/Student/ConferencePage/Close";
 
 const AppRouter = () => {
   const { userData, loadingInfo } = useContext(UserDataContext);
@@ -119,6 +120,7 @@ const AppRouter = () => {
                     <Route path="user/:slug" element={<UserProfilePage />} />
                     <Route path="edit-profile" element={<EditProfilePage />} />
                     <Route path="/edit-course/:courseID" element={<EditCoursePage />} />
+                    <Route path="conference/:slug" element={<ConferencePage instructor />} />
                     <Route path="*" element={<Navigate to={"/"} />} />
                   </Route>
                 )}
@@ -162,11 +164,12 @@ const AppRouter = () => {
                   // Student
                   <>
                     <Route path="conference/join" element={<Meeting />} />
+                    <Route path="conference/exit" element={<Close />} />
 
                     <Route path="/" element={<SupraContainer mode={"student"} />}>
                       <Route index element={<DiscoverPage />} />
 
-                      <Route path="conference/:conferenceID" element={<ConferencePage />} />
+                      <Route path="conference/:slug" element={<ConferencePage />} />
 
                       <Route path="course/:slug" element={<CoursePage />} />
                       <Route path="course/:slug/learn" element={<LearnPage />} />

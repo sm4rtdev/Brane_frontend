@@ -29,38 +29,26 @@ const DynamicInput = ({
   useEffect(() => {
     const defaultProps = {
       email: () => {
-        !placeholder &&
-          setPlaceholderValue(dictionary.dynamicInput[0][language]);
+        !placeholder && setPlaceholderValue(dictionary.dynamicInput[0][language]);
         setIconValue(<MailOutline />);
       },
       password: () => {
-        !placeholder &&
-          setPlaceholderValue(dictionary.dynamicInput[1][language]);
+        !placeholder && setPlaceholderValue(dictionary.dynamicInput[1][language]);
         setIconValue(<KeyOutline />);
       },
       search: () => {
-        !placeholder &&
-          setPlaceholderValue(dictionary.dynamicInput[2][language]);
+        !placeholder && setPlaceholderValue(dictionary.dynamicInput[2][language]);
         setIconValue(<SearchOutline />);
       },
     };
 
-    if (
-      type !== "text" &&
-      type !== "date" &&
-      type !== "number" &&
-      type !== "tel"
-    ) {
+    if (type !== "text" && type !== "date" && type !== "datetime-local" && type !== "number" && type !== "tel") {
       defaultProps[type]();
     }
   }, [type, language]); //eslint-disable-line
 
   return (
-    <div
-      className={`dynamic-input ${noIcon ? "no-icon" : ""} ${
-        price ? "price" : ""
-      }`}
-    >
+    <div className={`dynamic-input ${noIcon ? "no-icon" : ""} ${price ? "price" : ""}`}>
       {label && <label htmlFor={id}>{label}</label>}
       {!noIcon && iconValue}
       {multiline ? (
@@ -96,6 +84,9 @@ const DynamicInput = ({
               : {
                   max: new Date().toISOString().slice(0, 10),
                 }))}
+          {...(type === "datetime-local" && {
+            min: new Date().toISOString().slice(0, -8),
+          })}
           placeholder={placeholder ? placeholder : placeholderValue}
           {...((price || number) && { pattern: "[0-9]*", min: 0 })}
           onChange={(e) => {

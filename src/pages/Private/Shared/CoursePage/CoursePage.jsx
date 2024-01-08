@@ -61,7 +61,7 @@ const CoursePage = () => {
       if (ok) {
         setCurrentCourse(data.data.curso);
         setCurrentCourseLessons(data.data.clases);
-        console.log(data.data.curso);
+        // console.log(data.data.curso);
       } else {
         toast.error(`${data.error.message}`);
       }
@@ -209,7 +209,7 @@ const CoursePage = () => {
                               navigate(`/my-courses`);
                             } else {
                               if (currentCourse.tipo === "conferencia") {
-                                navigate(`/conference/${currentCourse.id}`);
+                                navigate(`/conference/${currentCourse.slug}`);
                               } else {
                                 navigate(`/course/${currentCourse.slug}/learn`);
                               }
@@ -450,7 +450,7 @@ const CoursePage = () => {
                                   navigate(`/my-courses`);
                                 } else {
                                   if (currentCourse.tipo === "conferencia") {
-                                    navigate(`/conference/${currentCourse.id}`);
+                                    navigate(`/conference/${currentCourse.slug}`);
                                   } else {
                                     navigate(`/course/${currentCourse.slug}/learn`);
                                   }
@@ -480,7 +480,7 @@ const CoursePage = () => {
                             navigate(`/my-courses`);
                           } else {
                             if (currentCourse.tipo === "conferencia") {
-                              navigate(`/conference/${currentCourse.id}`);
+                              navigate(`/conference/${currentCourse.slug}`);
                             } else {
                               navigate(`/course/${currentCourse.slug}/learn`);
                             }

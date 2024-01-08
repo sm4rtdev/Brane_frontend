@@ -212,7 +212,7 @@ const CreateConferenceInfo = () => {
         descripcion: inputs.descripcion,
         idioma: inputs.idioma,
         whatYouWillLearn: JSON.parse(inputs.whatYouWillLearn),
-        requirements: JSON.parse(inputs.requirements),
+        requeriments: JSON.parse(inputs.requirements),
         whoIsThisCourseFor: JSON.parse(inputs.whoIsThisCourseFor),
         categoria: inputs.categoria,
         precio: inputs.precio,
@@ -220,9 +220,9 @@ const CreateConferenceInfo = () => {
         duracion: inputs.duration,
         status: "draft",
         tipo: "conferencia",
-        timezone: "America/Santo_Domingo",
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         password: inputs.password,
-        start: inputs.start,
+        start: inputs.start + ":00Z",
       },
     };
 
@@ -235,6 +235,11 @@ const CreateConferenceInfo = () => {
     } else {
       toast.error(`${data.error.message}`);
     }
+  };
+
+  const validPassword = (pass) => {
+    const regex = /^[a-zA-Z0-9@\-_.]{1,10}$/;
+    return regex.test(pass);
   };
 
   const checkEverything = () => {
@@ -252,6 +257,8 @@ const CreateConferenceInfo = () => {
       toast.error(dictionary.privateInstructor.createConference[8][language]);
     } else if (inputs.password === "") {
       toast.error(dictionary.privateInstructor.createConference[9][language]);
+    } else if (!validPassword(inputs.password)) {
+      toast.error(dictionary.privateInstructor.createConference[64][language]);
     } else if (inputs.whatYouWillLearn.length === 0) {
       toast.error(dictionary.privateInstructor.createConference[10][language]);
     } else if (inputs.requirements.length === 0) {
@@ -359,7 +366,7 @@ const CreateConferenceInfo = () => {
 
         <>
           <h3>{dictionary.privateInstructor.createConference[34][language]}</h3>
-          <DynamicInput id={"start"} state={[inputs, setInputs]} type="date" min />
+          <DynamicInput id={"start"} state={[inputs, setInputs]} type="datetime-local" min />
           <p className="hint">{dictionary.privateInstructor.createConference[35][language]}</p>
         </>
 

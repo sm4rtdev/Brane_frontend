@@ -198,6 +198,8 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
       },
     };
 
+    console.log(obj);
+
     const { ok, data } = await postNewCourse(obj);
 
     if (ok) {
@@ -207,6 +209,8 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
       uploadFile(newID);
     } else {
       toast.error(`${data.error.message}`);
+      console.log(data.error);
+      setOngoingUpdate(false);
     }
   };
 
@@ -225,7 +229,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
       toast.error(dictionary.privateInstructor.createCourseInfo[7][language]);
     } else if (inputs.whoIsThisCourseFor.length === 0) {
       toast.error(dictionary.privateInstructor.createCourseInfo[8][language]);
-    } else if (inputs.categoria.length === null) {
+    } else if (!inputs.categoria) {
       toast.error(dictionary.privateInstructor.createCourseInfo[9][language]);
     } else if (inputs.precio < 5) {
       toast.error(dictionary.privateInstructor.createCourseInfo[10][language]);

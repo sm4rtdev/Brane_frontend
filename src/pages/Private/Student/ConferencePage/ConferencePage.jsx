@@ -20,13 +20,10 @@ import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getReviewByCourse } from "../../../../api/getReviewByCourse";
 import { getJoinConference } from "../../../../api/getJoinConference";
-import { getMyConference } from "../../../../api/getMyConference";
-import { getUserBySlug } from "../../../../api/getUserBySlug";
-
-// import Meeting from "./Meeting";
+import { getCourseBySlug } from "../../../../api/getCourseBySlug";
 
 function ConferencePage() {
-  const { conferenceID } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
 
   const { openReportModal } = useContext(ReportModalContext);
@@ -40,16 +37,12 @@ function ConferencePage() {
   useEffect(() => {
     // Main data
     (async () => {
-      const { ok, data } = await getMyConference(conferenceID);
+      const { ok, data } = await getCourseBySlug(slug);
 
       if (ok) {
-        if (data.data.length === 1) {
-          let response = data.data[0].attributes.curso.data.attributes;
+        let response = data.data.curso;
 
-          setConference(response);
-        } else {
-          navigate("/", { replace: true });
-        }
+        setConference(response);
       } else {
         toast.error(`${data.error.message}`);
         navigate("/", { replace: true });
@@ -58,7 +51,7 @@ function ConferencePage() {
 
     // Reviews
     (async () => {
-      const { ok, data } = await getReviewByCourse(conferenceID);
+      const { ok, data } = await getReviewByCourse(slug);
 
       if (ok) {
         setReviews(data.data);
@@ -67,29 +60,21 @@ function ConferencePage() {
       }
     })();
 
-    // Join conference
-    (async () => {
-      const { ok, data } = await getJoinConference(conferenceID);
-
-      if (ok) {
-        console.log(data);
-        setJoinData(data);
-      } else {
-        toast.error(`${data.error.message}`);
-      }
-    })();
-
     //eslint-disable-next-line
-  }, [conferenceID]);
+  }, [slug]);
 
   useEffect(() => {
     if (conference) {
-      // Get instructor
+      // Set instructor
+      setInstructor(conference.instructor);
+
+      // Join conference
       (async () => {
-        const { ok, data } = await getUserBySlug(conference.instructor.data.attributes.slug);
+        const { ok, data } = await getJoinConference(conference.id);
 
         if (ok) {
-          setInstructor(data);
+          console.log(data);
+          setJoinData(data);
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -125,13 +110,16 @@ function ConferencePage() {
                       <strong>Detalles de la conferencia:</strong>
                       <ul>
                         <li>
-                          Fecha y hora de inicio: <span>8929829</span>
+                          Fecha y hora de inicio: <span>{Date(joinData.meetingStartTime)}</span>
                         </li>
                         <li>
-                          Duración estimada: <span>asdasdasd min</span>
+                          Duración estimada: <span>{joinData.meetingDuration}</span>
                         </li>
                         <li>
-                          Tu nombre como participante: <span>asasd</span>
+                          Tu nombre a mostrar: <span>{joinData.userName}</span>
+                        </li>
+                        <li>
+                          Role: <span>{joinData.role === "instructor" ? "Instructor" : "Participante"}</span>
                         </li>
                       </ul>
 
@@ -140,9 +128,14 @@ function ConferencePage() {
                         onClick={() => {
                           window.joinDataTemp = JSON.stringify(joinData);
 
-                          let win = window.open("/conference/join", "_blank", {
-                            popup: true,
-                          });
+                          let win = window.open(
+                            "/conference/join",
+                            "_blank",
+                            {
+                              popup: true,
+                            },
+                            "width=" + window.screen.availWidth + ",height=" + window.screen.availHeight
+                          );
 
                           win.focus();
                         }}
@@ -154,7 +147,7 @@ function ConferencePage() {
                     </div>
                   </div>
                 ) : (
-                  <SpinnerOfDoom />
+                  <SpinnerOfDoom standalone />
                 )}
 
                 <Tabulation tabs={["Description", "Reviews"]} options={{ type: "bubble", color: "black" }}>
@@ -236,7 +229,7 @@ function ConferencePage() {
                     className="report-button"
                     onClick={() =>
                       openReportModal({
-                        courseID: conferenceID,
+                        courseID: conference.id,
                         lessonID: 0,
                       })
                     }
