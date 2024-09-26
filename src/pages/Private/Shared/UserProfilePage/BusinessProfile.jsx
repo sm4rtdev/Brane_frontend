@@ -19,6 +19,7 @@ import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getCompanyUsers } from "../../../../api/getCompanyUsers";
 import { BGProfileIns } from "../../../../assets/images";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const BusinessProfile = ({
   user,
@@ -31,6 +32,7 @@ const BusinessProfile = ({
   file,
 }) => {
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   const [employees, setEmployees] = useState(null);
 
@@ -54,7 +56,7 @@ const BusinessProfile = ({
       <div className="banner">
         <BGProfileIns />
 
-        <span>Perfil de empresa</span>
+        <span>{dictionary.businessProfile[0][language]}</span>
 
         {user.me && (
           <Link to="/edit-profile" className="small-button">
@@ -103,10 +105,10 @@ const BusinessProfile = ({
             >
               {isLoading ? (
                 <>
-                  <SpinnerOfDoom /> Cargando
+                  <SpinnerOfDoom /> {dictionary.businessProfile[1][language]}
                 </>
               ) : (
-                "Cambiar avatar"
+                `${dictionary.businessProfile[2][language]}`
               )}
             </button>
           )}
@@ -126,15 +128,15 @@ const BusinessProfile = ({
           <div className="meta">
             {user.meta && user.me ? (
               <>
-                <p>Numero de trabajadores: {user.meta.numberOfWorkers}</p>
-                <p>Dirección: {user.meta.address}</p>
+                <p>{dictionary.businessProfile[3][language]}: {user.meta.numberOfWorkers}</p>
+                <p>{dictionary.businessProfile[4][language]}: {user.meta.address}</p>
               </>
             ) : (
               <>
                 <p>
-                  Numero de trabajadores: {user.info.metaData.numberOfWorkers}
+                  {dictionary.businessProfile[3][language]}: {user.info.metaData.numberOfWorkers}
                 </p>
-                <p>Dirección: {user.info.metaData.address}</p>
+                <p>{dictionary.businessProfile[4][language]}: {user.info.metaData.address}</p>
               </>
             )}
           </div>
@@ -214,7 +216,7 @@ const BusinessProfile = ({
       </div>
 
       <Tabulation
-        tabs={["Empleados"]}
+        tabs={[dictionary.businessProfile[5][language]]}
         options={{ type: "bubble", color: "black" }}
       >
         <>
@@ -227,7 +229,7 @@ const BusinessProfile = ({
                 })}
               </div>
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.businessProfile[6][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone />

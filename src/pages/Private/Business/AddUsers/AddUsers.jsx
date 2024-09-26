@@ -95,7 +95,7 @@ const AddUsers = () => {
                           <span>ID:</span> <strong>{user.id}</strong>
                         </p>
                         <p>
-                          <span>Email:</span> <strong>{user.email}</strong>
+                          <span>{dictionary.privateBusiness.addUser[9][language]}:</span> <strong>{user.email}</strong>
                         </p>
                         {!user.name && !user.apellidos ? (
                           <p>{dictionary.privateBusiness.addUsers[4][language]}</p>

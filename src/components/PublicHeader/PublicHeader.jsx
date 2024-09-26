@@ -4,6 +4,7 @@ import { LogoBlack } from "../../assets/images";
 
 import "./PublicHeader.scss";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
+import Languages from "../Languages/Languages";
 
 const PublicHeader = () => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -22,6 +23,7 @@ const PublicHeader = () => {
       </nav>
 
       <div className="access">
+        <Languages />
         <Link className="action-button" to={"/auth/login"}>
           {dictionary.publicHeader[4][language]}
         </Link>

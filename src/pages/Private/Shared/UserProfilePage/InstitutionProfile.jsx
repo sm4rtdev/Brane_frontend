@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -20,6 +20,7 @@ import Little from "./Little";
 import { getCoursesFromInstitution } from "../../../../api/getCoursesFromInstitution";
 import { getInstitutionUsers } from "../../../../api/getInstitutionUsers";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const InstitutionProfile = ({
   uploadProfilePicture,
@@ -33,6 +34,7 @@ const InstitutionProfile = ({
 }) => {
   const [instructors, setInstructors] = useState(null);
   const [courses, setCourses] = useState(null);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   useEffect(() => {
     const getCourses = async () => {
@@ -85,7 +87,7 @@ const InstitutionProfile = ({
       <div className="banner">
         <BGProfileIns />
 
-        <span>Perfil de institución</span>
+        <span>{dictionary.institutionProfile[0][language]}</span>
 
         {user.me && (
           <Link to="/edit-profile" className="small-button">
@@ -134,10 +136,10 @@ const InstitutionProfile = ({
             >
               {isLoading ? (
                 <>
-                  <SpinnerOfDoom /> Cargando
+                  <SpinnerOfDoom /> {dictionary.institutionProfile[1][language]}
                 </>
               ) : (
-                "Cambiar avatar"
+                `${dictionary.institutionProfile[2][language]}`
               )}
             </button>
           )}
@@ -157,13 +159,13 @@ const InstitutionProfile = ({
           <div className="meta">
             {user.meta && user.me ? (
               <>
-                <p>Fecha de fundación: {user.meta.foundationDate}</p>
-                <p>Dirección: {user.meta.address}</p>
+                <p>{dictionary.institutionProfile[3][language]}: {user.meta.foundationDate}</p>
+                <p>{dictionary.institutionProfile[4][language]}: {user.meta.address}</p>
               </>
             ) : (
               <>
-                <p>Fecha de fundación: {user.info.metaData.foundationDate}</p>
-                <p>Dirección: {user.info.metaData.address}</p>
+                <p>{dictionary.institutionProfile[3][language]}: {user.info.metaData.foundationDate}</p>
+                <p>{dictionary.institutionProfile[4][language]}: {user.info.metaData.address}</p>
               </>
             )}
           </div>
@@ -263,7 +265,7 @@ const InstitutionProfile = ({
                 })}
               </div>
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.institutionProfile[5][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone />
@@ -279,7 +281,7 @@ const InstitutionProfile = ({
                 })}
               </div>
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.institutionProfile[5][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone />

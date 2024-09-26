@@ -15,9 +15,11 @@ import { putCompanyMetadata } from "../../../../api/putCompanyMetadata";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { putUserMetadata } from "../../../../api/putUserMetadata";
 import { putUser } from "../../../../api/putUser";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const EditProfilePage = ({ mode }) => {
   const { userData, setRefresh } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,7 +81,7 @@ const EditProfilePage = ({ mode }) => {
 
         if (ok) {
           setRefresh(Date.now());
-          toast.success("Your data has been successfully updated");
+          toast.success(dictionary.editProfilePage[0][language]);
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -100,7 +102,7 @@ const EditProfilePage = ({ mode }) => {
 
         if (ok) {
           setRefresh(Date.now());
-          toast.success("Tus datos han sido actualizados exitosamente");
+          toast.success(dictionary.editProfilePage[0][language]);
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -121,7 +123,7 @@ const EditProfilePage = ({ mode }) => {
 
         if (ok) {
           setRefresh(Date.now());
-          toast.success("Tus datos han sido actualizados exitosamente");
+          toast.success(dictionary.editProfilePage[0][language]);
         } else {
           toast.error(`${data.error.message}`);
         }
@@ -151,7 +153,7 @@ const EditProfilePage = ({ mode }) => {
                 backButton: true,
                 bigTitle: true,
               }}
-              title={"Edit Profile"}
+              title={dictionary.editProfilePage[1][language]}
             />
           </HeaderToggler>
         ) : (
@@ -160,13 +162,13 @@ const EditProfilePage = ({ mode }) => {
 
         <div className="main">
           <div className="section-title-box">
-            <h1>Editar perfil</h1>
+            <h1>{dictionary.editProfilePage[1][language]}</h1>
           </div>
 
           <form>
             {mode === "company" ? (
               <>
-                <h2>Información de la empresa</h2>
+                <h2>{dictionary.editProfilePage[2][language]}</h2>
 
                 {/* Profile */}
                 <DynamicInput
@@ -174,7 +176,7 @@ const EditProfilePage = ({ mode }) => {
                   state={[inputsUser, setInputsUser]}
                   placeholder="ACME"
                   noIcon
-                  label={"Nombre de empresa"}
+                  label={dictionary.editProfilePage[3][language]}
                 />
 
                 {/* Meta */}
@@ -183,34 +185,34 @@ const EditProfilePage = ({ mode }) => {
                   state={[inputsMeta, setInputsMeta]}
                   noIcon
                   type="date"
-                  label={"Fecha de fundación"}
+                  label={dictionary.editProfilePage[4][language]}
                 />
                 <DynamicInput
                   id={"location"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Dirección"
+                  placeholder={dictionary.editProfilePage[5][language]}
                   noIcon
-                  label={"Dirección"}
+                  label={dictionary.editProfilePage[5][language]}
                 />
                 <DynamicInput
                   id={"numberOfWorkers"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Numero de Trabajadores"
+                  placeholder={dictionary.editProfilePage[6][language]}
                   type="number"
                   noIcon
                   number
-                  label={"Numero de Trabajadores"}
+                  label={dictionary.editProfilePage[6][language]}
                 />
                 <DynamicInput
                   id={"description"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Descripción de la empresa"
+                  placeholder={dictionary.editProfilePage[7][language]}
                   noIcon
                   multiline
-                  label={"Descripción de la empresa"}
+                  label={dictionary.editProfilePage[7][language]}
                 />
                 <p className="explanatory">
-                  La descripción será visible en tu perfil.
+                  {dictionary.editProfilePage[8][language]}
                 </p>
                 <DynamicInput
                   id={"facebook"}
@@ -248,20 +250,20 @@ const EditProfilePage = ({ mode }) => {
                       inputsMeta.linkedin === userData.meta.linkedin)
                   }
                 >
-                  {isLoading && <SpinnerOfDoom />}Actualizars
+                  {isLoading && <SpinnerOfDoom />}{dictionary.editProfilePage[9][language]}
                 </button>
               </>
             ) : mode === "institution" ? (
               <>
-                <h2>Información de la institución</h2>
+                <h2>{dictionary.editProfilePage[10][language]}</h2>
 
                 {/* Profile */}
                 <DynamicInput
                   id={"firstName"}
                   state={[inputsUser, setInputsUser]}
-                  placeholder="Nombre de la Institución"
+                  placeholder={dictionary.editProfilePage[11][language]}
                   noIcon
-                  label={"Nombre de la Institución"}
+                  label={dictionary.editProfilePage[11][language]}
                 />
 
                 {/* Meta */}
@@ -270,25 +272,25 @@ const EditProfilePage = ({ mode }) => {
                   state={[inputsMeta, setInputsMeta]}
                   noIcon
                   type="date"
-                  label={"Fecha de fundación"}
+                  label={dictionary.editProfilePage[4][language]}
                 />
                 <DynamicInput
                   id={"location"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Dirección"
+                  placeholder={dictionary.editProfilePage[5][language]}
                   noIcon
-                  label={"Dirección"}
+                  label={dictionary.editProfilePage[5][language]}
                 />
                 <DynamicInput
                   id={"description"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Descripción de la Institución"
+                  placeholder={dictionary.editProfilePage[12][language]}
                   noIcon
                   multiline
-                  label={"Descripción de la Institución"}
+                  label={dictionary.editProfilePage[12][language]}
                 />
                 <p className="explanatory">
-                  La descripción será visible en tu perfil.
+                  {dictionary.editProfilePage[8][language]}
                 </p>
                 <DynamicInput
                   id={"facebook"}
@@ -309,12 +311,12 @@ const EditProfilePage = ({ mode }) => {
                   label={"Linkedin"}
                 />
 
-                <h2 className="separator">Contact information</h2>
+                <h2 className="separator">{dictionary.editProfilePage[13][language]}</h2>
                 <DynamicInput
                   id={"phone"}
                   state={[inputsUser, setInputsUser]}
                   noIcon
-                  label={"Phone number"}
+                  label={dictionary.editProfilePage[14][language]}
                 />
 
                 <button
@@ -333,76 +335,75 @@ const EditProfilePage = ({ mode }) => {
                       inputsMeta.linkedin === userData.meta.linkedin)
                   }
                 >
-                  {isLoading && <SpinnerOfDoom />}Actualizar
+                  {isLoading && <SpinnerOfDoom />}{dictionary.editProfilePage[9][language]}
                 </button>
               </>
             ) : (
               <>
-                <h2>Información del estudiante</h2>
+                <h2>{dictionary.editProfilePage[15][language]}</h2>
 
                 <DynamicInput
                   id={"firstName"}
                   state={[inputsUser, setInputsUser]}
                   placeholder="John"
                   noIcon
-                  label={"Nombre"}
+                  label={dictionary.editProfilePage[16][language]}
                 />
                 <DynamicInput
                   id={"lastName"}
                   state={[inputsUser, setInputsUser]}
                   placeholder="Doe"
                   noIcon
-                  label={"Apellido"}
+                  label={dictionary.editProfilePage[17][language]}
                 />
                 <DynamicInput
                   id={"birthdate"}
                   type="date"
                   state={[inputsMeta, setInputsMeta]}
                   noIcon
-                  label={"Fecha de nacimiento"}
+                  label={dictionary.editProfilePage[18][language]}
                 />
                 <DynamicInput
                   id={"location"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="España"
+                  placeholder={dictionary.editProfilePage[19][language]}
                   noIcon
-                  label={"Dirección"}
+                  label={dictionary.editProfilePage[5][language]}
                 />
                 <DynamicInput
                   id={"ocupation"}
                   state={[inputsMeta, setInputsMeta]}
-                  placeholder="Diseñador"
+                  placeholder={dictionary.editProfilePage[20][language]}
                   noIcon
-                  label={"Ocupación"}
+                  label={dictionary.editProfilePage[21][language]}
                 />
 
                 {userData.mode === "instructor" && (
                   <div className="only">
-                    <h2>Información del instructor</h2>
+                    <h2>{dictionary.editProfilePage[22][language]}</h2>
 
                     <DynamicInput
                       id={"headline"}
                       state={[inputsUser, setInputsUser]}
-                      placeholder="Enseñando desde el 99"
+                      placeholder={dictionary.editProfilePage[23][language]}
                       noIcon
-                      label={"Titular"}
+                      label={dictionary.editProfilePage[24][language]}
                       max={30}
                     />
                     <p className="explanatory">
-                      El título aparecerá junto a su nombre en sus cursos y
-                      resultados de búsqueda.
+                      {dictionary.editProfilePage[25][language]}
                     </p>
 
                     <DynamicInput
                       id={"biography"}
                       state={[inputsMeta, setInputsMeta]}
-                      placeholder="Instructor en Brane"
+                      placeholder={dictionary.editProfilePage[26][language]}
                       noIcon
                       multiline
-                      label={"Biografía"}
+                      label={dictionary.editProfilePage[27][language]}
                     />
                     <p className="explanatory">
-                      La Bio será visible en tu perfil.
+                      {dictionary.editProfilePage[28][language]}
                     </p>
 
                     <DynamicInput
@@ -443,7 +444,7 @@ const EditProfilePage = ({ mode }) => {
                       inputsMeta.linkedin === userData.meta.linkedin)
                   }
                 >
-                  {isLoading && <SpinnerOfDoom />}Actualizar
+                  {isLoading && <SpinnerOfDoom />}{dictionary.editProfilePage[9][language]}
                 </button>
               </>
             )}

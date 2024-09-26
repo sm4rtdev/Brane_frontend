@@ -17,9 +17,11 @@ import { getMyWishlistFolders } from "../../../../api/getMyWishlistFolders";
 import { getSpecificWishlist } from "../../../../api/getSpecificWishlist";
 import { postCreateWishlist } from "../../../../api/postCreateWishlist";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const WishlistPage = () => {
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
   const { listID } = useParams();
 
   // Folders View
@@ -81,7 +83,7 @@ const WishlistPage = () => {
       getFolders();
       setInput({ name: "" });
       setIsCreationOpen(false);
-      toast.success(`Lista de deseos creada`);
+      toast.success(dictionary.wishListPage[0][language]);
     } else {
       toast.error(`${data.error.message}`);
     }
@@ -98,7 +100,7 @@ const WishlistPage = () => {
 
     if (ok) {
       getList(listID);
-      toast.success(data.message === "borrado" ? "Removido" : "Añadido");
+      toast.success(data.message === "borrado" ? dictionary.wishListPage[1][language] : dictionary.wishListPage[2][language]);
     } else {
       toast.error(`${data.error.message}`);
     }
@@ -115,7 +117,7 @@ const WishlistPage = () => {
               cart: true,
             }}
             title={
-              listID !== undefined ? (list ? list.name : true) : "Wishlist"
+              listID !== undefined && list ? list.name : dictionary.wishListPage[3][language]
             }
           />
         </HeaderToggler>
@@ -124,7 +126,7 @@ const WishlistPage = () => {
             myFolders ? (
               <>
                 <div className="title">
-                  <h1>Mis listas</h1>
+                  <h1>{dictionary.wishListPage[4][language]}</h1>
                 </div>
 
                 <div className="add-list-section">
@@ -133,7 +135,7 @@ const WishlistPage = () => {
                       <DynamicInput
                         id={"name"}
                         state={[input, setInput]}
-                        label="Nombre de la lista"
+                        label={dictionary.wishListPage[5][language]}
                         noIcon
                       />
                       <button
@@ -141,7 +143,7 @@ const WishlistPage = () => {
                         disabled={input.name.length < 3}
                         onClick={createWishlist}
                       >
-                        Crear lista
+                        {dictionary.wishListPage[6][language]}
                       </button>
                     </>
                   ) : (
@@ -149,7 +151,7 @@ const WishlistPage = () => {
                       className="action-button"
                       onClick={() => setIsCreationOpen(true)}
                     >
-                      Agregar nueva lista
+                      {dictionary.wishListPage[7][language]}
                     </button>
                   )}
                 </div>
@@ -162,7 +164,7 @@ const WishlistPage = () => {
                   </div>
                 ) : (
                   <div className="no-info">
-                    <p>Actualmente no tienes ninguna lista de deseos creada</p>
+                    <p>{dictionary.wishListPage[8][language]}</p>
                   </div>
                 )}
               </>
@@ -191,10 +193,10 @@ const WishlistPage = () => {
                 </div>
               ) : (
                 <div className="no-info">
-                  <p>Esta lista está actualmente vacía</p>
+                  <p>{dictionary.wishListPage[9][language]}</p>
 
                   <Link className="action-button" to="/">
-                    Descubre nuevos cursos
+                    {dictionary.wishListPage[10][language]}
                   </Link>
                 </div>
               )}

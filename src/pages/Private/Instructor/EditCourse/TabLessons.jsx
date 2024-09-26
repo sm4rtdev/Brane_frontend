@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import "../CreateCourse/InstructorCourseLessons.scss";
@@ -8,10 +8,12 @@ import LessonAggregator from "./LessonAggregator";
 import SingleLesson from "./SingleLesson";
 import { getLessonsByCourseID } from "../../../../api/getLessonsByCourseID";
 import { deleteLesson } from "../../../../api/deleteLesson";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const TabLessons = ({ courseID }) => {
   const [lessons, setLessons] = useState(null);
   const [updater, setUpdater] = useState(null);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   // ------------------- Get info
 
@@ -39,7 +41,7 @@ const TabLessons = ({ courseID }) => {
   const requestLessonRemoval = async (lessonID) => {
     const { ok, data } = await deleteLesson(lessonID);
     if (ok) {
-      toast.success(`Lección eliminada exitosamente`);
+      toast.success(dictionary.privateInstructor.createCourseInfo[139][language]);
       setLessons(null);
       getLessons();
     } else {
@@ -56,7 +58,7 @@ const TabLessons = ({ courseID }) => {
               return <SingleLesson key={lesson.id} {...lesson} index={index} deleteLesson={requestLessonRemoval} />;
             })
           ) : (
-            <p className="no-data">Sin datos</p>
+            <p className="no-data">{dictionary.privateInstructor.createCourseInfo[140][language]}</p>
           )
         ) : (
           <SpinnerOfDoom standalone center />
@@ -72,7 +74,7 @@ const TabLessons = ({ courseID }) => {
                 setMoreIsOpen(true);
               }}
             >
-              Añadir otra lección
+              {dictionary.privateInstructor.createCourseInfo[141][language]}
             </button>
           </>
         ) : (

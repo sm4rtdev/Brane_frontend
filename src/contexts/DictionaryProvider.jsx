@@ -782,6 +782,7 @@ const dictionary = {
         es: "Añadir",
         en: "Add",
       },
+      { es: "Correo electrónico", en: "Email" },
     ],
     faq: [
       { es: "Preguntas frecuentes", en: "Frequently Asked Questions" },
@@ -907,6 +908,7 @@ const dictionary = {
     { es: "Agregar nueva lista", en: "Add new list" },
     { es: "Crear lista", en: "Create list" },
     { es: "Guardar", en: "Save" },
+    { es: "Cursos", en: "Courses" },
   ],
   cartProvider: [
     { es: "El curso ha sido añadido al carrito.", en: "The course has been added to the cart." },
@@ -932,6 +934,7 @@ const dictionary = {
     { es: "Resumen de ventas de tus instructores:", en: "Sales summary of your instructors:" },
     { es: "Filtrar por curso", en: "Filter by course" },
     { es: "Filtrar por instructor", en: "Filter by instructor" },
+    { es: "Correo electrónico", en: "Email" },
   ],
   privateIntitutionsManage: [
     { es: "Usuario creado", en: "User created" },
@@ -1214,6 +1217,350 @@ const dictionary = {
         es: "Sí planeas colocar subtitulos a tus lecciones, selecciona en que idioma",
         en: "If you plan to add subtitles to your lessons, select which language",
       },
+      {
+        es: "La información de la conferencia ha sido actualizada.",
+        en: "Conference information has been updated.",
+      },
+      {
+        es: "La información del curso ha sido actualizada.",
+        en: "The course information has been updated.",
+      },
+      {
+        es: "La imagen de la conferencia ha sido cargada.",
+        en: "The conference image has been loaded.",
+      },
+      {
+        es: "La imagen del curso ha sido cargada.",
+        en: "The course image has been loaded.",
+      },
+      {
+        es: "El nombre de la conferencia no puede estar vacío y debe tener al menos 3 letras",
+        en: "The conference name cannot be empty and must have at least 3 letters",
+      },
+      {
+        es: "El nombre del curso no puede estar vacío y debe tener al menos 3 letras",
+        en: "The course name cannot be empty and must have at least 3 letters",
+      },
+      {
+        es: "Introduzca una breve descripción",
+        en: "Enter a brief description",
+      },
+      {
+        es: "Introduce una descripción",
+        en: "Enter a description",
+      },
+      {
+        es: "Selecciona un idioma",
+        en: "Select a language",
+      },
+      {
+        es: "Debes especificar qué aprenderás con la conferencia",
+        en: "You must specify what you will learn from the conference",
+      },
+      {
+        es: "Debes especificar qué aprenderás con el curso",
+        en: "You must specify what you will learn with the course",
+      },
+      {
+        es: "Debes ingresar al menos 1 requerimiento",
+        en: "You must enter at least 1 requirement",
+      },
+      {
+        es: "Debes especificar para quién es la conferencia.",
+        en: "You must specify who the conference is for.",
+      },
+      {
+        es: "Debes especificar para quién es el curso.",
+        en: "You must specify who the course is for.",
+      },
+      {
+        es: "Debes seleccionar una categoría",
+        en: "You must select a category",
+      },
+      {
+        es: "El precio de la conferencia no puede ser inferior a 5$",
+        en: "The price of the conference cannot be less than $5",
+      },
+      {
+        es: "El precio del curso no puede ser inferior a 5$",
+        en: "The price of the course cannot be less than $5",
+      },
+      {
+        es: "Falta una imagen",
+        en: "Missing image",
+      },
+      {
+        es: "Se ha sido eliminado la conferencia.",
+        en: "The conference has been deleted.",
+      },
+      {
+        es: "Se ha sido eliminado el curso.",
+        en: "The course has been deleted.",
+      },
+      {
+        es: "Se ha publicado la conferencia.",
+        en: "The conference has been published.",
+      },
+      {
+        es: "Se ha publicado el curso.",
+        en: "The course has been published.",
+      },
+      {
+        es: "Una de las lecciones del curso no tiene vídeo.",
+        en: "One of the lessons in the course does not have a video.",
+      },
+      {
+        es: "El curso debe tener al menos una lección.",
+        en: "The course must have at least one lesson.",
+      },
+      {
+        es: "Lo basico",
+        en: "The basics",
+      },
+      {
+        es: "Título de la conferencia",
+        en: "Title of the conference",
+      },
+      {
+        es: "Título del curso",
+        en: "Course Title",
+      },
+      {
+        es: "Cómo...",
+        en: "As...",
+      },
+      {
+        es: "Elija un título único que lo distinga de otras conferencias",
+        en: "Choose a unique title that sets you apart from other conferences",
+      },
+      {
+        es: "Elija un título único que lo distinga de otros cursos",
+        en: "Choose a unique title that sets you apart from other courses",
+      },
+      {
+        es: "Breve descripción de la conferencia",
+        en: "Brief description of the conference",
+      },
+      {
+        es: "Breve descripción del curso",
+        en: "Brief description of the course",
+      },
+      {
+        es: "Larga historia corta...",
+        en: "Long story short...",
+      },
+      {
+        es: "Una descripción que describe rápidamente de qué se trata la conferencia",
+        en: "A description that quickly describes what the conference is about",
+      },
+      {
+        es: "Descripción de la conferencia",
+        en: "Conference Description",
+      },
+      {
+        es: "Descripción del curso",
+        en: "Course Description",
+      },
+      {
+        es: "Érase una vez...",
+        en: "Once upon a time...",
+      },
+      {
+        es: "Una descripción completa de la conferencia",
+        en: "A complete description of the conference",
+      },
+      {
+        es: "Una descripción completa del curso",
+        en: "A complete description of the course",
+      },
+      {
+        es: "Idioma de la conferencia",
+        en: "Language of the conference",
+      },
+      {
+        es: "Idioma del curso",
+        en: "Course language",
+      },
+      {
+        es: "El idioma hablado de la conferencia",
+        en: "The spoken language of the conference",
+      },
+      {
+        es: "El idioma hablado de las lecciones de tu curso",
+        en: "The spoken language of your course lessons",
+      },
+      {
+        es: "Certificado",
+        en: "Certificate",
+      },
+      {
+        es: "Sí",
+        en: "Yes",
+      },
+      {
+        es: "¿El curso debería emitir un certificado al finalizar?",
+        en: "Should the course issue a certificate upon completion?",
+      },
+      {
+        es: "Información específica",
+        en: "Specific information",
+      },
+      {
+        es: "Lo que vas a aprender",
+        en: "What you will learn",
+      },
+      {
+        es: "Añadir algo",
+        en: "Add something",
+      },
+      {
+        es: "Cuéntale a tu audiencia lo que aprenderán después de completar esta conferencia",
+        en: "Tell your audience what they will learn after completing this lecture",
+      },
+      {
+        es: "Cuéntale a tu audiencia lo que aprenderán después de completar este curso",
+        en: "Tell your audience what they will learn after completing this course",
+      },
+      {
+        es: "Añadir",
+        en: "Add",
+      },
+      {
+        es: "Requerimientos",
+        en: "Requirements",
+      },
+      {
+        es: "Aprenderás...",
+        en: "You will learn...",
+      },
+      {
+        es: "Necesitará...",
+        en: "You will need...",
+      },
+      {
+        es: "Dile a tu audiencia qué experiencia o requisitos necesitan para completar esta conferencia",
+        en: "Tell your audience what experience or requirements they need to complete this conference",
+      },
+      {
+        es: "Dile a tu audiencia qué experiencia o requisitos necesitan para completar este curso",
+        en: "Tell your audience what experience or requirements they need to complete this course",
+      },
+      {
+        es: "Para quién es este curso",
+        en: "Who is this course for?",
+      },
+      {
+        es: "Una persona...",
+        en: "A person...",
+      },
+      {
+        es: "¿Quién puede utilizar tu conferencia?",
+        en: "Who can use your conference?",
+      },
+      {
+        es: "¿Quién puede utilizar tu curso?",
+        en: "Who can use your course?",
+      },
+      {
+        es: "Categorías",
+        en: "Categories",
+      },
+      {
+        es: "Selecciona la categoría que mejor define el contenido de tu conferencia",
+        en: "Select the category that best defines the content of your conference",
+      },
+      {
+        es: "Selecciona la categoría que mejor define el contenido de tu curso",
+        en: "Select the category that best defines the content of your course",
+      },
+      {
+        es: "El precio",
+        en: "The price",
+      },
+      {
+        es: "El precio para el público.",
+        en: "The price for the public.",
+      },
+      {
+        es: "Nuestra tarifa de servicio",
+        en: "Our service fee",
+      },
+      {
+        es: "Tus ganancias netas",
+        en: "Your net earnings",
+      },
+      {
+        es: "Tus ganancias netas son las ganancias que obtendrás después de cada venta de esta conferencia",
+        en: "Your net earnings are the profits you will make after each sale from this conference",
+      },
+      {
+        es: "Imagen de la conferencia",
+        en: "Image of the conference",
+      },
+      {
+        es: "Imagen del curso",
+        en: "Course image",
+      },
+      {
+        es: "Añadir imagen",
+        en: "Add image",
+      },
+      {
+        es: "Cambiar imagen",
+        en: "Change image",
+      },
+      {
+        es: "Guardar cambios",
+        en: "Save changes",
+      },
+      {
+        es: "Subiendo archivo...",
+        en: "Uploading file...",
+      },
+      {
+        es: "Salvando...",
+        en: "Saving...",
+      },
+      {
+        es: "Guardar",
+        en: "Save",
+      },
+      {
+        es: "Comprobando la conferencia...",
+        en: "Checking the conference...",
+      },
+      {
+        es: "Comprobando el curso...",
+        en: "Checking the course...",
+      },
+      {
+        es: "Publicar",
+        en: "Publish",
+      },
+      {
+        es: "Eliminar (Acción No Reversible)",
+        en: "Delete (Non-Reversible Action)",
+      },
+      {
+        es: "Eliminando...",
+        en: "Deleting...",
+      },
+      {
+        es: "Eliminar",
+        en: "Delete",
+      },
+      {
+        es: "Lección eliminada exitosamente",
+        en: "Lesson successfully deleted",
+      },
+      {
+        es: "Sin datos",
+        en: "No data",
+      },
+      {
+        es: "Añadir otra lección",
+        en: "Añadir otra lección",
+      },
     ],
     lessonAggregator: [
       { es: "Se ha subido el vídeo de la lección.", en: "The lesson video has been uploaded." },
@@ -1280,6 +1627,119 @@ const dictionary = {
     { es: "Sin datos", en: "No data" },
     { es: "Mis chats", en: "My chats" },
     { es: "Escriba su mensaje aquí...", en: "Write your message here..." },
+    { es: "Charlar", en: "Chat" },
+  ],
+  coursePage: [
+    { es: "Precio actual", en: "Current price" },
+    { es: "Añadir a la cesta", en: "Add to cart" },
+    { es: "Comprar ahora", en: "Buy Now" },
+    { es: "Añadir a la lista de deseos", en: "Add to wishlist" },
+    { es: "Eres el creador de", en: "You are the creator of" },
+    { es: "esta conferencia", en: "this conference" },
+    { es: "este curso", en: "this course" },
+    { es: "Ya tienes", en: "You already have" },
+    { es: "Ver mis cursos", en: "See my courses" },
+    { es: "Ir a la conferencia", en: "Go to the conference" },
+    { es: "Ir al curso", en: "Go to the course" },
+    { es: "Estrellas", en: "Stars" },
+    { es: "(Sin reseñas)", en: "(No reviews)" },
+    { es: "Subtítulos", en: "Subtitles" },
+    { es: "Estudiantes", en: "Students" },
+    { es: "Detalles", en: "Details" },
+    { es: "Contenido", en: "Content" },
+    { es: "Lo que vas a aprender", en: "What you will learn" },
+    { es: "Requisitos", en: "Requirements" },
+    { es: "Descripción", en: "Description" },
+    { es: "Para quién es esta conferencia", en: "Who is this conference for" },
+    { es: "Resumen", en: "Summary" },
+    { es: "Duración estimada", en: "Estimated duration" },
+    { es: "Lecciones", en: "Lessons" },
+    { es: "Recursos adicionales", en: "Additional Resources" },
+    { es: "Editar conferencia", en: "Edit conference" },
+    { es: "Editar curso", en: "Edit course" },
+    { es: "Esta conferencia ya está en tu carrito", en: "This conference is already in your cart" },
+    { es: "Este curso ya está en tu carrito", en: "This course is already in your cart" },
+    { es: "Compra esta conferencia para ver su contenido", en: "Buy this conference to see its content" },
+    { es: "Compra este curso para ver su contenido", en: "Buy this course to see its content" },
+    { es: "Ir al carrito", en: "Go to cart" },
+    { es: "Añadir al carrito", en: "Add to cart" },
+  ],
+  editProfilePage: [
+    { es: "Tus datos han sido actualizados exitosamente", en: "Your data has been successfully updated" },
+    { es: "Editar perfil", en: "Edit profile" },
+    { es: "Información de la empresa", en: "Company information" },
+    { es: "Nombre de empresa", en: "Company Name" },
+    { es: "Fecha de fundación", en: "Founding date" },
+    { es: "Dirección", en: "Address" },
+    { es: "Numero de Trabajadores", en: "Number of Workers" },
+    { es: "Descripción de la empresa", en: "Company Description" },
+    { es: "La descripción será visible en tu perfil.", en: "The description will be visible on your profile." },
+    { es: "Actualizars", en: "Updates" },
+    { es: "Información de la institución", en: "Institution information" },
+    { es: "Nombre de la Institución", en: "Name of the Institution" },
+    { es: "Descripción de la Institución", en: "Description of the Institution" },
+    { es: "Información del contacto", en: "Contact information" },
+    { es: "Número de teléfono", en: "Phone number" },
+    { es: "Información del estudiante", en: "Student Information" },
+    { es: "Nombre", en: "First Name" },
+    { es: "Apellido", en: "Last Name" },
+    { es: "Fecha de nacimiento", en: "Date of birth" },
+    { es: "España", en: "Spain" },
+    { es: "Diseñador", en: "Designer" },
+    { es: "Ocupación", en: "Occupation" },
+    { es: "Información del instructor", en: "Instructor Information" },
+    { es: "Enseñando desde el 99", en: "Teaching since 99" },
+    { es: "Titular", en: "Holder" },
+    {
+      es: "El título aparecerá junto a su nombre en sus cursos y resultados de búsqueda.", 
+      en: "The title will appear next to your name in your courses and search results." 
+    },
+    { es: "Instructor en Brane", en: "Instructor in Brane" },
+    { es: "Biografía", en: "Biography" },
+    { es: "La Bio será visible en tu perfil.", en: "The Bio will be visible on your profile." },
+    { es: "", en: "" },
+    { es: "", en: "" },
+    { es: "", en: "" },
+  ],
+  myCoursePage: [
+    { es: "Asignado", en: "Assigned" },
+    { es: "Removido", en: "Removed" },
+    { es: "Mis cursos", en: "My courses" },
+    { es: "Buscar mis cursos", en: "Find my courses" },
+    { es: "Publicado", en: "Published" },
+    { es: "Editar cursos", en: "Edit courses" },
+    { es: "Mis cursos y conferencias", en: "My courses and conferences" },
+    { es: "Descargas", en: "Downloads" },
+    { es: "Asignar usuarios", en: "Assign users" },
+    { es: "Aún no has publicado ningún curso", en: "You have not published any courses yet" },
+    { es: "No se encontraron coincidencias para su búsqueda", en: "No matches were found for your search" },
+    { es: "Aún no has comprado ningún curso", en: "You have not purchased any courses yet" },
+    { es: "Aún no has creado ningún curso", en: "You haven't created any courses yet" },
+    { es: "No tienes cursos con lecciones descargables", en: "You don't have any courses with downloadable lessons" },
+    { es: "Curso seleccionado", en: "Selected course" },
+    { es: "Correo electrónico", en: "Email" },
+    { es: "Sin nombre", en: "Unnamed" },
+    { es: "Desasignar", en: "Unassign" },
+    { es: "Asignar", en: "Assign" },
+    { es: "Aún no tienes usuarios", en: "You don't have any users yet" },
+    { es: "Seleccione un curso primero", en: "Select a course first" },
+  ],
+  businessProfile: [
+    { es: "Perfil de empresa", en: "Company profile" },
+    { es: "Cargando", en: "Charging" },
+    { es: "Cambiar avatar", en: "Change avatar" },
+    { es: "Numero de trabajadores", en: "Number of workers" },
+    { es: "Dirección", en: "Address" },
+    { es: "Empleados", en: "Employees" },
+    { es: "Sin datos", en: "No data" },
+  ],
+  institutionProfile: [
+    { es: "Perfil de institución", en: "Institution profile" },
+    { es: "Cargando", en: "Charging" },
+    { es: "Cambiar avatar", en: "Change avatar" },
+    { es: "Fecha de fundación", en: "Founding date" },
+    { es: "Dirección", en: "Address" },
+    { es: "Sin datos", en: "No data" },
   ],
   studentProfile: [
     { es: "Descripción", en: "Description" },
@@ -1322,34 +1782,235 @@ const dictionary = {
     { es: "no existe", en: "does not exist" },
   ],
   instructorProfile: [
-    { es: "Descripción", en: "Description" },
-    { es: "Descuento", en: "Discount" },
-    { es: "Método de pago", en: "Payment Method" },
-    { es: "Fecha", en: "Date" },
-    {
-      es: "Tu configuración de notificaciones ha sido actualizada.",
-      en: "Your notification settings have been updated",
-    },
-    { es: "Perfil de estudiante", en: "Student profile" },
+    { es: "Perfil del instructor", en: "Instructor profile" },
+    { es: "Cargando", en: "Charging" },
     { es: "Cambiar avatar", en: "Change avatar" },
     { es: "Edad", en: "Age" },
-    { es: "Dirección", en: "Location" },
+    { es: "Dirección", en: "Address" },
     { es: "Ocupación", en: "Occupation" },
-    { es: "Notificaciones de mensajes", en: "Message notifications" },
-    { es: "Notificación de promociones", en: "Promotions notification" },
-    { es: "Notificaciones de anuncios del instructor", en: "Instructor Announcement Notifications" },
-    { es: "Cursos inscritos", en: "Enrolled Courses" },
-    { es: "Cursos completados", en: "Completed courses" },
-    { es: "Certificados obtenidos", en: "Obtained Certificates" },
-    { es: "Cursos", en: "Courses" },
-    { es: "Aún no has comprado cursos", en: "You have not purchased courses yet" },
-    { es: "El usuario no ha comprado cursos.", en: "The user has not purchased courses." },
-    { es: "Ver más", en: "See more" },
-    { es: "Actualmente tienes", en: "You currently have" },
-    { es: "créditos", en: "credits" },
     { es: "Sin datos", en: "No data" },
-    { es: "Créditos U", en: "U Credits" },
-    { es: "Historial de compras", en: "Purchase history" },
+  ],
+  conferencePage : [
+    { es: "Detalles de la conferencia", en: "Conference details" },
+    { es: "Fecha y hora de inicio", en: "Start date and time" },
+    { es: "Duración estimada", en: "Estimated duration" },
+    { es: "Tu nombre a mostrar", en: "Your display name" },
+    { es: "Participante", en: "Participant" },
+    { es: "Entrar a la conferencia", en: "Enter the conference" },
+    { es: "Tras hacer clic en el botón se te abrirá una ventana emergente.", en: "After clicking the button, a pop-up window will open." },
+    { es: "Esta conferencia no tiene descripción", en: "This conference has no description" },
+    { es: "Reseñas", en: "Reviews" },
+    { es: "Aún no hay reseñas", en: "There are no reviews yet" },
+    { es: "Ver perfil", en: "View profile" },
+    { es: "¿Algún problema con la conferencia?", en: "Any problems with the conference?" },
+    { es: "Informar de un problema", en: "Report a problem" },
+    { es: "Partida...", en: "Leaving..." },
+    { es: "Cargando reunión de Zoom...", en: "Loading Zoom Meeting..." },
+  ],
+  learnPage: [
+    { es: "Lección", en: "Lesson" },
+    { es: "Este curso no posee clases en este momento.", en: "This course does not have classes at this time." },
+  ],
+  lessonPage: [
+    { es: "La operacion no pudo ser completada", en: "The operation could not be completed" },
+    { es: "Lección completada", en: "Lesson completed" },
+    { es: "Has enviado el comentario", en: "You have submitted the comment" },
+    { es: "Estás viendo un vídeo descargado.", en: "You are watching a downloaded video." },
+    { es: "Has completado este curso!", en: "You have completed this course!" },
+    { es: "Cargando", en: "Charging" },
+    { es: "Descargar certificado", en: "Download certificate" },
+    { es: "Leccion previa", en: "Previous lesson" },
+    { es: "Marcar lección como completada", en: "Mark lesson as completed" },
+    { es: "Siguiente lección", en: "Next lesson" },
+    { es: "Esta clase no tiene descripción", en: "This class has no description" },
+    { es: "Reseñas", en: "Reviews" },
+    { es: "Aún no hay reseñas", en: "There are no reviews yet" },
+    { es: "Recursos adicionales", en: "Additional Resources" },
+    { es: "Esta clase no tiene material adicional", en: "This class has no additional material" },
+    { es: "Ver perfil", en: "View profile" },
+    { es: "¿Algún problema con el vídeo?", en: "Any problems with the video?" },
+    { es: "Informar de un problema", en: "Report a problem" },
+    { es: "Comentarios de la lección", en: "Lesson Comments" },
+    { es: "Sin comentarios aún", en: "No comments yet" },
+    { es: "Deja un comentario", en: "Leave a comment" },
+    { es: "Envío...", en: "Sending..." },
+    { es: "Enviar", en: "Send" },
+    { es: "¿Algún problema con el vídeo?", en: "Any problems with the video?" },
+    { es: "Lecciones del curso", en: "Lessons from the course" },
+  ],
+  payment: [
+    { es: "El pago ha fallado", en: "Payment has failed" },
+    { es: "No te preocupes, puedes volver a intentarlo en cualquier momento.", en: "Don't worry, you can try again at any time." },
+    { es: "Ir al inicio", en: "Go to the beginning" },
+    { es: "Felicidades!", en: "Congratulations!" },
+    { es: "Te has matriculado exitosamente en el curso", en: "You have successfully enrolled in the course" },
+    { es: "Ver mis cursos", en: "See my courses" },
+  ],
+  roleSelection: [
+    { es: "Selecciona el perfil con el que quieres acceder", en: "Select the profile you want to access with" },
+    { es: "Estudiante", en: "Student" },
+  ],
+  searchPage: [
+    { 
+      es: "Ingrese el nombre de un curso, categoría, subcategoría o instructor en la barra de búsqueda", 
+      en: "Enter the name of a course, category, subcategory, or instructor in the search bar" 
+    },
+    { es: "Resultados de la búsqueda", en: "Search results" },
+    { es: "Categorías", en: "Categories" },
+    { es: "Cursos y Conferencias", en: "Courses and Conferences" },
+    { es: "Instructores", en: "Instructors" },
+    { es: "No hay resultados", en: "No results found" },
+    { es: "Buscar por categorías principales", en: "Browse by main categories" },
+    { es: "Los mejores instructores", en: "The best instructors" },
+  ],
+  wishListPage: [
+    { es: "Lista de deseos creada", en: "Wishlist created" },
+    { es: "Removido", en: "Removed" },
+    { es: "Añadido", en: "Added" },
+    { es: "Lista de deseos", en: "Wishlist" },
+    { es: "Mis listas", en: "My lists" },
+    { es: "Nombre de la lista", en: "List name" },
+    { es: "Crear lista", en: "Create list" },
+    { es: "Agregar nueva lista", en: "Add new list" },
+    { es: "Actualmente no tienes ninguna lista de deseos creada", en: "You currently have no wish lists created" },
+    { es: "Esta lista está actualmente vacía", en: "This list is currently empty" },
+    { es: "Descubre nuevos cursos", en: "Discover new courses" },
+  ],
+  policy: [
+    { es: "Política de privacidad", en: "Privacy Policy" },
+    {
+      es: `La presente Política de Privacidad establece los términos con que BRANE usa y protege la información que es proporcionada por sus usuarios al momento de utilizar su app. Esta compañía está comprometida con la seguridad de los datos de sus usuarios.`, 
+      en: `This Privacy Policy establishes the terms under which BRANE uses and protects the information provided by its users when using its app. This company is committed to the security of its users' data.`
+    },
+    { es: "INFORMACIÓN DEL SITIO Y GENERALIDADES", en: "SITE INFORMATION AND GENERALITIES" },
+    {
+      es: `La presente Política de Privacidad se aplica a la utilización de los datos personales de cualquier persona que visite o se registre en la web y/o aplicación de BRANE, provista por BRANE.`, 
+      en: `This Privacy Policy applies to the use of personal data of any person who visits or registers on the BRANE website and/or application, provided by BRANE.`
+    },
+    {
+      es: `AL ACCEDER, CONECTARSE, REGISTRARSE O DE CUALQUIER OTRA FORMA UTILIZAR LA WEB Y/O EL APP, EL USUARIO CONFIRMA QUE LEYÓ, ENTENDIÓ, CONSINTIÓ Y ACEPTÓ LOS TÉRMINOS Y CONDICIONES DE ESTA POLÍTICA DE PRIVACIDAD. SI NO ESTÁ DE ACUERDO CON LOS TÉRMINOS DE ESTA POLÍTICA DE PRIVACIDAD, EL USUARIO NO DEBE UTILIZAR LA WEB, APP, PLATAFORMA DE CONTENIDO NI LOS CANALES DE COMUNICACIÓN DE BRANE.`, 
+      en: `BY ACCESSING, CONNECTING, REGISTERING OR OTHERWISE USING THE WEBSITE AND/OR THE APP, THE USER CONFIRMS THAT HE/SHE HAS READ, UNDERSTOOD, CONSENT TO AND ACCEPTED THE TERMS AND CONDITIONS OF THIS PRIVACY POLICY. IF THE USER DOES NOT AGREE WITH THE TERMS OF THIS PRIVACY POLICY, THE USER SHOULD NOT USE THE WEBSITE, APP, CONTENT PLATFORM OR BRANE COMMUNICATION CHANNELS.`
+    },
+    {
+      es: `SI NO ESTÁ DE ACUERDO CON LOS TÉRMINOS DE ESTA POLÍTICA DE PRIVACIDAD, EL USUARIO NO DEBE UTILIZAR LA WEB, APP, PLATAFORMA DE CONTENIDO NI LOS CANALES DE COMUNICACIÓN DE BRANE.`, 
+      en: `IF YOU DO NOT AGREE WITH THE TERMS OF THIS PRIVACY POLICY, THE USER SHOULD NOT USE THE WEBSITE, APP, CONTENT PLATFORM OR BRANE COMMUNICATION CHANNELS.`
+    },
+    { es: "RESPONSABLE DE TRATAMIENTO DE SUS DATOS PERSONALES", en: "RESPONSIBLE FOR THE PROCESSING OF YOUR PERSONAL DATA" },
+    {
+      es: `BRANE es una sociedad responsable del tratamiento de los Datos Personales que el Usuario facilite en la App, o que se recopilen o procesen en la App. En cualquier caso, cualesquiera recopilación, uso e información compartida en relación con sus Datos Personales, el Usuario quedará sujeto a esta Política, sus actualizaciones y la política de cookies complementaria.`, 
+      en: `BRANE is a company responsible for the processing of Personal Data that the User provides in the App, or that is collected or processed in the App. In any case, any collection, use and sharing of information in relation to your Personal Data, the User will be subject to this Policy, its updates and the complementary cookie policy.`
+    },
+    { es: "BASES LEGALES", en: "LEGAL BASIS" },
+    {
+      es: `BRANE procesa la información personal del Usuario sobre las siguientes bases legales: a) consentimiento libre, expreso e informado de los titulares de datos; b) cumplimiento de todo acuerdo contractual con los titulares de datos; c) cumplimiento de obligaciones legales; d) intereses legítimos autorizados por la LPDP.`, 
+      en: `BRANE processes the User's personal information on the following legal bases: a) free, express and informed consent of the data subjects; b) compliance with any contractual agreement with the data subjects; c) compliance with legal obligations; d) legitimate interests authorized by the LPDP.`
+    },
+    { es: "INFORMACIÓN RECOGIDA", en: "INFORMATION COLLECTED" },
+    {
+      es: `Nuestra Web y/o App podrá recoger información personal, por ejemplo: Nombre, información de contacto (como su dirección de correo electrónico, teléfono e información demográfica, comportamientos de uso y consumo).`, 
+      en: `Our Website and/or App may collect personal information, for example: Name, contact information (such as your email address, telephone number and demographic information, usage and consumption behaviors).`
+    },
+    { es: "FINALIDAD DE LA INFORMACIÓN RECOGIDA", en: "PURPOSE OF THE INFORMATION COLLECTED" },
+    {
+      es: `Nuestra Web y/o App emplea la información con el fin de proporcionar el mejor servicio al usuario, particularmente para mantener un registro de usuarios, de pedidos en caso que aplique, gestionar, analizar, desarrollar, personalizar y mejorar la App, nuestros productos y servicios.`, 
+      en: `Our Website and/or App uses the information in order to provide the best service to the user, particularly to keep a record of users, orders if applicable, manage, analyze, develop, personalize and improve the App, our products and services.`
+    },
+    {
+      es: `Una cookie es un fichero que es enviado con la finalidad de solicitar permiso para almacenarse en su ordenador. Nuestra app emplea las cookies para poder identificar las páginas que son visitadas y su frecuencia`, 
+      en: `A cookie is a file that is sent for the purpose of requesting permission to be stored on your computer. Our app uses cookies to identify the pages that are visited and their frequency.`
+    },
+    { es: "CON QUIÉN SE COMPARTE TU INFORMACIÓN PERSONAL", en: "WITH WHOM YOUR PERSONAL INFORMATION IS SHARED" },
+    {
+      es: `BRANE jamás venderá tu información personal sin tu consentimiento. Tampoco revelaremos a terceros tu información personal sin tu consentimiento.`, 
+      en: `BRANE will never sell your personal information without your consent. We will also never disclose your personal information to third parties without your consent.`
+    },
+    { es: "ENLACES A TERCEROS", en: "LINKS TO THIRD PARTIES" },
+    {
+      es: `Tanto la Web y/o App de BRANE pudieran contener enlaces a otros sitios que pudieran ser de su interés.`, 
+      en: `Both the BRANE Website and/or App may contain links to other sites that may be of interest to you.`
+    },
+    { es: "CONTROL DE SU INFORMACIÓN PERSONAL", en: "CONTROL OF YOUR PERSONAL INFORMATION" },
+    {
+      es: `En cualquier momento usted puede restringir la recopilación o el uso de la información personal que es proporcionada a nuestra web y/o App. Cada vez que se le solicite rellenar un formulario, como el de alta de usuario, puede marcar o desmarcar la opción de recibir información por correo electrónico.`, 
+      en: `At any time you may restrict the collection or use of personal information that is provided to our website and/or App. Each time you are asked to fill out a form, such as the user registration form, you can check or uncheck the option to receive information by email.`
+    },
+    { es: "CONFIDENCIALIDAD Y SEGURIDAD DE LA INFORMACIÓN", en: "CONFIDENTIALITY AND SECURITY OF INFORMATION" },
+    {
+      es: `BRANE ha adoptado medidas de seguridad razonables para proteger la información del Usuario e impedir el acceso no autorizado a sus datos o cualquier modificación, divulgación o destrucción no autorizada de los mismos.`, 
+      en: `BRANE has adopted reasonable security measures to protect the User's information and prevent unauthorized access to its data or any unauthorized modification, disclosure or destruction thereof.`
+    },
+    { es: "CONSERVACIÓN DE LA INFORMACIÓN", en: "INFORMATION CONSERVATION" },
+    {
+      es: `BRANE conservará los datos personales por el tiempo que sea necesario para el cumplimiento de las finalidades por las que fueron recolectados.`, 
+      en: `BRANE will retain personal data for as long as necessary to fulfill the purposes for which they were collected.`
+    },
+    { es: "DERECHOS DEL USUARIO SOBRE LA INFORMACIÓN", en: "USER RIGHTS TO INFORMATION" },
+    {
+      es: `El Usuario tiene los siguientes derechos con relación a sus datos personales: a) Solicitar el acceso a sus datos; b)Rectificar datos incompletos o inexactos que se relacionen con su persona; c) Solicitar a BRANE que elimine sus datos cuando no haya base legal para que sigan procesando dichos datos; d)Retirar cualquier consentimiento que haya proporcionado para el tratamiento de tus datos personales.`, 
+      en: `The User has the following rights in relation to his/her personal data: a) Request access to his/her data; b) Rectify incomplete or inaccurate data relating to him/her; c) Request BRANE to delete his/her data when there is no legal basis for them to continue processing said data; d) Withdraw any consent he/she has provided for the processing of his/her personal data.`
+    },
+    { es: "MODIFICACIÓN DE LA POLÍTICA DE PRIVACIDAD", en: "MODIFICATION OF THE PRIVACY POLICY" },
+    {
+      es: `Esta Política está sujeta a cambios y actualizaciones. El Usuario debe revisar la Política regularmente para asegurarse de que está familiarizado con su contenido.`, 
+      en: `This Policy is subject to change and updates. The User should review the Policy regularly to ensure that he/she is familiar with its content.`
+    },
+  ],
+  terms: [
+    { es: "Términos de servicio", en: "Terms of Service" },
+    {
+      es: "Bienvenido a Brane, una plataforma de aprendizaje en línea que te ofrece cursos de alta calidad impartidos por expertos en la materia. Al usar nuestros Servicios, aceptas los siguientes términos y condiciones, que rigen nuestra relación contigo en relación con los Servicios. Los presentes Términos y Condiciones de uso (“Condiciones”) regulan el acceso o uso que usted haga, como persona o empresa, desde cualquier país del mundo de aplicaciones, páginas web, contenidos, productos, cursos, talleres, conferencias, diplomados y cualquier otro servicio, (“Los Servicios”) puestos a disposición por Brane LTD y sus subsidiarias, una sociedad de responsabilidad limitada constituida en los Estados Unidos",
+      en: "Welcome to Brane, an online learning platform that offers you high-quality courses taught by subject matter experts. By using our Services, you agree to the following terms and conditions, which govern our relationship with you in relation to the Services. These Terms and Conditions of Use (“Terms”) govern your access to or use, as an individual or company, from any country in the world of applications, websites, content, products, courses, workshops, conferences, diplomas and any other services, (“The Services”) made available by Brane LTD and its subsidiaries, a limited liability company incorporated in the United States"
+    },
+    { es: "Introducción", en: "Introduction" },
+    { 
+      es: "Brane es una plataforma de aprendizaje en línea que te ofrece cursos de alta calidad impartidos por expertos en la materia. Al usar nuestros Servicios, aceptas los siguientes términos y condiciones, que rigen nuestra relación contigo en relación con los Servicios.", 
+      en: "Brane is an online learning platform that provides you with high-quality courses taught by subject matter experts. By using our Services, you agree to the following terms and conditions, which govern our relationship with you in relation to the Services." 
+    },
+    { es: "Uso de los Servicios", en: "Use of the Services" },
+    { 
+      es: "Puedes usar nuestros Servicios solo para fines legales y de conformidad con estos Términos. No estás autorizado para utilizar nuestros Servicios si no puedes celebrar contratos vinculantes con Brane, si eres menor de edad o si te han suspendido o prohibido el uso de los Servicios.", 
+      en: "You may use our Services only for lawful purposes and in accordance with these Terms. You are not authorized to use our Services if you cannot form binding contracts with Brane, if you are a minor, or if you have been suspended or banned from using the Services." 
+    },
+    { es: "Contenido y propiedad intelectual", en: "Content and intellectual property" },
+    { 
+      es: "La plataforma Brane, el contenido de los cursos y todo el material relacionado, incluidos, entre otros, texto, gráficos, imágenes, fotografías, audio, música, videos, software, códigos, títulos, diseños, palabras clave, conceptos y temas, se encuentran protegidos por leyes de derechos de autor, marcas registradas y otras leyes de propiedad intelectual aplicables.", 
+      en: "The Brane Platform, the Course Content, and all related materials, including but not limited to text, graphics, images, photographs, audio, music, videos, software, code, titles, designs, keywords, concepts, and themes, are protected by applicable copyright, trademark, and other intellectual property laws." 
+    },
+    { es: "Política de privacidad", en: "Privacy Policy" },
+    { 
+      es: "En Brane, nos tomamos muy en serio tu privacidad y nuestra Política de privacidad describe cómo recopilamos, utilizamos y compartimos tus datos personales.", 
+      en: "At Brane, we take your privacy seriously and our Privacy Policy describes how we collect, use and share your personal data." 
+    },
+    { es: "Pago y renovación de cursos", en: "Payment and renewal of courses" },
+    { 
+      es: "Los cursos, talleres, diplomados o carreras de Brane pueden tener un precio y se pueden adquirir individualmente o como parte de una suscripción. Los precios de los cursos se indican en la plataforma y pueden cambiar en cualquier momento. Al comprar un curso, aceptas pagar el precio indicado en la plataforma.", 
+      en: "Brane courses, workshops, diplomas or degrees may be priced and can be purchased individually or as part of a subscription. Course prices are listed on the platform and may change at any time. By purchasing a course, you agree to pay the price listed on the platform." 
+    },
+    { es: "Cancelación y reembolso de cursos", en: "Cancellation and refund of courses" },
+    { 
+      es: "En Brane, queremos que estés satisfecho con los cursos que adquieras. Por lo tanto, ofrecemos una política de cancelación y reembolso justa y transparente.", 
+      en: "At Brane, we want you to be happy with the courses you purchase. Therefore, we offer a fair and transparent cancellation and refund policy." 
+    },
+    { es: "Derechos de propiedad intelectual", en: "Intellectual property rights" },
+    { 
+      es: "Respetamos los derechos de propiedad intelectual de terceros y esperamos que nuestros usuarios y tutores hagan lo mismo. Si crees que tu trabajo ha sido copiado de una manera que constituye una infracción de derechos de autor, comunicate con nosotros legal@brane.com y trataremos de resolver el problema de manera justa y rápida.", 
+      en: "We respect the intellectual property rights of others and expect our users and tutors to do the same. If you believe that your work has been copied in a way that constitutes copyright infringement, please contact us at legal@brane.com and we will try to resolve the issue fairly and quickly." 
+    },
+    { es: "Garantías y exenciones de responsabilidad", en: "Warranties and Disclaimers" },
+    { 
+      es: "Los cursos, talleres, conferencias y demás servicios se proporcionan \"tal cual\" y sin garantía de ningún tipo, ya sea expresa o implícita. Brane no garantiza que los cursos satisfagan tus necesidades o expectativas y no se hace responsable de ningún daño directo, indirecto, incidental, especial, punitivo o consecuente que surja del uso o la incapacidad de uso de los Servicios.", 
+      en: "The courses, workshops, conferences and other services are provided \"as is\" and without warranty of any kind, either express or implied. Brane does not guarantee that the courses will meet your needs or expectations and is not liable for any direct, indirect, incidental, special, punitive or consequential damages arising from the use or inability to use the Services." 
+    },
+    { es: "Indemnización", en: "Compensation" },
+    { 
+      es: "Al usar nuestros Servicios, aceptas indemnizar, defender y eximir de responsabilidad a Brane y a sus empleados, representantes y agentes, frente a cualquier reclamación, acción legal, demanda, pérdida, responsabilidad, daño, costo y gasto (incluidos, entre otros, los honorarios razonables de los abogados) que surjan de tu incumplimiento de estos Términos o del uso de los Servicios.", 
+      en: "By using our Services, you agree to indemnify, defend and hold harmless Brane and its employees, representatives and agents, from and against any and all claims, causes of action, demands, losses, liabilities, damages, costs and expenses (including, but not limited to, reasonable attorneys' fees) arising from your breach of these Terms or your use of the Services." 
+    },
+    { es: "Resolución de conflictos", en: "Conflict resolution" },
+    { 
+      es: "Cualquier conflicto relacionado con estos Términos se resolverá mediante arbitraje de conformidad con las normas de arbitraje.", 
+      en: "Any dispute relating to these Terms shall be resolved by arbitration in accordance with the arbitration rules." 
+    },
   ],
 };
 

@@ -16,9 +16,11 @@ import { getAllClasses } from "../../../../api/getAllClasses";
 import { getCourseBySlug } from "../../../../api/getCourseBySlug";
 import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../../../contexts/UserDataContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const LearnPage = () => {
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
   const { slug } = useParams();
 
   const [lessons, setLessons] = useState(null);
@@ -75,7 +77,7 @@ const LearnPage = () => {
                   lessons.map((lesson, index) => {
                     return (
                       <div className="lesson" key={lesson.id}>
-                        <h2>Lesson {index + 1}</h2>
+                        <h2>{dictionary.learnPage[0][language]} {index + 1}</h2>
 
                         <Link to={`lesson/${lesson.id}`} className="lesson-card">
                           <div className="left">
@@ -95,7 +97,7 @@ const LearnPage = () => {
                     );
                   })
                 ) : (
-                  <p className="no-data">Este curso no posee clases en este momento</p>
+                  <p className="no-data">{dictionary.learnPage[1][language]}</p>
                 )}
               </div>
             </div>

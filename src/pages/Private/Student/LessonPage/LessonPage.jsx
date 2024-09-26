@@ -35,6 +35,7 @@ import { getCourseBySlug } from "../../../../api/getCourseBySlug";
 import { getCertificate } from "../../../../api/getCertificate";
 import { getUserBySlug } from "../../../../api/getUserBySlug";
 import { getClass } from "../../../../api/getClass";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const LessonPage = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const LessonPage = () => {
 
   const { openReportModal } = useContext(ReportModalContext);
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
   const commentsContainer = useRef(null);
 
   const [inputs, setInputs] = useState({
@@ -121,7 +123,7 @@ const LessonPage = () => {
 
       request.onerror = (event) => {
         console.error(event);
-        toast.error("La operacion no pudo ser completada");
+        toast.error(dictionary.lessonPage[0][language]);
       };
 
       request.onsuccess = (event) => {
@@ -242,7 +244,7 @@ const LessonPage = () => {
       if (ok) {
         setSimpleDisable(true);
         getCourse();
-        toast.success(`Lección completada`);
+        toast.success(dictionary.lessonPage[1][language]);
       } else {
         toast.warning(`${data.error.message}`);
       }
@@ -272,7 +274,7 @@ const LessonPage = () => {
       getComments();
       setInputs({ comment: "" });
 
-      toast.success(`Has enviado el comentario`);
+      toast.success(dictionary.lessonPage[2][language]);
     } else {
       toast.warning(`${data.error.message}`);
     }
@@ -345,7 +347,7 @@ const LessonPage = () => {
                 {localVideo && (
                   <div className="offline-msg">
                     <CheckmarkCircle />
-                    <p>Estás viendo un vídeo descargado.</p>
+                    <p>{dictionary.lessonPage[3][language]}</p>
                   </div>
                 )}
 
@@ -353,16 +355,16 @@ const LessonPage = () => {
 
                 {courseProgress && courseProgress.completado && (
                   <div className="completed-course-box">
-                    <strong>Has completado este curso!</strong>
+                    <strong>{dictionary.lessonPage[4][language]}</strong>
 
                     {course && course.certificado && (
                       <button className="action-button" onClick={loadCertificate} disabled={loadingCertificate}>
                         {loadingCertificate ? (
                           <>
-                            <SpinnerOfDoom /> Cargando
+                            <SpinnerOfDoom /> {dictionary.lessonPage[5][language]}
                           </>
                         ) : (
-                          "Descargar certificado"
+                          `${dictionary.lessonPage[6][language]}`
                         )}
                       </button>
                     )}
@@ -376,7 +378,7 @@ const LessonPage = () => {
                       onClick={previousLesson}
                       disabled={currentPositionInArrayOfLessons === 0}
                     >
-                      Leccion previa
+                      {dictionary.lessonPage[7][language]}
                     </button>
                   ) : (
                     <div></div>
@@ -386,7 +388,7 @@ const LessonPage = () => {
                     onClick={markAsCompleted}
                     disabled={lessons[currentPositionInArrayOfLessons].status === "finalizada" || simpleDisable}
                   >
-                    Marcar lección como completada
+                    {dictionary.lessonPage[8][language]}
                   </button>
                   {currentPositionInArrayOfLessons !== lessons.length - 1 ? (
                     <button
@@ -394,7 +396,7 @@ const LessonPage = () => {
                       onClick={nextLesson}
                       disabled={currentPositionInArrayOfLessons === lessons.length - 1}
                     >
-                      Siguiente lección
+                      {dictionary.lessonPage[9][language]}
                     </button>
                   ) : (
                     <div></div>
@@ -409,14 +411,14 @@ const LessonPage = () => {
                     {currentLesson.descripcion ? (
                       <p className="description">{currentLesson.descripcion}</p>
                     ) : (
-                      <p className="no-data">Esta clase no tiene descripción</p>
+                      <p className="no-data">{dictionary.lessonPage[10][language]}</p>
                     )}
                   </>
                   <>
                     {reviews ? (
                       reviews.length > 0 ? (
                         <div className="reviews">
-                          <h2>Reseñas</h2>
+                          <h2>{dictionary.lessonPage[11][language]}</h2>
                           <div className="inner-container">
                             {reviews.map((review) => {
                               return (
@@ -448,7 +450,7 @@ const LessonPage = () => {
                           </div>
                         </div>
                       ) : (
-                        <p className="no-data">Aún no hay reseñas</p>
+                        <p className="no-data">{dictionary.lessonPage[12][language]}</p>
                       )
                     ) : (
                       <SpinnerOfDoom standalone />
@@ -458,7 +460,7 @@ const LessonPage = () => {
                     {currentLesson.additionalResources !== null ? (
                       <>
                         <div className="additional-resources">
-                          <h2>Recursos adicionales</h2>
+                          <h2>{dictionary.lessonPage[13][language]}</h2>
 
                           <div className="links">
                             {currentLesson.additionalResources.map((el, index) => {
@@ -476,7 +478,7 @@ const LessonPage = () => {
                         </div>
                       </>
                     ) : (
-                      <p className="no-data">Esta clase no tiene material adicional</p>
+                      <p className="no-data">{dictionary.lessonPage[14][language]}</p>
                     )}
                   </>
                 </Tabulation>
@@ -496,13 +498,13 @@ const LessonPage = () => {
                     </div>
 
                     <Link to={`/user/${instructor.slug}`} className="button">
-                      Ver perfil
+                      {dictionary.lessonPage[15][language]}
                     </Link>
                   </div>
                 )}
 
                 <div className="report-section">
-                  <strong>¿Algún problema con el vídeo?</strong>
+                  <strong>{dictionary.lessonPage[16][language]}</strong>
 
                   <button
                     className="report-button"
@@ -513,12 +515,12 @@ const LessonPage = () => {
                       })
                     }
                   >
-                    Informar de un problema <AlertCircleOutline />
+                    {dictionary.lessonPage[17][language]} <AlertCircleOutline />
                   </button>
                 </div>
 
                 <div className="comments-section">
-                  <h2>Comentarios de la lección</h2>
+                  <h2>{dictionary.lessonPage[18][language]}</h2>
 
                   <div className="container" ref={commentsContainer}>
                     {comments && comments.length > 0 ? (
@@ -539,7 +541,7 @@ const LessonPage = () => {
                         );
                       })
                     ) : (
-                      <p className="no-comments">Sin comentarios aún</p>
+                      <p className="no-comments">{dictionary.lessonPage[19][language]}</p>
                     )}
 
                     {/* <div className="my-comment">
@@ -548,9 +550,9 @@ const LessonPage = () => {
                   </div>
 
                   <div className="add-new-comment">
-                    <DynamicInput id={"comment"} state={[inputs, setInputs]} label="Leave a comment" noIcon />
+                    <DynamicInput id={"comment"} state={[inputs, setInputs]} label={dictionary.lessonPage[20][language]} noIcon />
                     <button className="action-button" disabled={inputs.comment === "" || loading} onClick={sendComment}>
-                      {loading ? "Sending..." : "Send"}
+                      {loading ? dictionary.lessonPage[21][language] : dictionary.lessonPage[22][language]}
                     </button>
                   </div>
                 </div>
@@ -559,7 +561,7 @@ const LessonPage = () => {
               {lessons && (
                 <div className="content-list">
                   <div className="report-section">
-                    <strong>¿Algún problema con el vídeo?</strong>
+                    <strong>{dictionary.lessonPage[23][language]}</strong>
 
                     <button
                       className="report-button"
@@ -570,11 +572,11 @@ const LessonPage = () => {
                         })
                       }
                     >
-                      Informar de un problema <AlertCircleOutline />
+                      {dictionary.lessonPage[17][language]} <AlertCircleOutline />
                     </button>
                   </div>
 
-                  <h2>Lecciones del curso</h2>
+                  <h2>{dictionary.lessonPage[24][language]}</h2>
 
                   <div className="list">
                     {lessons.map((lesson) => {

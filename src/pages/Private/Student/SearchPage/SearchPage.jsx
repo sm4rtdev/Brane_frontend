@@ -21,6 +21,7 @@ import { getImageLinkFrom } from "../../../../helpers/getImageLinkFrom";
 import { getCoursesByName } from "../../../../api/getCoursesByName";
 import { getAllInstructors } from "../../../../api/getAllInstructors";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const CategoryCard = ({ attributes }) => {
   return (
@@ -54,6 +55,7 @@ const InstructorCard = ({ slug, avatar, nombre, apellidos, headline }) => {
 
 const SearchPage = () => {
   const { categories } = useContext(CategoriesContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   const [input, setInput] = useState({
     query: "",
@@ -160,17 +162,16 @@ const SearchPage = () => {
               <Search />
 
               <p>
-                Ingrese el nombre de un curso, categoría, subcategoría o
-                instructor en la barra de búsqueda
+                {dictionary.searchPage[0][language]}
               </p>
             </div>
           ) : (
             <div className="results">
-              <h2>Resultados de la búsqueda</h2>
+              <h2>{dictionary.searchPage[1][language]}</h2>
 
               {categoryResults && (
                 <div className="result">
-                  <h3>Categorías</h3>
+                  <h3>{dictionary.searchPage[2][language]}</h3>
 
                   <div className="list">
                     {categoryResults.map((category) => {
@@ -184,7 +185,7 @@ const SearchPage = () => {
 
               {courses && (
                 <div className="result">
-                  <h3>Cursos y Conferencias</h3>
+                  <h3>{dictionary.searchPage[3][language]}</h3>
 
                   <div className="list">
                     {courses.map((course) => {
@@ -202,7 +203,7 @@ const SearchPage = () => {
 
               {instructorsByName && (
                 <div className="result">
-                  <h3>Instructores</h3>
+                  <h3>{dictionary.searchPage[4][language]}</h3>
 
                   <div className="list">
                     {instructorsByName.map((instructor) => {
@@ -219,7 +220,7 @@ const SearchPage = () => {
                 !instructorsByName &&
                 !isLoading &&
                 input.query !== "" && (
-                  <p className="no-results">No hay resultados</p>
+                  <p className="no-results">{dictionary.searchPage[5][language]}</p>
                 )}
             </div>
           )}
@@ -227,7 +228,7 @@ const SearchPage = () => {
           <div className="grid">
             {parentCategories && (
               <div className="section">
-                <h2>Buscar por categorías principales</h2>
+                <h2>{dictionary.searchPage[6][language]}</h2>
 
                 <div className="list">
                   {parentCategories.map((category) => {
@@ -239,7 +240,7 @@ const SearchPage = () => {
 
             {instructors && (
               <div className="section">
-                <h2>Los mejores instructores</h2>
+                <h2>{dictionary.searchPage[7][language]}</h2>
 
                 <div className="list">
                   {instructors.map((instructor, index) => {

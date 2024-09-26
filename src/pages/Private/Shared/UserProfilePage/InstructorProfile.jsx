@@ -66,7 +66,7 @@ const InstructorProfile = ({
       <div className="banner">
         <BGProfileIns />
 
-        <span>Perfil del instructor</span>
+        <span>{dictionary.instructorProfile[0][language]}</span>
 
         {user.me && (
           <Link to="/edit-profile" className="small-button">
@@ -106,10 +106,10 @@ const InstructorProfile = ({
             <button className="action-button" onClick={uploadProfilePicture} disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <SpinnerOfDoom /> Cargando
+                  <SpinnerOfDoom /> {dictionary.instructorProfile[1][language]}
                 </>
               ) : (
-                "Cambiar avatar"
+                `${dictionary.instructorProfile[2][language]}`
               )}
             </button>
           )}
@@ -129,15 +129,15 @@ const InstructorProfile = ({
           <div className="meta">
             {user.meta && user.me ? (
               <>
-                <p>Edad: {calculateAge(user.meta.birthday)}</p>
-                <p>Dirección: {user.meta.address}</p>
-                <p>Ocupación: {user.meta.profesion}</p>
+                <p>{dictionary.instructorProfile[3][language]}: {calculateAge(user.meta.birthday)}</p>
+                <p>{dictionary.instructorProfile[4][language]}: {user.meta.address}</p>
+                <p>{dictionary.instructorProfile[5][language]}: {user.meta.profesion}</p>
               </>
             ) : (
               <>
-                <p>Age: {calculateAge(user.info.metaData.birthday)}</p>
-                <p>Dirección: {user.info.metaData.address}</p>
-                <p>Ocupación: {user.info.metaData.profesion}</p>
+                <p>{dictionary.instructorProfile[3][language]}: {calculateAge(user.info.metaData.birthday)}</p>
+                <p>{dictionary.instructorProfile[4][language]}: {user.info.metaData.address}</p>
+                <p>{dictionary.instructorProfile[5][language]}: {user.info.metaData.profesion}</p>
               </>
             )}
           </div>
@@ -200,7 +200,7 @@ const InstructorProfile = ({
                 return <CourseCard key={index} {...course} type="related download" />;
               })
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.instructorProfile[6][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone />
@@ -215,7 +215,7 @@ const InstructorProfile = ({
                 })}
               </div>
             ) : (
-              <p className="no-data">Sin datos</p>
+              <p className="no-data">{dictionary.instructorProfile[6][language]}</p>
             )
           ) : (
             <SpinnerOfDoom standalone />

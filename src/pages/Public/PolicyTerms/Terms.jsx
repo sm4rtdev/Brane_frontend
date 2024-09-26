@@ -5,9 +5,11 @@ import PublicHeader from "../../../components/PublicHeader/PublicHeader";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footer/Footer";
 import { UserDataContext } from "../../../contexts/UserDataContext";
+import { DictionaryContext } from "../../../contexts/DictionaryContext";
 
 const Terms = () => {
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   return (
     <div id="policy-terms" className="page">
@@ -15,120 +17,71 @@ const Terms = () => {
         {userData.jwt ? <Header /> : <PublicHeader />}
 
         <div className="main">
-          <h1>Términos de servicio</h1>
+          <h1>{dictionary.terms[0][language]}</h1>
 
           <div className="content">
             <p>
-              Bienvenido a Brane, una plataforma de aprendizaje en línea que te
-              ofrece cursos de alta calidad impartidos por expertos en la
-              materia. Al usar nuestros Servicios, aceptas los siguientes
-              términos y condiciones, que rigen nuestra relación contigo en
-              relación con los Servicios. Los presentes Términos y Condiciones
-              de uso (“Condiciones”) regulan el acceso o uso que usted haga,
-              como persona o empresa, desde cualquier país del mundo de
-              aplicaciones, páginas web, contenidos, productos, cursos,
-              talleres, conferencias, diplomados y cualquier otro servicio,
-              (“Los Servicios”) puestos a disposición por Brane LTD y sus
-              subsidiarias, una sociedad de responsabilidad limitada constituida
-              en los Estados Unidos
+              {dictionary.terms[1][language]}
             </p>
 
-            <h3>1. Introducción:</h3>
+            <h3>1. {dictionary.terms[2][language]}:</h3>
 
             <p>
-              Brane es una plataforma de aprendizaje en línea que te ofrece
-              cursos de alta calidad impartidos por expertos en la materia. Al
-              usar nuestros Servicios, aceptas los siguientes términos y
-              condiciones, que rigen nuestra relación contigo en relación con
-              los Servicios.
+              {dictionary.terms[3][language]}
             </p>
 
-            <h3>2. Uso de los Servicios:</h3>
+            <h3>2. {dictionary.terms[4][language]}:</h3>
 
             <p>
-              Puedes usar nuestros Servicios solo para fines legales y de
-              conformidad con estos Términos. No estás autorizado para utilizar
-              nuestros Servicios si no puedes celebrar contratos vinculantes con
-              Brane, si eres menor de edad o si te han suspendido o prohibido el
-              uso de los Servicios.
+              {dictionary.terms[5][language]}
             </p>
 
-            <h3>3. Contenido y propiedad intelectual:</h3>
+            <h3>3. {dictionary.terms[6][language]}:</h3>
 
             <p>
-              La plataforma Brane, el contenido de los cursos y todo el material
-              relacionado, incluidos, entre otros, texto, gráficos, imágenes,
-              fotografías, audio, música, videos, software, códigos, títulos,
-              diseños, palabras clave, conceptos y temas, se encuentran
-              protegidos por leyes de derechos de autor, marcas registradas y
-              otras leyes de propiedad intelectual aplicables.
+              {dictionary.terms[7][language]}
             </p>
 
-            <h3>4. Política de privacidad:</h3>
+            <h3>4. {dictionary.terms[8][language]}:</h3>
 
             <p>
-              En Brane, nos tomamos muy en serio tu privacidad y nuestra
-              Política de privacidad describe cómo recopilamos, utilizamos y
-              compartimos tus datos personales.
+              {dictionary.terms[9][language]}
             </p>
 
-            <h3>5. Pago y renovación de cursos :</h3>
+            <h3>5. {dictionary.terms[10][language]}:</h3>
 
             <p>
-              Los cursos, talleres, diplomados o carreras de Brane pueden tener
-              un precio y se pueden adquirir individualmente o como parte de una
-              suscripción. Los precios de los cursos se indican en la plataforma
-              y pueden cambiar en cualquier momento. Al comprar un curso,
-              aceptas pagar el precio indicado en la plataforma.
+              {dictionary.terms[11][language]}
             </p>
 
-            <h3>6. Cancelación y reembolso de cursos:</h3>
+            <h3>6. {dictionary.terms[12][language]}:</h3>
 
             <p>
-              En Brane, queremos que estés satisfecho con los cursos que
-              adquieras. Por lo tanto, ofrecemos una política de cancelación y
-              reembolso justa y transparente.
+              {dictionary.terms[13][language]}
             </p>
 
-            <h3>7. Derechos de propiedad intelectual:</h3>
+            <h3>7. {dictionary.terms[14][language]}:</h3>
 
             <p>
-              Respetamos los derechos de propiedad intelectual de terceros y
-              esperamos que nuestros usuarios y tutores hagan lo mismo. Si crees
-              que tu trabajo ha sido copiado de una manera que constituye una
-              infracción de derechos de autor, comunicate con nosotros
-              legal@brane.com y trataremos de resolver el problema de manera
-              justa y rápida.
+              {dictionary.terms[15][language]}
             </p>
 
-            <h3>8. Garantías y exenciones de responsabilidad:</h3>
+            <h3>8. {dictionary.terms[16][language]}:</h3>
 
             <p>
-              Los cursos, talleres, conferencias y demás servicios se
-              proporcionan "tal cual" y sin garantía de ningún tipo, ya sea
-              expresa o implícita. Brane no garantiza que los cursos satisfagan
-              tus necesidades o expectativas y no se hace responsable de ningún
-              daño directo, indirecto, incidental, especial, punitivo o
-              consecuente que surja del uso o la incapacidad de uso de los
-              Servicios.
+              {dictionary.terms[17][language]}
             </p>
 
-            <h3>9. Indemnización:</h3>
+            <h3>9. {dictionary.terms[18][language]}:</h3>
 
             <p>
-              Al usar nuestros Servicios, aceptas indemnizar, defender y eximir
-              de responsabilidad a Brane y a sus empleados, representantes y
-              agentes, frente a cualquier reclamación, acción legal, demanda,
-              pérdida, responsabilidad, daño, costo y gasto (incluidos, entre
-              otros, los honorarios razonables de los abogados) que surjan de tu
-              incumplimiento de estos Términos o del uso de los Servicios.
+              {dictionary.terms[19][language]}
             </p>
 
-            <h3>10. Resolución de conflictos:</h3>
+            <h3>10. {dictionary.terms[20][language]}:</h3>
 
             <p>
-              Cualquier conflicto relacionado con estos Términos se resolverá
-              mediante arbitraje de conformidad con las normas de arbitraje.
+              {dictionary.terms[21][language]}
             </p>
           </div>
         </div>

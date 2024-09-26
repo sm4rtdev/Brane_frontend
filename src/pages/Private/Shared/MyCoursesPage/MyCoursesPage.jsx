@@ -22,9 +22,11 @@ import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { postAssignCourse } from "../../../../api/postAssignCourse";
 import { getCompanyUsers } from "../../../../api/getCompanyUsers";
 import { getMyCourses } from "../../../../api/getMyCourses";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const MyCoursesPage = () => {
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   // ========== Student
   const [studentRawCourses, setStudentRawCourses] = useState(null);
@@ -141,7 +143,7 @@ const MyCoursesPage = () => {
     const { ok, data } = await postAssignCourse(obj);
 
     if (ok) {
-      toast.success(`Asignado`);
+      toast.success(dictionary.myCoursePage[0][language]);
       getStatus();
     } else {
       toast.error(`${data.error.message}`);
@@ -157,7 +159,7 @@ const MyCoursesPage = () => {
     const { ok, data } = await postDeallocateCourse(obj);
 
     if (ok) {
-      toast.success(`Removido`);
+      toast.success(dictionary.myCoursePage[1][language]);
       getStatus();
     } else {
       toast.error(`${data.error.message}`);
@@ -206,7 +208,7 @@ const MyCoursesPage = () => {
                 cart: true,
                 search: true,
               }}
-              title={"Mis cursos"}
+              title={dictionary.myCoursePage[2][language]}
               queryState={[input, setInput]}
             />
           </HeaderToggler>
@@ -216,20 +218,20 @@ const MyCoursesPage = () => {
 
         <div className="main">
           <div className="title">
-            <h1>Mis cursos</h1>
+            <h1>{dictionary.myCoursePage[2][language]}</h1>
           </div>
 
           <div className="filters">
-            <DynamicInput id="query" type="search" state={[input, setInput]} label="Buscar mis cursos" />
+            <DynamicInput id="query" type="search" state={[input, setInput]} label={dictionary.myCoursePage[3][language]} />
           </div>
 
           <Tabulation
             tabs={
               !userData.company
                 ? userData.mode === "instructor"
-                  ? ["Publicado", "Editar cursos"]
-                  : ["Mis cursos y conferencias", "Descargas"]
-                : ["Mis cursos", "Asignar usuarios"]
+                  ? [dictionary.myCoursePage[4][language], dictionary.myCoursePage[5][language]]
+                  : [dictionary.myCoursePage[6][language], dictionary.myCoursePage[7][language]]
+                : [dictionary.myCoursePage[2][language], dictionary.myCoursePage[8][language]]
             }
             options={{ type: "bubble", color: "yellow" }}
           >
@@ -247,8 +249,8 @@ const MyCoursesPage = () => {
                   ) : (
                     <p className="no-data">
                       {input.query === ""
-                        ? "Aún no has publicado ningún curso"
-                        : "No se encontraron coincidencias para su búsqueda"}
+                        ? dictionary.myCoursePage[9][language]
+                        : dictionary.myCoursePage[10][language]}
                     </p>
                   )
                 ) : (
@@ -280,8 +282,8 @@ const MyCoursesPage = () => {
                   ) : (
                     <p className="no-data">
                       {input.query === ""
-                        ? "Aún no has comprado ningún curso"
-                        : "No se encontraron coincidencias para su búsqueda"}
+                        ? dictionary.myCoursePage[11][language]
+                        : dictionary.myCoursePage[10][language]}
                     </p>
                   )
                 ) : (
@@ -307,8 +309,8 @@ const MyCoursesPage = () => {
                     ) : (
                       <p className="no-data">
                         {input.query === ""
-                          ? "Aún no has creado ningún curso"
-                          : "No se encontraron coincidencias para su búsqueda"}
+                          ? dictionary.myCoursePage[12][language]
+                          : dictionary.myCoursePage[10][language]}
                       </p>
                     )
                   ) : (
@@ -325,13 +327,13 @@ const MyCoursesPage = () => {
                       ).length > 0 ? (
                         <DownloadManager filteredCourses={studentCoursesFilteredBySearch} />
                       ) : (
-                        <p className="no-data">No tienes cursos con lecciones descargables</p>
+                        <p className="no-data">{dictionary.myCoursePage[13][language]}</p>
                       )
                     ) : (
                       <p className="no-data">
                         {input.query === ""
-                          ? "Aún no has comprado ningún curso"
-                          : "No se encontraron coincidencias para su búsqueda"}
+                          ? dictionary.myCoursePage[11][language]
+                          : dictionary.myCoursePage[10][language]}
                       </p>
                     )
                   ) : (
@@ -345,11 +347,11 @@ const MyCoursesPage = () => {
                   studentCoursesFilteredBySearch.length > 0 ? (
                     selectedCourse ? (
                       <div className="company">
-                        <h2>Curso seleccionado:</h2>
+                        <h2>{dictionary.myCoursePage[14][language]}:</h2>
 
                         <h3>{getNameOfSelectedCourse()}</h3>
 
-                        <h2>Asignar usuarios</h2>
+                        <h2>{dictionary.myCoursePage[8][language]}</h2>
 
                         {status && myUsers ? (
                           myUsers.length > 0 ? (
@@ -362,10 +364,10 @@ const MyCoursesPage = () => {
                                         <span>ID:</span> <strong>{user.id}</strong>
                                       </p>
                                       <p>
-                                        <span>Email:</span> <strong>{user.email}</strong>
+                                        <span>{dictionary.myCoursePage[15][language]}:</span> <strong>{user.email}</strong>
                                       </p>
                                       {!user.name && !user.apellidos ? (
-                                        <p>Sin nombre</p>
+                                        <p>{dictionary.myCoursePage[16][language]}</p>
                                       ) : (
                                         <p>{`${user.nombre ? user.nombre : ""} ${
                                           user.apellidos ? user.apellidos : ""
@@ -383,7 +385,7 @@ const MyCoursesPage = () => {
                                           }
                                         }}
                                       >
-                                        <AddCircleOutline /> {encountered(status, user.id) ? "Desasignar" : "Asignar"}
+                                        <AddCircleOutline /> {encountered(status, user.id) ? dictionary.myCoursePage[17][language] : dictionary.myCoursePage[18][language]}
                                       </button>
                                     </div>
                                   </div>
@@ -391,20 +393,20 @@ const MyCoursesPage = () => {
                               })}
                             </div>
                           ) : (
-                            <p className="no-data">Aún no tienes usuarios</p>
+                            <p className="no-data">{dictionary.myCoursePage[19][language]}</p>
                           )
                         ) : (
                           <SpinnerOfDoom standalone center />
                         )}
                       </div>
                     ) : (
-                      <p className="no-data">Seleccione un curso primero</p>
+                      <p className="no-data">{dictionary.myCoursePage[20][language]}</p>
                     )
                   ) : (
                     <p className="no-data">
                       {input.query === ""
-                        ? "Aún no has comprado ningún curso"
-                        : "No se encontraron coincidencias para su búsqueda"}
+                        ? dictionary.myCoursePage[11][language]
+                        : dictionary.myCoursePage[10][language]}
                     </p>
                   )
                 ) : (

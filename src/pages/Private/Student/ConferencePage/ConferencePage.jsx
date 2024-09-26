@@ -21,6 +21,7 @@ import { UserDataContext } from "../../../../contexts/UserDataContext";
 import { getReviewByCourse } from "../../../../api/getReviewByCourse";
 import { getJoinConference } from "../../../../api/getJoinConference";
 import { getCourseBySlug } from "../../../../api/getCourseBySlug";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 function ConferencePage() {
   const { slug } = useParams();
@@ -28,6 +29,7 @@ function ConferencePage() {
 
   const { openReportModal } = useContext(ReportModalContext);
   const { userData } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   const [conference, setConference] = useState(null);
   const [reviews, setReviews] = useState(null);
@@ -107,19 +109,19 @@ function ConferencePage() {
                 {joinData ? (
                   <div className="conference-box">
                     <div className="box">
-                      <strong>Detalles de la conferencia:</strong>
+                      <strong>{dictionary.conferencePage[0][language]}:</strong>
                       <ul>
                         <li>
-                          Fecha y hora de inicio: <span>{Date(joinData.meetingStartTime)}</span>
+                          {dictionary.conferencePage[1][language]}: <span>{Date(joinData.meetingStartTime)}</span>
                         </li>
                         <li>
-                          Duración estimada: <span>{joinData.meetingDuration}</span>
+                          {dictionary.conferencePage[2][language]}: <span>{joinData.meetingDuration}</span>
                         </li>
                         <li>
-                          Tu nombre a mostrar: <span>{joinData.userName}</span>
+                          {dictionary.conferencePage[3][language]}: <span>{joinData.userName}</span>
                         </li>
                         <li>
-                          Role: <span>{joinData.role === "instructor" ? "Instructor" : "Participante"}</span>
+                          Role: <span>{joinData.role === "instructor" ? "Instructor" : dictionary.conferencePage[4][language]}</span>
                         </li>
                       </ul>
 
@@ -140,10 +142,10 @@ function ConferencePage() {
                           win.focus();
                         }}
                       >
-                        Entrar a la conferencia
+                        {dictionary.conferencePage[5][language]}
                       </button>
 
-                      <span>Tras hacer clic en el botón se te abrirá una ventana emergente.</span>
+                      <span>{dictionary.conferencePage[6][language]}</span>
                     </div>
                   </div>
                 ) : (
@@ -155,14 +157,14 @@ function ConferencePage() {
                     {conference.descripcion ? (
                       <p className="description">{conference.descripcion}</p>
                     ) : (
-                      <p className="no-data">Esta conferencia no tiene descripción</p>
+                      <p className="no-data">{dictionary.conferencePage[7][language]}</p>
                     )}
                   </>
                   <>
                     {reviews ? (
                       reviews.length > 0 ? (
                         <div className="reviews">
-                          <h2>Reseñas</h2>
+                          <h2>{dictionary.conferencePage[8][language]}</h2>
                           <div className="inner-container">
                             {reviews.map((review) => {
                               return (
@@ -194,7 +196,7 @@ function ConferencePage() {
                           </div>
                         </div>
                       ) : (
-                        <p className="no-data">Aún no hay reseñas</p>
+                        <p className="no-data">{dictionary.conferencePage[9][language]}</p>
                       )
                     ) : (
                       <SpinnerOfDoom standalone />
@@ -217,13 +219,13 @@ function ConferencePage() {
                     </div>
 
                     <Link to={`/user/${instructor.slug}`} className="button">
-                      Ver perfil
+                      {dictionary.conferencePage[10][language]}
                     </Link>
                   </div>
                 )}
 
                 <div className="report-section">
-                  <strong>¿Algún problema con la conferencia?</strong>
+                  <strong>{dictionary.conferencePage[11][language]}</strong>
 
                   <button
                     className="report-button"
@@ -234,7 +236,7 @@ function ConferencePage() {
                       })
                     }
                   >
-                    Informar de un problema <AlertCircleOutline />
+                    {dictionary.conferencePage[12][language]} <AlertCircleOutline />
                   </button>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { BGPaymentFail } from "../../../../assets/images";
@@ -6,23 +6,25 @@ import { BGPaymentFail } from "../../../../assets/images";
 import PageTransition from "../../../../components/PageTransition/PageTransition";
 import Footer from "../../../../components/Footer/Footer";
 import Header from "../../../../components/Header/Header";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const PaymentFailure = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   return (
     <div className="page post-payment">
       <PageTransition margin>
         <Header type={"discover"} />
 
         <div className="main">
-          <strong>El pago ha fallado</strong>
+          <strong>{dictionary.payment[0][language]}</strong>
           <p>
-            No te preocupes, puedes volver a intentarlo en cualquier momento.
+            {dictionary.payment[1][language]}
           </p>
 
           <BGPaymentFail />
 
           <Link to={"/"} className="action-button">
-            Ir al inicio
+            {dictionary.payment[2][language]}
           </Link>
         </div>
 

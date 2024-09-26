@@ -7,9 +7,11 @@ import PageTransition from "../../../../components/PageTransition/PageTransition
 import { UserDataContext } from "../../../../contexts/UserDataContext";
 
 import "./RoleSelection.scss";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const RoleSelection = () => {
   const { changeMode } = useContext(UserDataContext);
+  const { dictionary, language } = useContext(DictionaryContext);
   const navigate = useNavigate();
 
   const [array, setArray] = useState([1]);
@@ -65,11 +67,11 @@ const RoleSelection = () => {
           </div>
 
           <div className="center">
-            <strong>Selecciona el perfil con el que quieres acceder</strong>
+            <strong>{dictionary.roleSelection[0][language]}</strong>
 
             <div className="selection">
               <button className="action-button" onClick={() => changeRole(0)}>
-                Estudiante
+                {dictionary.roleSelection[1][language]}
               </button>
               <button className="action-button" onClick={() => changeRole(1)}>
                 Instructor

@@ -23,7 +23,7 @@ const LessonDownloader = ({ attributes, triggerUpdate, updater }) => {
 
     request.onerror = (event) => {
       console.error(event);
-      toast.error("La operacion no pudo ser completada");
+      toast.error(dictionary.lessonDownloader[0][language]);
     };
 
     request.onsuccess = (event) => {

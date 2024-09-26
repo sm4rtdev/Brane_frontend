@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const Meeting = () => {
+  const { dictionary, language } = useContext(DictionaryContext);
   const createZoomElement = (link, type) => {
     if (type === "style") {
       const styleElement = document.createElement("link");
@@ -87,7 +89,7 @@ const Meeting = () => {
 
   return (
     <div className="full-center">
-      <p className="no-data">Loading Zoom Meeting...</p>
+      <p className="no-data">{dictionary.conferencePage[14][language]}</p>
     </div>
   );
 };

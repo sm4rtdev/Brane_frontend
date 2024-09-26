@@ -11,6 +11,7 @@ import MsgDropdown from "../MsgDropdown/MsgDropdown";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { CartContext } from "../../contexts/CartContext";
+import Languages from "../Languages/Languages";
 
 const Header = ({ black, title, progress }) => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -106,6 +107,8 @@ const Header = ({ black, title, progress }) => {
             </Link>
           </>
         )}
+
+        <Languages border={false} />
 
         <HeaderDropdown
           greetingText={greetingText}

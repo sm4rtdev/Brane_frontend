@@ -37,6 +37,7 @@ import HeaderToggler from "../../../../components/HeaderToggler/HeaderToggler";
 import Tabulation from "../../../../components/Tabulation/Tabulation";
 import FancyImage from "../../../../components/FancyImage/FancyImage";
 import Footer from "../../../../components/Footer/Footer";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const CoursePage = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const CoursePage = () => {
   const { openWishlistModal } = useContext(WishlistModalContext);
   const { userData, changeMode } = useContext(UserDataContext);
   const { cart, addToCart } = useContext(CartContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   const [currentCourse, setCurrentCourse] = useState(null);
   const [currentCourseLessons, setCurrentCourseLessons] = useState(null);
@@ -161,7 +163,7 @@ const CoursePage = () => {
                     (!courseIsOwned ? (
                       <>
                         <p className="price">
-                          Precio actual: <strong>${currentCourse.precio}</strong>
+                          {dictionary.coursePage[0][language]}: <strong>${currentCourse.precio}</strong>
                         </p>
 
                         {!userData.institution &&
@@ -169,7 +171,7 @@ const CoursePage = () => {
                             <div className="buttons">
                               <button className="action-button black" onClick={() => addToCart(currentCourse.id)}>
                                 <Cart />
-                                Añadir a la cesta
+                                {dictionary.coursePage[1][language]}
                               </button>
                               <button
                                 className="action-button"
@@ -178,7 +180,7 @@ const CoursePage = () => {
                                   navigate("/cart");
                                 }}
                               >
-                                Comprar ahora
+                                {dictionary.coursePage[2][language]}
                               </button>
                               {!userData.company && (
                                 <button
@@ -186,21 +188,21 @@ const CoursePage = () => {
                                   onClick={() => openWishlistModal(currentCourse.id)}
                                 >
                                   <HeartOutline />
-                                  Añadir a la lista de deseos
+                                  {dictionary.coursePage[3][language]}
                                 </button>
                               )}
                             </div>
                           ) : (
                             <p className="no-data">
-                              Eres el creador de{" "}
-                              {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
+                              {dictionary.coursePage[4][language]}{" "}
+                              {currentCourse.tipo === "conferencia" ? dictionary.coursePage[5][language] : dictionary.coursePage[6][language]}
                             </p>
                           ))}
                       </>
                     ) : (
                       <>
                         <strong className="message">
-                          Ya tienes {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
+                          {dictionary.coursePage[7][language]}{" "}{currentCourse.tipo === "conferencia" ? dictionary.coursePage[5][language] : dictionary.coursePage[6][language]}
                         </strong>
                         <button
                           className="action-button"
@@ -217,10 +219,10 @@ const CoursePage = () => {
                           }}
                         >
                           {userData.company
-                            ? "Ver mis cursos"
+                            ? dictionary.coursePage[8][language]
                             : currentCourse.tipo === "conferencia"
-                            ? "Ir a la conferencia"
-                            : "Ir al curso"}
+                            ? dictionary.coursePage[9][language]
+                            : dictionary.coursePage[10][language]}
                         </button>
                       </>
                     ))}
@@ -266,24 +268,24 @@ const CoursePage = () => {
                   {currentCourse.subTitles.length > 0 && (
                     <div className="detail">
                       <LogoClosedCaptioning />
-                      <span>{`Subtítulos: ${currentCourse.subTitles.join(", ")}`}</span>
+                      <span>{`${dictionary.coursePage[13][language]}: ${currentCourse.subTitles.join(", ")}`}</span>
                     </div>
                   )}
                   <div className="detail">
                     <Star />
-                    <span>Estrellas: {currentCourse.averageScore ? currentCourse.averageScore : "(Sin reseñas)"}</span>
+                    <span>{dictionary.coursePage[11][language]}: {currentCourse.averageScore ? currentCourse.averageScore : dictionary.coursePage[12][language]}</span>
                   </div>
                   <div className="detail">
                     <People />
-                    <span>{currentCourse.cantidadEstudiantes} Estudiantes</span>
+                    <span>{currentCourse.cantidadEstudiantes} {dictionary.coursePage[14][language]}</span>
                   </div>
                 </div>
 
-                <Tabulation tabs={["Detalles", "Contenido"]} options={{ type: "bubble", color: "black" }}>
+                <Tabulation tabs={[dictionary.coursePage[15][language], dictionary.coursePage[16][language]]} options={{ type: "bubble", color: "black" }}>
                   <>
                     {currentCourse.whatYouWillLearn !== null && currentCourse.whatYouWillLearn.length > 0 && (
                       <>
-                        <h2>Lo que vas a aprender:</h2>
+                        <h2>{dictionary.coursePage[17][language]}:</h2>
                         <ul>
                           {currentCourse.whatYouWillLearn.map((el, index) => {
                             return (
@@ -299,7 +301,7 @@ const CoursePage = () => {
 
                     {currentCourse.requeriments !== null && currentCourse.requeriments.length > 0 && (
                       <>
-                        <h2>Requisitos:</h2>
+                        <h2>{dictionary.coursePage[18][language]}:</h2>
                         <ul className="requirements">
                           {currentCourse.requeriments.map((el, index) => {
                             return (
@@ -313,13 +315,13 @@ const CoursePage = () => {
                       </>
                     )}
 
-                    <h2>Descripción:</h2>
+                    <h2>{dictionary.coursePage[19][language]}:</h2>
                     <p className="description">{currentCourse.descripcion}</p>
 
                     {currentCourse.whoIsThisCourseFor !== null && currentCourse.whoIsThisCourseFor.length > 0 && (
                       <>
                         <h2>
-                          Para quién es {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}:
+                          {currentCourse.tipo === "conferencia" ? dictionary.coursePage[20][language] : dictionary.coursePage[21][language]}:
                         </h2>
                         <ul className="requirements">
                           {currentCourse.whoIsThisCourseFor.map((el, index) => {
@@ -335,25 +337,25 @@ const CoursePage = () => {
                     )}
                   </>
                   <>
-                    <h2>Resumen:</h2>
+                    <h2>{dictionary.coursePage[22][language]}:</h2>
                     <ul className="summary">
                       {currentCourse.tipo === "conferencia" ? (
                         <>
                           <li>
                             <Videocam />
-                            Duración estimada: {currentCourse.conference.ZoomDuration} min
+                            {dictionary.coursePage[23][language]}: {currentCourse.conference.ZoomDuration} min
                           </li>
                         </>
                       ) : (
                         <>
                           <li>
                             <Videocam />
-                            {currentCourse.summary[0].cantidadClases} Lecciones (
+                            {currentCourse.summary[0].cantidadClases} {dictionary.coursePage[24][language]} (
                             {currentCourse.summary[0].duracionTotal}min)
                           </li>
                           <li>
                             <Book />
-                            {currentCourse.summary[0].additionalResources} Recursos adicionales
+                            {currentCourse.summary[0].additionalResources} {dictionary.coursePage[25][language]}
                           </li>
                           {/* <li>
                             <Hammer />
@@ -369,7 +371,7 @@ const CoursePage = () => {
 
                     {currentCourse.tipo !== "conferencia" && (
                       <>
-                        <h2> Lecciones:</h2>
+                        <h2> {dictionary.coursePage[24][language]}:</h2>
                         <div className="lessons">
                           {currentCourseLessons.map((lesson, index) => {
                             return (
@@ -400,8 +402,8 @@ const CoursePage = () => {
                         {courseMadeByMe ? (
                           <>
                             <strong>
-                              Eres el creador de{" "}
-                              {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}.
+                              {dictionary.coursePage[4][language]}{" "}
+                              {currentCourse.tipo === "conferencia" ? dictionary.coursePage[5][language] : dictionary.coursePage[6][language]}.
                             </strong>
 
                             <button
@@ -411,19 +413,15 @@ const CoursePage = () => {
                                 navigate(`/edit-course/${currentCourse.id}`);
                               }}
                             >
-                              Editar {currentCourse.tipo}
+                              {currentCourse.tipo === "conferencia" ? dictionary.coursePage[25][language] : dictionary.coursePage[26][language]}
                             </button>
                           </>
                         ) : !courseIsOwned ? (
                           <>
                             <strong>
                               {cart.includes(currentCourse.id)
-                                ? `${
-                                    currentCourse.tipo === "conferencia" ? "Esta conferencia" : "Este curso"
-                                  } ya está en tu carrito`
-                                : `Compra ${
-                                    currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"
-                                  } para ver su contenido`}
+                                ? currentCourse.tipo === "conferencia" ? dictionary.coursePage[27][language] : dictionary.coursePage[28][language]
+                                : currentCourse.tipo === "conferencia" ? dictionary.coursePage[29][language] : dictionary.coursePage[30][language]}
                             </strong>
                             <button
                               className="action-button"
@@ -435,13 +433,13 @@ const CoursePage = () => {
                                 }
                               }}
                             >
-                              {cart.includes(currentCourse.id) ? "Ir al carrito" : "Añadir al carrito"}
+                              {cart.includes(currentCourse.id) ? dictionary.coursePage[31][language] : dictionary.coursePage[32][language]}
                             </button>
                           </>
                         ) : (
                           <>
                             <strong>
-                              Ya tienes {currentCourse.tipo === "conferencia" ? "esta conferencia" : "este curso"}
+                              {dictionary.coursePage[7][language]}{" "}{currentCourse.tipo === "conferencia" ? dictionary.coursePage[5][language] : dictionary.coursePage[6][language]}
                             </strong>
                             <button
                               className="action-button"
@@ -458,8 +456,8 @@ const CoursePage = () => {
                               }}
                             >
                               {userData.company
-                                ? "Ver mis cursos"
-                                : `Ir ${currentCourse.tipo === "conferencia" ? "a la conferencia" : "al curso"}`}
+                                ? dictionary.coursePage[8][language]
+                                : currentCourse.tipo === "conferencia" ? dictionary.coursePage[9][language] : dictionary.coursePage[10][language]}
                             </button>
                           </>
                         )}
@@ -495,11 +493,10 @@ const CoursePage = () => {
                     >
                       {courseIsOwned
                         ? userData.company
-                          ? "Ver mis cursos"
+                          ? dictionary.coursePage[8][language]
                           : currentCourse.tipo === "conferencia"
-                          ? "Ir a la conferencia"
-                          : "Ir al curso"
-                        : "Comprar ahora"}
+                          ? dictionary.coursePage[9][language] : dictionary.coursePage[10][language]
+                        : dictionary.coursePage[2][language]}
                     </button>
                   </div>
                 )}

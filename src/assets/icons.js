@@ -64,3 +64,6 @@ export { ReactComponent as Flag } from "./icons/flag.svg";
 export { ReactComponent as Send } from "./icons/send.svg";
 export { ReactComponent as Star } from "./icons/star.svg";
 export { ReactComponent as Sync } from "./icons/sync.svg";
+export { ReactComponent as Globe } from "./icons/globe.svg";
+export { ReactComponent as US } from "./icons/us.svg";
+export { ReactComponent as ES } from "./icons/es.svg";

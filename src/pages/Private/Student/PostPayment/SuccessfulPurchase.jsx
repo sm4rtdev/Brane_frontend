@@ -8,9 +8,11 @@ import Footer from "../../../../components/Footer/Footer";
 import Header from "../../../../components/Header/Header";
 import { removeFromLocal } from "../../../../helpers/localStorage";
 import { CartContext } from "../../../../contexts/CartContext";
+import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const SuccessfulPurchase = () => {
   const { clearCart } = useContext(CartContext);
+  const { dictionary, language } = useContext(DictionaryContext);
 
   useEffect(() => {
     removeFromLocal("cart");
@@ -25,13 +27,13 @@ const SuccessfulPurchase = () => {
         <Header type={"discover"} />
 
         <div className="main">
-          <strong>Felicidades!</strong>
-          <p>Te has matriculado exitosamente en el curso</p>
+          <strong>{dictionary.payment[3][language]}</strong>
+          <p>{dictionary.payment[4][language]}</p>
 
           <BGPayment />
 
           <Link className="action-button" to={"/my-courses"}>
-            Ver mis cursos
+            {dictionary.payment[5][language]}
           </Link>
         </div>
 

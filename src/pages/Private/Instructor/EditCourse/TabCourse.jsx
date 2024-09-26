@@ -213,7 +213,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
     if (ok) {
       if (!revision) {
-        toast.success(`La información ${conference ? "de la conferencia" : "del curso"} ha sido actualizada.`);
+        toast.success(dictionary.privateInstructor.createCourseInfo[conference ? 55 : 56][language]);
       }
 
       setOngoingUpdate(false);
@@ -242,7 +242,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     setUploadingFile(false);
 
     if (ok) {
-      toast.success(`La imagen ${conference ? "de la conferencia" : "del curso"}  ha sido cargada.`);
+      toast.success(dictionary.privateInstructor.createCourseInfo[conference ? 57 : 58][language]);
       setFile(null);
 
       updateCourse(revision);
@@ -253,29 +253,25 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
   const checkEverything = (revision) => {
     if (inputs.name.length < 3) {
-      toast.error(
-        `El nombre ${
-          conference ? "de la conferencia" : "del curso"
-        }  no puede estar vacío y debe tener al menos 3 letras`
-      );
+      toast.error(dictionary.privateInstructor.createCourseInfo[conference ? 59 : 60][language]);
     } else if (inputs.shortDescription === "") {
-      toast.error("Introduzca una breve descripción");
+      toast.error(dictionary.privateInstructor.createCourseInfo[61][language]);
     } else if (inputs.descripcion === "") {
-      toast.error("Introduce una descripción");
+      toast.error(dictionary.privateInstructor.createCourseInfo[62][language]);
     } else if (inputs.idioma === "") {
-      toast.error("Selecciona un idioma");
+      toast.error(dictionary.privateInstructor.createCourseInfo[63][language]);
     } else if (inputs.whatYouWillLearn.length === 0) {
-      toast.error(`Debes especificar qué aprenderás con ${conference ? "la conferencia" : "el curso"}`);
+      toast.error(dictionary.privateInstructor.createCourseInfo[conference ? 64 : 65][language]);
     } else if (inputs.requirements.length === 0) {
-      toast.error(`Debes ingresar al menos 1 requerimiento`);
+      toast.error(dictionary.privateInstructor.createCourseInfo[66][language]);
     } else if (inputs.whoIsThisCourseFor.length === 0) {
-      toast.error(`Debes especificar para quién es ${conference ? "la conferencia" : "el curso"}`);
+      toast.error(dictionary.privateInstructor.createCourseInfo[conference ? 67 : 68][language]);
     } else if (inputs.categoria.length === null) {
-      toast.error("Debes seleccionar una categoría");
+      toast.error(dictionary.privateInstructor.createCourseInfo[69][language]);
     } else if (inputs.precio < 5) {
-      toast.error(`El precio ${conference ? "de la conferencia" : "del curso"} no puede ser inferior a 5$`);
+      toast.error(dictionary.privateInstructor.createCourseInfo[conference ? 70 : 71][language]);
     } else if (preview === null) {
-      toast.error("Falta una imagen");
+      toast.error(dictionary.privateInstructor.createCourseInfo[72][language]);
     } else {
       setOngoingUpdate(true);
 
@@ -293,7 +289,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
     const { ok, data } = await deleteCourse(courseID);
 
     if (ok) {
-      toast.success(`Se ha sido eliminado ${conference ? "la conferencia" : "el curso"}.`);
+      toast.success(dictionary.privateInstructor.createCourseInfo[conference ? 73 : 74][language]);
 
       navigate("/my-courses");
     } else {
@@ -317,7 +313,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
       const { ok, data } = await putCourse(courseID, obj);
 
       if (ok) {
-        toast.success(`Se ha publicado ${conference ? "la conferencia" : "el curso"}.`);
+        toast.success(dictionary.privateInstructor.createCourseInfo[conference ? 75 : 76][language]);
         setPublished(true);
         setRequesting(false);
       } else {
@@ -340,11 +336,11 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
             updateCourseStatus();
           } else {
             console.log(error);
-            toast.error("Una de las lecciones del curso no tiene vídeo.");
+            toast.error(dictionary.privateInstructor.createCourseInfo[77][language]);
             setRequesting(false);
           }
         } else {
-          toast.error("El curso debe tener al menos una lección.");
+          toast.error(dictionary.privateInstructor.createCourseInfo[78][language]);
           setRequesting(false);
         }
       } else {
@@ -362,44 +358,44 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
   return (
     <div className="instructor-course-info">
       <div className="section">
-        <h2>Lo basico</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[79][language]}</h2>
 
         <>
-          <h3>Título {conference ? "de la conferencia" : "del curso"}</h3>
-          <DynamicInput id={"name"} state={[inputs, setInputs]} noIcon placeholder={"Cómo..."} />
+          <h3>{dictionary.privateInstructor.createCourseInfo[conference ? 80 : 81][language]}</h3>
+          <DynamicInput id={"name"} state={[inputs, setInputs]} noIcon placeholder={dictionary.privateInstructor.createCourseInfo[82][language]} />
           <p className="hint">
-            Elija un título único que lo distinga de {conference ? "otras conferencias" : "otros cursos"}
+            {dictionary.privateInstructor.createCourseInfo[conference ? 83 : 84][language]}
           </p>
         </>
 
         <>
-          <h3>Breve descripción {conference ? "de la conferencia" : "del curso"}</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[conference ? 85 : 86][language]}</h3>
           <DynamicInput
             id={"shortDescription"}
             state={[inputs, setInputs]}
             multiline
             noIcon
-            placeholder={"Larga historia corta..."}
+            placeholder={dictionary.privateInstructor.createCourseInfo[87][language]}
           />
           <p className="hint">
-            Una descripción que describe rápidamente de qué se trata {conference ? "la conferencia" : "el curso"}.
+            {dictionary.privateInstructor.createCourseInfo[conference ? 88 : 89][language]}.
           </p>
         </>
 
         <>
-          <h3>Descripción {conference ? "de la conferencia" : "del curso"}</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[conference ? 90 : 91][language]}</h3>
           <DynamicInput
             id={"descripcion"}
             state={[inputs, setInputs]}
             noIcon
             multiline
-            placeholder={"Once upon a time..."}
+            placeholder={dictionary.privateInstructor.createCourseInfo[92][language]}
           />
-          <p className="hint">Una descripción completa {conference ? "de la conferencia" : "del curso"}.</p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[conference ? 93 : 94][language]}.</p>
         </>
 
         <>
-          <h3>Idioma {conference ? "de la conferencia" : "del curso"}</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[conference ? 95 : 96][language]}</h3>
           <FormControl fullWidth>
             <Select
               value={inputs.idioma}
@@ -431,7 +427,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               <MenuItem value={"English"}>English</MenuItem>
             </Select>
           </FormControl>
-          <p className="hint">El idioma hablado de {conference ? "la conferencia" : "las lecciones de tu curso"}.</p>
+          <p className="hint">{dictionary.privateInstructor.createCourseInfo[conference ? 97 : 98][language]}.</p>
         </>
 
         {/* //------------- */}
@@ -474,7 +470,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
 
         {!conference && (
           <>
-            <h3>Certificado</h3>
+            <h3>{dictionary.privateInstructor.createCourseInfo[99][language]}</h3>
             <FormControl fullWidth>
               <Select
                 value={inputs.certificado}
@@ -501,20 +497,20 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                   },
                 }}
               >
-                <MenuItem value={true}>Sí</MenuItem>
+                <MenuItem value={true}>{dictionary.privateInstructor.createCourseInfo[100][language]}</MenuItem>
                 <MenuItem value={false}>No</MenuItem>
               </Select>
             </FormControl>
-            <p className="hint">¿El curso debería emitir un certificado al finalizar?</p>
+            <p className="hint">{dictionary.privateInstructor.createCourseInfo[101][language]}</p>
           </>
         )}
       </div>
 
       <div className="section">
-        <h2>Información específica</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[102][language]}</h2>
 
         <>
-          <h3>Lo que vas a aprender</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[103][language]}</h3>
           <div className="list-items">
             {inputs.whatYouWillLearn !== null && inputs.whatYouWillLearn.length > 0 ? (
               inputs.whatYouWillLearn.map((text, index) => {
@@ -525,7 +521,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[104][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -533,11 +529,10 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               id={"whatYouWillLearn"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Aprenderás..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[109][language]}
             />
             <p className="hint">
-              Cuéntale a tu audiencia lo que aprenderán después de completar
-              {conference ? "esta conferencia" : "este curso"}.
+              {dictionary.privateInstructor.createCourseInfo[conference ? 105 : 106][language]}.
             </p>
             <button
               className="action-button"
@@ -549,13 +544,13 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 addTextToATextArray("whatYouWillLearn");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[107][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Requerimientos</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[108][language]}</h3>
           <div className="list-items">
             {inputs.requirements !== null && inputs.requirements.length > 0 ? (
               inputs.requirements.map((text, index) => {
@@ -566,7 +561,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[104][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -574,11 +569,10 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               id={"requirements"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Necesitará..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[110][language]}
             />
             <p className="hint">
-              Dile a tu audiencia qué experiencia o requisitos necesitan para completar{" "}
-              {conference ? "esta conferencia" : "este curso"}.
+              {dictionary.privateInstructor.createCourseInfo[conference ? 111 : 112][language]}.
             </p>
             <button
               className="action-button"
@@ -589,13 +583,13 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 addTextToATextArray("requirements");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[107][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Para quién es este curso</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[113][language]}</h3>
           <div className="list-items">
             {inputs.whoIsThisCourseFor !== null && inputs.whoIsThisCourseFor.length > 0 ? (
               inputs.whoIsThisCourseFor.map((text, index) => {
@@ -606,7 +600,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 );
               })
             ) : (
-              <p className="no-items">Añadir algo</p>
+              <p className="no-items">{dictionary.privateInstructor.createCourseInfo[104][language]}</p>
             )}
           </div>
           <div className="aggregator">
@@ -614,9 +608,9 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               id={"whoIsThisCourseFor"}
               state={[internalInputs, setInternalInputs]}
               noIcon
-              placeholder={"Una persona..."}
+              placeholder={dictionary.privateInstructor.createCourseInfo[114][language]}
             />
-            <p className="hint">¿Quién puede utilizar tu {conference ? "conferencia" : "curso"}?</p>
+            <p className="hint">{dictionary.privateInstructor.createCourseInfo[conference ? 115 : 116][language]}</p>
             <button
               className="action-button"
               disabled={
@@ -627,13 +621,13 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 addTextToATextArray("whoIsThisCourseFor");
               }}
             >
-              Añadir
+              {dictionary.privateInstructor.createCourseInfo[107][language]}
             </button>
           </div>
         </>
 
         <>
-          <h3>Categorías</h3>
+          <h3>{dictionary.privateInstructor.createCourseInfo[117][language]}</h3>
 
           {categories ? (
             <>
@@ -653,8 +647,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                 })}
               </div>
               <p className="hint">
-                Selecciona la categoría que mejor define el contenido de tu
-                {conference ? "conferencia" : "curso"}
+                {dictionary.privateInstructor.createCourseInfo[conference ? 118 : 119][language]}
               </p>
             </>
           ) : (
@@ -664,7 +657,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
       </div>
 
       <div className="section">
-        <h2>El precio</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[120][language]}</h2>
 
         <>
           <div className="price-section">
@@ -674,7 +667,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               state={[inputs, setInputs]}
               noIcon
               price
-              label={"El precio para el público."}
+              label={dictionary.privateInstructor.createCourseInfo[121][language]}
             />
             <DynamicInput
               id={"fee"}
@@ -682,20 +675,19 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
               noIcon
               price
               disabled
-              label={`Nuestra tarifa de servicio (${feePercentage}%)`}
+              label={`${dictionary.privateInstructor.createCourseInfo[122][language]} (${feePercentage}%)`}
             />
-            <DynamicInput id={"net"} state={[fees, setFees]} noIcon price disabled label={"Tus ganancias netas"} />
+            <DynamicInput id={"net"} state={[fees, setFees]} noIcon price disabled label={dictionary.privateInstructor.createCourseInfo[123][language]} />
           </div>
           <p className="hint">
-            Tus ganancias netas son las ganancias que obtendrás después de cada venta de{" "}
-            {conference ? "esta conferencia" : "este curso"}.
+            {dictionary.privateInstructor.createCourseInfo[124][language]}.
           </p>
         </>
       </div>
 
       <div className="section">
         <div className="media-creation">
-          <h2>Imagen {conference ? "de la conferencia" : "del curso"}</h2>
+          <h2>{dictionary.privateInstructor.createCourseInfo[conference ? 125 : 126][language]}</h2>
 
           <input
             type="file"
@@ -710,14 +702,14 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
           </div>
 
           <button className="action-button" onClick={openFileSelection}>
-            {!preview ? "Añadir imagen" : "Cambiar imagen"}
+            {dictionary.privateInstructor.createCourseInfo[!preview ? 127 : 128][language]}
             <ImageOutline />
           </button>
         </div>
       </div>
 
       <div className="section action">
-        <h2>Guardar cambios</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[129][language]}</h2>
 
         <button
           className="action-button final"
@@ -730,16 +722,16 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
             uploadingFile ? (
               <>
                 <SpinnerOfDoom />
-                Subiendo archivo...
+                {dictionary.privateInstructor.createCourseInfo[130][language]}
               </>
             ) : (
               <>
                 <SpinnerOfDoom />
-                Salvando...
+                {dictionary.privateInstructor.createCourseInfo[131][language]}
               </>
             )
           ) : (
-            "Guardar"
+            `${dictionary.privateInstructor.createCourseInfo[132][language]}`
           )}
         </button>
 
@@ -754,26 +746,26 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
             {requesting ? (
               <>
                 <SpinnerOfDoom />
-                Comprobando {conference ? "la conferencia" : "el curso"}...
+                {dictionary.privateInstructor.createCourseInfo[conference ? 133 : 134][language]}
               </>
             ) : (
-              "Publicar"
+              `${dictionary.privateInstructor.createCourseInfo[135][language]}`
             )}
           </button>
         )}
       </div>
 
       <div className="section action">
-        <h2>Eliminar (Acción No Reversible)</h2>
+        <h2>{dictionary.privateInstructor.createCourseInfo[136][language]}</h2>
 
         <button className="action-button final red" onClick={eraseCourse} disabled={deleting}>
           {deleting ? (
             <>
               <SpinnerOfDoom />
-              Eliminando...
+              {dictionary.privateInstructor.createCourseInfo[137][language]}
             </>
           ) : (
-            "Eliminar"
+            `${dictionary.privateInstructor.createCourseInfo[138][language]}`
           )}
         </button>
       </div>

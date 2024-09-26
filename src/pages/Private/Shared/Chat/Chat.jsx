@@ -240,7 +240,7 @@ const Chat = () => {
 
   return (
     <div id="chat-page">
-      <h1>Chat</h1>
+      <h1>{dictionary.chat[8][language]}</h1>
 
       <p className="hint">
         {userData.mode === "student" ? dictionary.chat[1][language] : dictionary.chat[2][language]}
