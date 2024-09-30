@@ -152,7 +152,7 @@ function ConferencePage() {
                   <SpinnerOfDoom standalone />
                 )}
 
-                <Tabulation tabs={["Description", "Reviews"]} options={{ type: "bubble", color: "black" }}>
+                <Tabulation tabs={[dictionary.conferencePage[15][language], dictionary.conferencePage[16][language]]} options={{ type: "bubble", color: "black" }}>
                   <>
                     {conference.descripcion ? (
                       <p className="description">{conference.descripcion}</p>

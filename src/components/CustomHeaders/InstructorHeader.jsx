@@ -18,6 +18,7 @@ import FancyImage from "../FancyImage/FancyImage";
 import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 import { UserDataContext } from "../../contexts/UserDataContext";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
+import Languages from "../Languages/Languages";
 
 const InstructorHeader = ({ openOptionsMenu }) => {
   const navigate = useNavigate();
@@ -45,6 +46,8 @@ const InstructorHeader = ({ openOptionsMenu }) => {
         <Link to="/notifications" className="small-button">
           <NotificationsOutline />
         </Link>
+
+        <Languages border={false}/>
 
         <div className="user" onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
           <button className="profile-picture" onClick={toggleUserDropdown}>

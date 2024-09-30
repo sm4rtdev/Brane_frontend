@@ -404,7 +404,7 @@ const LessonPage = () => {
                 </div>
 
                 <Tabulation
-                  tabs={["Description", "Reviews", "Learning Tools"]}
+                  tabs={[dictionary.lessonPage[25][language], dictionary.lessonPage[26][language], dictionary.lessonPage[27][language]]}
                   options={{ type: "bubble", color: "black" }}
                 >
                   <>

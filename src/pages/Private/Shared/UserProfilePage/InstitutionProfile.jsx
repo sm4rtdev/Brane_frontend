@@ -245,7 +245,7 @@ const InstitutionProfile = ({
       </div>
 
       <Tabulation
-        tabs={["Cursos", "Instructores"]}
+        tabs={[dictionary.institutionProfile[6][language], dictionary.institutionProfile[7][language]]}
         options={{ type: "bubble", color: "black" }}
       >
         <>

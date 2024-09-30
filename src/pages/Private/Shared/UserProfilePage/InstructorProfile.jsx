@@ -192,7 +192,7 @@ const InstructorProfile = ({
             )}
       </div>
 
-      <Tabulation tabs={["Cursos", "Estudiantes"]} options={{ type: "bubble", color: "black" }}>
+      <Tabulation tabs={[dictionary.instructorProfile[7][language], dictionary.instructorProfile[8][language]]} options={{ type: "bubble", color: "black" }}>
         <>
           {courses ? (
             courses.length > 0 ? (

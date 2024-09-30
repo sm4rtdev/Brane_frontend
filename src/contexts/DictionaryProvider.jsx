@@ -1740,6 +1740,8 @@ const dictionary = {
     { es: "Fecha de fundación", en: "Founding date" },
     { es: "Dirección", en: "Address" },
     { es: "Sin datos", en: "No data" },
+    { es: "Cursos", en: "Courses" },
+    { es: "Instructores", en: "Instructors" },
   ],
   studentProfile: [
     { es: "Descripción", en: "Description" },
@@ -1789,6 +1791,8 @@ const dictionary = {
     { es: "Dirección", en: "Address" },
     { es: "Ocupación", en: "Occupation" },
     { es: "Sin datos", en: "No data" },
+    { es: "Cursos", en: "Courses" },
+    { es: "Estudiantes", en: "Students" },
   ],
   conferencePage : [
     { es: "Detalles de la conferencia", en: "Conference details" },
@@ -1806,6 +1810,8 @@ const dictionary = {
     { es: "Informar de un problema", en: "Report a problem" },
     { es: "Partida...", en: "Leaving..." },
     { es: "Cargando reunión de Zoom...", en: "Loading Zoom Meeting..." },
+    { es: "Descripción", en: "Description" },
+    { es: "Reseñas", en: "Reviews" },
   ],
   learnPage: [
     { es: "Lección", en: "Lesson" },
@@ -1837,6 +1843,9 @@ const dictionary = {
     { es: "Enviar", en: "Send" },
     { es: "¿Algún problema con el vídeo?", en: "Any problems with the video?" },
     { es: "Lecciones del curso", en: "Lessons from the course" },
+    { es: "Descripción", en: "Description" },
+    { es: "Reseñas", en: "Reviews" },
+    { es: "Herramientas de aprendizaje", en: "Learning Tools" },
   ],
   payment: [
     { es: "El pago ha fallado", en: "Payment has failed" },
