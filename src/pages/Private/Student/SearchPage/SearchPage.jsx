@@ -24,9 +24,10 @@ import FancyImage from "../../../../components/FancyImage/FancyImage";
 import { DictionaryContext } from "../../../../contexts/DictionaryContext";
 
 const CategoryCard = ({ attributes }) => {
+  const { language } = useContext(DictionaryContext);
   return (
     <Link to={`/courses/${attributes.slug}`} className="card category-card">
-      <p>{attributes.nombre}</p>
+      <p>{language === 'es' ? attributes.nombre : attributes.descripcion}</p>
 
       <ChevronForward />
     </Link>

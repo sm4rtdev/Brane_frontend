@@ -1612,7 +1612,7 @@ const dictionary = {
   },
   advancedSearchPage: [
     { es: "Popular en", en: "Popular in" },
-    { es: "Todos los cursos", en: "All courses." },
+    { es: "Todos los cursos", en: "All courses" },
     { es: "Filtros", en: "Filters" },
     { es: "Estrellas", en: "Stars" },
     { es: "Precio", en: "Price" },
