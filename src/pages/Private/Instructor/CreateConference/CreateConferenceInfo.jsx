@@ -504,7 +504,7 @@ const CreateConferenceInfo = () => {
                         toggleCategory(cat.id);
                       }}
                     >
-                      {language === 'es' ? cat.attributes.nombre : cat.attributes.description}
+                      {language === 'es' ? cat.attributes.nombre : cat.attributes.descripcion}
                     </button>
                   );
                 })}

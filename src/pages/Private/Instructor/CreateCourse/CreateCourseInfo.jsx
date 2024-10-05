@@ -523,7 +523,7 @@ const CreateCourseInfo = ({ setOpenTab, setCourseID }) => {
                         toggleCategory(cat.id);
                       }}
                     >
-                      {cat.attributes.nombre}
+                      {language === 'es' ? cat.attributes.nombre : cat.attributes.descripcion}
                     </button>
                   );
                 })}

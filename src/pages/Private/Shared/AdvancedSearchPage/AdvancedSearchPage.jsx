@@ -224,7 +224,7 @@ const AdvancedSearchPage = ({ conference }) => {
             <>
               <div className="popular">
                 <h2>
-                  {dictionary.advancedSearchPage[0][language]}: { language === 'es' ? courses[0].attributes.categoria.data.attributes.nombre : courses[0].attributes.categoria.data.attributes.description}
+                  {dictionary.advancedSearchPage[0][language]}: { language === 'es' ? courses[0].attributes.categoria.data.attributes.nombre : courses[0].attributes.categoria.data.attributes.descripcion}
                 </h2>
 
                 <div className="carousel">
@@ -245,7 +245,7 @@ const AdvancedSearchPage = ({ conference }) => {
               </div>
 
               <h2>
-                {dictionary.advancedSearchPage[1][language]}: {language === 'es' ? courses[0].attributes.categoria.data.attributes.nombre : courses[0].attributes.categoria.data.attributes.description}
+                {dictionary.advancedSearchPage[1][language]}: {language === 'es' ? courses[0].attributes.categoria.data.attributes.nombre : courses[0].attributes.categoria.data.attributes.descripcion}
               </h2>
 
               <div className="filterable">
