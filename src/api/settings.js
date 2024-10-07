@@ -1,3 +1,3 @@
-export const ORIGIN = "https://api.brane.es/";
+export const ORIGIN = "https://api.apenox.com/";
 // export const ORIGIN = "/custom/";
-export const FRONT = "https://brane.es/";
+export const FRONT = "https://apenox.com/";
