@@ -1627,7 +1627,7 @@ const dictionary = {
     { es: "Sin datos", en: "No data" },
     { es: "Mis chats", en: "My chats" },
     { es: "Escriba su mensaje aquí...", en: "Write your message here..." },
-    { es: "Charlar", en: "Chat" },
+    { es: "Chat", en: "Chat" },
   ],
   coursePage: [
     { es: "Precio actual", en: "Current price" },

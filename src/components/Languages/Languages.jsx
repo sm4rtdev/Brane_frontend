@@ -7,7 +7,7 @@ import {
 import { useContext } from "react";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
 
-const Languages = ({border = true}) => {
+const Languages = ({border = true, margin = true}) => {
   const { toggleLanguage, language } =
     useContext(DictionaryContext);
 
@@ -25,7 +25,7 @@ const Languages = ({border = true}) => {
   ];
 
   return (
-    <div className={`languages-selector ${!border && "circle"}`}>
+    <div className={`languages-selector ${!border && "circle"}`} style={{ marginInline: margin ? "" : "0rem"}}>
       <div className="menu">
         <Globe/>
       </div>

@@ -12,6 +12,7 @@ import { UserDataContext } from "../../contexts/UserDataContext";
 import { CartContext } from "../../contexts/CartContext";
 import { DictionaryContext } from "../../contexts/DictionaryContext";
 import MsgDropdown from "../MsgDropdown/MsgDropdown";
+import Languages from "../Languages/Languages";
 
 const SearchHeader = ({ state, starRange, priceRange, general }) => {
   const { dictionary, language } = useContext(DictionaryContext);
@@ -73,6 +74,8 @@ const SearchHeader = ({ state, starRange, priceRange, general }) => {
           </Link>
           {cart.length > 0 && <div className="noti">{cart.length < 10 ? cart.length : ""}</div>}
         </div>
+
+        <Languages border={false} margin={false} />
 
         <HeaderDropdown company />
       </div>
