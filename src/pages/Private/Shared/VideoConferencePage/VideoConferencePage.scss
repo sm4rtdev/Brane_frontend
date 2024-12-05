@@ -1,0 +1,58 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+
+  button {
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    cursor: pointer;
+    width: 20rem;
+    background-color: #b1b1b1b1;
+    transition: 0.25s;
+
+    &:hover {
+      background-color: #b1b1b1;
+    }
+  }
+
+  input {
+    font-size: 1.2rem;
+    padding: 0.65rem;
+    width: 20rem;
+    outline: none;
+    border: 1px solid #b1b1b1;
+    border-radius: 0.4rem;
+
+    &:focus {
+      border: 0.1rem solid #5c24dd;
+    }
+  }
+}
+
+.room {
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  .videos {
+    background-color: #e2e2e2;
+    border-radius: 20px;
+    height: 80vh;
+    font-size: 0.9rem;
+  }
+  
+  .chat {
+    height: 80vh;
+    width: 20rem;
+  }
+}
