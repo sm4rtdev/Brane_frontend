@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
+import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 
 const Chat = ({user, roomId, peerId, socket, setNewMsg}) => {
   const chatMessageRef = useRef(null);
@@ -48,9 +49,13 @@ const Chat = ({user, roomId, peerId, socket, setNewMsg}) => {
               <p className="user-text">{msg.message}</p>
             </div>
           ) : (
-            <div key={index} className="chat-message">
-              <p className="chat-user">{msg.user.name}</p>
-              <p className="chat-text">{msg.message}</p>
+            <div key={index} className="chat-message-container">
+              <div className="chat-avatar">
+                {msg.user.avatar ? <img src={getImageLinkFrom(msg.user.avatar)} alt={msg.user.avatar}/> : <p>{msg.user.name?.toUpperCase()[0]}</p>}
+              </div>
+              <div className="chat-message">
+                <p className="chat-text"><p className="chat-user">{msg.user.name}</p>{msg.message}</p>
+              </div>
             </div>
           );
         })}

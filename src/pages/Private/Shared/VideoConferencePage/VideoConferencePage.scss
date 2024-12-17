@@ -1,37 +1,175 @@
 .home-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  gap: 1rem;
+  gap: 6vw;
 
-  button {
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 8px;
-    padding: 0.8rem;
-    cursor: pointer;
-    width: 20rem;
-    background-color: #b1b1b1b1;
-    transition: 0.25s;
+  .video-container {
+    position: relative;
+    border-radius: 12px;
+    background-color: rgb(54, 54, 54);
+    width: 640px;
+    height: 360px;
 
-    &:hover {
-      background-color: #b1b1b1;
+    video {
+      width: 640px;
+      height: 360px;
+    }
+
+    .voice-detector {
+      position: absolute;
+      bottom: 1.2rem;
+      left: 1.2rem;
+    }
+
+    .button-group {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      button {
+        position: relative;
+        border-radius: 50%;
+        background-color: rgb(234, 67, 53);
+        width: 3rem;
+        height: 3rem;
+        padding: 0;
+        border: 1px solid rgb(234, 67, 53);
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &.on {
+          background-color: transparent;
+          border-color: white;
+        }
+        &.on:hover {
+          background-color: #fff5;
+        }
+
+        &:hover {
+          background-color: rgba(234, 67, 53, 0.85);
+        }
+
+        svg {
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+
+        i {
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: #FA7B17;
+          color: white;
+          top: -0.1rem;
+          left: 2rem;
+          font-style: normal;
+        }
+      }
     }
   }
 
-  input {
-    font-size: 1.2rem;
-    padding: 0.65rem;
-    width: 20rem;
-    outline: none;
-    border: 1px solid #b1b1b1;
-    border-radius: 0.4rem;
+  .action-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    padding: 4rem;
 
-    &:focus {
-      border: 0.1rem solid #5c24dd;
+    h3 {
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: -1rem;
     }
+
+    p, input {
+      border: 1px solid #00adfd;
+      outline: none;
+      border-radius: 8px;
+      padding: 0.8rem;
+      width: 20rem;
+      font-size: 1.2rem;
+
+      &::placeholder {
+        font-size: 1rem;
+      }
+      &:focus {
+        border-color: #0083ff;
+      }
+    }
+
+    button {
+      font-size: 1rem;
+      border: none;
+      border-radius: 2rem;
+      padding: 1rem;
+      cursor: pointer;
+      width: 16rem;
+      background-color: #b1b1b1b1;
+      transition: 0.25s;
+  
+      &:hover {
+        background-color: #b1b1b1;
+      }
+    }
+
+    .spinner {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(3px);
+      margin: -4rem;
+    }
+  }
+}
+
+.voice-detector-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 4px;
+  gap: 2px;
+  background-color: #00adfd;
+  border-radius: 50%;
+  box-shadow: 1px 2px 4px #4448;
+
+  @keyframes scaleAnimation {
+    0% {
+      height: 4px;
+    }
+    50% {
+      height: 12px;
+    }
+    100% {
+      height: 4px;
+    }
+  }
+
+  &.loading i {
+    animation: scaleAnimation 0.4s infinite;
+  }
+
+  i {
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: white;
   }
 }
 
@@ -45,14 +183,18 @@
   gap: 12px;
 
   .videos {
-    background-color: #e2e2e2;
+    background-color: rgb(54, 54, 54);
     border-radius: 20px;
     height: 80vh;
+    width: 100%;
     font-size: 0.9rem;
   }
   
   .chat {
+    // position: fixed;
+    // right: 2rem;
     height: 80vh;
     width: 20rem;
+    min-width: 18rem;
   }
 }

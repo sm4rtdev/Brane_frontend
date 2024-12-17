@@ -4,6 +4,7 @@
   height: 100%;
   width: 100%;
   border: 1px solid #ccc;
+  background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   border-radius: 20px;
@@ -22,9 +23,9 @@
 
   .chat-message {
     width: fit-content;
+    margin-top: 6px;
 
     p {
-      margin-block: 4px;
       border-bottom-left-radius: 0;
     }
   }
@@ -39,8 +40,30 @@
     }
   }
 
+  .chat-message-container {
+    display: flex;
+    gap: 5px;
+    align-items: end;
+  }
+
+  .chat-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ccc;
+
+    img, p {
+      width: 100%;
+      height: 100%;
+      font-size: 1.6rem;
+      color: white;
+      text-align: center;
+    }
+  }
+
   .chat-user {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 600;
     text-align: left;
   }

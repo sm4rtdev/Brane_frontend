@@ -8,76 +8,47 @@ import { TbMessage } from "react-icons/tb";
 import Peer from "peerjs";
 import "./VideoChat.scss";
 import { PEERJS_SERVER } from "../../api/settings";
+import { addStream, removeStream, VoiceDetector } from "../../pages/Private/Shared/VideoConferencePage/VideoConference";
+import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
+import DummyVideo from "../../assets/media.mp4";
 
-const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMsg}) => {
+const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMsg, mic, video}) => {
   const navigate = useNavigate();
   
   const [copied, setCopied] = useState(false);
+  const [init, setInit] = useState(false);
   const [micOn, setMicOn] = useState(false);
   const [videoOn, setVideoOn] = useState(false);
+  const micOnRef = useRef(micOn);
+  const videoOnRef = useRef(videoOn);
   const screenPeer = useRef();
   
-  const mainStream = useRef();
   const screenStream =useRef();
+  const sharedScreen = useRef(false);
   const mainDisplay = useRef();
   const [mainUsername, setMainUsername] = useState(null);
-  const [mainPeerId, setMainPeerId] = useState("");
-  const sharedScreen = useRef(false);
-  const [mainState, setMainState] = useState(0);
+  const [mainAvatar, setMainAvatar] = useState(null);
+  const [speaking, setSpeaking] = useState(false);
+  const mainPeerId = useRef("");
+  const [mainState, setMainState] = useState();
   const videoRefs = useRef({});
+  const dummyStream = useRef();
 
-  const checkDevices = async () => {
-    return navigator.mediaDevices.enumerateDevices()
-    .then(devices => {
-      const video = devices.filter(device => device.kind === 'videoinput').length > 0;
-      const audio = devices.filter(device => device.kind === 'audioinput').length > 0;
-      
-      return {
-        video: video ? {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        } : false,
-        audio: audio ? {
-          noiseSuppression: false,
-          echoCancellation: false,
-        } : false
-      };
-    })
-    .catch(err => {
-      console.log(err);
-      return null;
-    })
-  }
+  useEffect(() => {
+    let video = document.createElement("video");
+    video.src = DummyVideo;
+    video.oncanplay = (e) => {
+      dummyStream.current = video.captureStream();
+      dummyStream.current.getTracks().map(track => track.stop())
+    }
+  }, []);
 
-  const requestMedia = async() => {
-    const checks = await checkDevices();
-    navigator.mediaDevices
-    .getUserMedia(checks)
-    .then(stream => {
-      setVideoOn(checks.video);
-      setMicOn(checks.audio);
-      mainStream.current = stream;
-      if (!sharedScreen.current) setMainVideo(stream, user.name, 4, peer.id);
-      setStream(peer.id, stream);
-      
-      members.map((m) => {
-        if (m.peerId !== peer.id) {
-          call(m.peerId, peer, stream);
-        }
-      })
-    })
-    .catch(reason => console.log("request media failed", reason));
-  }
-
-  const call = (peerId, p, stream) => {
-    const c = (p || peer).call(peerId, stream || mainStream.current);
-    c?.on('stream', remoteStream => {
-      setStream(peerId, remoteStream, c, remoteStream.getVideoTracks().length > 0 ? 4 : 2);
-    });
-  }
-  const shareScreen = (peerId, p, stream) => {
-    const c = (p || screenPeer.current).call(peerId + "_screen", stream || screenStream.current);
-    videoRefs.current[peerId].screenCall = c;
+  const getEmptyTrack = (videoOrAudio) => {
+    if (videoOrAudio === "video") {
+      return dummyStream.current?.getVideoTracks()[0]
+    } else if (videoOrAudio === "audio") {
+      return dummyStream.current?.getAudioTracks()[0]
+    } else return dummyStream.current?.getTracks();
   }
 
   const requestScreenShare = () => {
@@ -86,17 +57,28 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
     .then(stream => {
       screenStream.current = stream;
       sharedScreen.current = true;
-      setMainVideo(stream, "", 5);
+      
+      mainDisplay.current.srcObject = stream;
+      setMainAvatar(null);
+      setMainUsername("Screen sharing...");
+      setMainState({ video: true, audio: true});
       
       members.forEach((m) => {
-        if (peer.id !== m.peerId) {
-          shareScreen(m.peerId, screenPeer.current, stream);
+        if (peer.current.id !== m.peerId) {
+          videoRefs.current[m.peerId].screenCall = screenPeer.current.call(m.peerId + "_screen", stream);
         }
       })
       stream.getVideoTracks()[0].addEventListener('ended', (track, e) => {
+        stream.getTracks().map(track => track.stop())
         screenStream.current = null;
         sharedScreen.current = false;
-        setMainVideo(mainStream.current, user.name, 4, peer.id);
+
+        const member = members.find(m => m.peerId === mainPeerId.current);
+        mainDisplay.current.srcObject = videoRefs.current[mainPeerId.current].ref.current.srcObject;
+        setMainAvatar(member.avatar);
+        setMainUsername(member.name);
+        setMainState(member.state);
+        
         Object.keys(videoRefs.current).forEach((key) => {
           videoRefs.current[key].screenCall?.close();
           delete videoRefs.current[key].screenCall;
@@ -105,59 +87,95 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
     })
     .catch(reason => console.log("request screen share failed", reason))
   }
-
   const getScreenShare = (screen) => {
     screenStream.current?.getTracks().forEach(track => track.stop());
+    screenStream.current = null
     sharedScreen.current = true;
-    setMainVideo(screen, "", 5);
+    
+    mainDisplay.current.srcObject = screen;
+    setMainAvatar(null);
+    setMainUsername("Screen sharing...");
+    setMainState({ video: true, audio: true});
     screen.getVideoTracks()[0].addEventListener('ended', (track, e) => {
       sharedScreen.current = false;
-      setMainVideo(mainStream.current, "", mainStream.current.getVideoTracks().length > 0 ? 4 : 2, peer.id);
+      screen.getTracks().map(track => track.stop());
+
+      const member = members.find(m => m.peerId === mainPeerId.current);
+      mainDisplay.current.srcObject = videoRefs.current[mainPeerId.current].ref.current.srcObject;
+      setMainAvatar(member.avatar);
+      setMainUsername(member.name);
+      setMainState(member.state);
+    })
+  }
+  const setSrcObject = (ref, stream, callback) => {
+    if (ref.current) {
+      if (!ref.current.srcObject) {
+        addStream(ref, stream);
+        callback && callback();
+        ref.current.play();
+      }
+    } else {
+      setTimeout(() => setSrcObject(ref, stream, callback), 1000);
+    }
+  }
+  const setState = (peerId, state) => {
+    setMembers(prev => prev.map((m) => {
+      if (m.peerId === peerId) {
+        m.state = {...m.state, ...state};
+        if (mainPeerId.current === peerId && !sharedScreen.current) {
+          setMainState(m.state);
+        }
+      }
+      return m;
+    }))
+  }
+  const startTracks = (tracks, videoOrAudio) => {
+    Object.keys(videoRefs.current).forEach(peerId => {
+      if (peerId !== peer.current.id) {
+        if (videoRefs.current[peerId].call) {
+          videoOrAudio.forEach(media => {
+            const sender = videoRefs.current[peerId].call.peerConnection.getSenders().find(s => s.track?.kind === media);
+            if (sender) {
+              sender.replaceTrack(tracks[media]);
+            }
+          })
+        } else {
+          videoRefs.current[peerId].call = peer.current.call(
+            peerId, 
+            new MediaStream(["audio", "video"].map(key => {
+              if (tracks[key]) {
+                return tracks[key];
+              } else {
+                return getEmptyTrack(key);
+              }
+            })));
+        }
+      }
+    })
+  }
+  const stopTracks = (videoOrAudio) => {
+    Object.keys(videoRefs.current).forEach(peerId => {
+      if (peerId !== peer.current.id) {
+        videoOrAudio.forEach(media => {
+          const sender = videoRefs.current[peerId].call?.peerConnection.getSenders().find(s => s.track?.kind === media);
+          if (sender) {
+            sender.track.stop();
+          }
+        })
+      }
     })
   }
 
-  const setStream = (peerId, stream, call, state) => {
-    if (stream || call || state) {
-      setMembers(prev => prev.map((m) => {
-        if (m.peerId === peerId) {
-          if (stream && videoRefs.current[peerId]?.ref) {
-            videoRefs.current[peerId].ref.current.srcObject = stream;
-            if (peerId === peer.id) {
-              videoRefs.current[peerId].ref.current.muted = true;
-            }
-          }
-          if (call && videoRefs.current[peerId]?.call) {
-            if (videoRefs.current[peerId].call) {
-              videoRefs.current[peerId].call.close();
-            }
-            videoRefs.current[peerId].call = call;
-          }
-          if (state) m.state = state;
-          if (!sharedScreen.current && stream) setMainVideo(stream, m.name, m.state, peerId);
-        }
-        return m;
-      }))
-    }
+  const onVoiceDetected = (action) => {
+    socket.current.emit('send-signal', {
+      type: 'voice-detect',
+      peerId: peer.current.id,
+      name: user.name,
+      avatar: user.avatar,
+      action,
+      state: { video: videoOnRef.current, audio: micOnRef.current}
+    })
   }
-
-  const setMainVideo = (stream, name, state, peerId) => {
-    if (peerId !== mainPeerId) {
-      if (stream !== undefined && mainDisplay.current) mainDisplay.current.srcObject = stream;
-      name !== undefined && setMainUsername(name);
-      state && setMainState(state);
-      mainDisplay.current.muted = state !== 5;
-      peerId && setMainPeerId(peerId);
-    }
-  }
-
-  useEffect(() => {
-    if (mainDisplay.current) {
-      mainDisplay.current.srcObject?.getVideoTracks()[0].addEventListener("ended", () => {
-        console.log("ended main display")
-        setMainState(2);
-      })
-    }
-  }, [mainDisplay.current])
 
   useEffect(() => {
     Object.keys(videoRefs.current).forEach(key => {
@@ -168,11 +186,9 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
   }, [members])
 
   useEffect(() => {
-    if (peer) {
-      screenPeer.current = new Peer(peer.id + "_screen", { host: PEERJS_SERVER });
-      
-      requestMedia();
-      
+    if (peer.current) {
+      screenPeer.current = new Peer(peer.current.id + "_screen", { host: PEERJS_SERVER });
+
       socket.current.on("user-joined", (user) => {
         setMembers(prev => [...prev, user]);
       })
@@ -183,18 +199,51 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
         setMembers(prev => prev.filter(u => u.peerId !== user.peerId));
       })
       socket.current.on('signals', (data) => {
-        if (data.state < 5) {
-          setStream(data.peerId, null, null, data.state);
+        switch (data.type) {
+          case "voice-detect":
+            if (data.peerId === peer.current.id) return;
+            if (data.peerId !== mainPeerId.current) {
+              mainDisplay.current.srcObject = videoRefs.current[data.peerId].ref.current.srcObject;
+              setMainAvatar(data.avatar);
+              setMainUsername(data.name);
+              mainPeerId.current = data.peerId;
+              setMainState(data.state);
+            }
+            if (data.action === 'start') {
+              setSpeaking(true);
+            } else if (data.peerId === mainPeerId.current) {
+              setSpeaking(false);
+            }
+            break;
+          case "audio":
+            setState(data.peerId, {audio: data.action === "on"});
+            break;
+          case "video":
+            setState(data.peerId, {video: data.action === "on"})
+            break;
+          case 'state':
+          default:
+            setState(data.peerId, data.state);
         }
       });
       socket.current.on("user-ready", (user) => {
-        call(user.peerId);
-        if (screenStream.current) shareScreen(user.peerId);
+        if (videoOnRef.current || micOnRef.current)
+          videoRefs.current[peer.current.id].call = peer.current.call(
+            user.peerId,
+            new MediaStream(videoRefs.current[peer.current.id].ref.current.srcObject.getTracks())
+          )
+        socket.current.emit('send-signal', {
+          type: 'state',
+          peerId: peer.current.id,
+          state: {video: videoOnRef.current, audio: micOnRef.current}
+        })
+        if (screenStream.current)
+          videoRefs.current[user.peerId].screenCall = screenPeer.current.call(user.peerId + "_screen", screenStream.current);
       })
-      peer.on('call', call => {
-        call.answer(mainStream.current);
+      peer.current.on('call', call => {
+        call.answer();
         call.on('stream', remoteStream => {
-          setStream(call.peer, remoteStream, call, remoteStream.getVideoTracks().length > 0 ? 4 : 2);
+          setSrcObject(videoRefs.current[call.peer].ref, remoteStream);
         });
       });
       screenPeer.current.on('call', call => {
@@ -203,45 +252,99 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
           getScreenShare(screen);
         })
       });
-      socket.current.emit("am-ready", {roomId, peerId: peer.id, user});
+      
+      setMainAvatar(user.avatar);
+      setMainUsername(user.name);
+      mainPeerId.current = peer.current.id;
+      setMainState({video, audio: mic});
+      socket.current.emit("am-ready", {roomId, peerId: peer.current.id, user});
     }
-  }, [peer]);
+  }, [peer.current]);
 
   useEffect(() => {
-    socket.current?.emit('send-signal', {
-      state: micOn
-            ? videoOn ? 4 : 2
-            : videoOn ? 3 : 1,
-      peerId: peer.id,
-    });
-  }, [videoOn, micOn]);
+    if (mic || video) {
+      if (!init) {
+        navigator.mediaDevices
+        .getUserMedia({video: video === true, audio: mic ? {
+          noiseSuppression: true,
+          echoCancellation: false,
+        } : false})
+        .then(stream => {
+          addStream(videoRefs.current[peer.current.id].ref, stream, "both");
+          if (mainPeerId.current === peer.current.id) mainDisplay.current.srcObject = videoRefs.current[peer.current.id].ref.current.captureStream();
+          startTracks({
+            video: video ? stream.getVideoTracks()[0] : null,
+            audio: mic ? stream.getAudioTracks()[0] : null
+          }, (video ? ["video"] : []).concat(mic ? ["audio"] : []));
+          setVideoOn(video);
+          socket.current?.emit('send-signal', {type: "video", peerId: peer.current.id, action: video?"on":"off"})
+          setMicOn(mic);
+          socket.current?.emit('send-signal', {type: "audio", peerId: peer.current.id, action: mic?"on":"off"})
+        });
+      }
+      setInit(true);
+    }
+  }, [mic, video])
 
-  const toggleMic = () => {
+  useEffect(() => {
+    micOnRef.current = micOn;
+  }, [micOn])
+  useEffect(() => {
+    videoOnRef.current = videoOn;
+  }, [videoOn])
+
+  const toggleMic = (onOrOff) => {
     try {
-      if (mainStream.current) {
-        const audioTrack = mainStream.current.getTracks().find((track) => track.kind === 'audio');
-        if (audioTrack) {
-          audioTrack.enabled = !audioTrack.enabled;
-          setMicOn(audioTrack.enabled);
-        }
+      if (onOrOff === "off" || (onOrOff !== "on" && micOn)) {
+        removeStream(videoRefs.current[peer.current.id].ref, "audio")
+        if (mainPeerId.current === peer.current.id) mainDisplay.current.srcObject = videoRefs.current[peer.current.id].ref.current.captureStream();
+        
+        stopTracks(["audio"])
+        setMicOn(false);
+        socket.current?.emit('send-signal', {type: "audio", peerId: peer.current.id, action: "off"})
       } else {
-        requestMedia();
+        navigator.mediaDevices
+        .getUserMedia({video: false, audio:{
+          noiseSuppression: true,
+          echoCancellation: false,
+        }})
+        .then(stream => {
+          addStream(videoRefs.current[peer.current.id].ref, stream, "audio")
+          if (mainPeerId.current === peer.current.id) mainDisplay.current.srcObject = videoRefs.current[peer.current.id].ref.current.captureStream();
+          
+          startTracks({
+            audio: stream.getAudioTracks()[0]
+          }, ["audio"]);
+          setMicOn(true);
+          socket.current?.emit('send-signal', {type: "audio", peerId: peer.current.id, action: "on"})
+        })
       }
     } catch (error) {
       console.log('Error in toggleMic', error);
     }
   };
 
-  const toggleVideo = () => {
+  const toggleVideo = (onOrOff) => {
     try {
-      if (mainStream.current) {
-        const videoTrack = mainStream.current.getTracks().find((track) => track.kind === 'video');
-        if (videoTrack) {
-          videoTrack.enabled = !videoTrack.enabled;
-          setVideoOn(videoTrack.enabled);
-        }
+      if (onOrOff === "off" || (onOrOff !== "on" && videoOn)) {
+        removeStream(videoRefs.current[peer.current.id].ref, "video")
+        if (mainPeerId.current === peer.current.id) mainDisplay.current.srcObject = videoRefs.current[peer.current.id].ref.current.captureStream();
+        
+        stopTracks(["video"])
+        setVideoOn(false);
+        socket.current?.emit('send-signal', {type: "video", peerId: peer.current.id, action: "off"})
       } else {
-        requestMedia();
+        navigator.mediaDevices
+        .getUserMedia({video: true, audio:false})
+        .then(stream => {
+          addStream(videoRefs.current[peer.current.id].ref, stream, "video");
+          if (mainPeerId.current === peer.current.id) mainDisplay.current.srcObject = videoRefs.current[peer.current.id].ref.current.captureStream();
+          startTracks({
+            video: stream.getVideoTracks()[0]
+          }, ["video"])
+          setVideoOn(true);
+          socket.current?.emit('send-signal', {type: "video", peerId: peer.current.id, action: "on"})
+        })
       }
     } catch (error) {
       console.log('Error in toggleVideo', error);
@@ -256,20 +359,28 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
   return (
     <div className="meet">
       <div className="meet-video">
-        <div className="empty-avatar" style={{display: mainState > 2?"none":"flex"}}>
-          <p>{mainUsername ? mainUsername.toUpperCase()[0]: "U"}</p>
+        <div className="empty-avatar" style={{display: mainState && mainState.video?"none":"flex"}}>
+          {mainAvatar ? <img src={getImageLinkFrom(mainAvatar)} alt={mainAvatar}/> : <p>{mainUsername?.toUpperCase()[0]}</p>}
         </div>
-        <video ref={mainDisplay} autoPlay muted style={{visibility: mainState > 2?"visible":"hidden"}}></video>
-        <span className="user-name">{mainUsername}</span>
+        <video ref={mainDisplay} autoPlay muted={mainPeerId.current === peer.current.id} style={{visibility: mainState && mainState.video?"visible":"hidden"}}></video>
+        <span className="user-name">{mainUsername ?? ""}</span>
+        {(!mainState || !mainState.audio) ? <div className="muted"><AiOutlineAudioMuted color="rgb(234, 67, 53)" /></div> : speaking ? <VoiceDetector startOnLoad={false} load={speaking} /> : null}
         <div className="meet-options">
           <div className="video-buttons">
-            <button onClick={toggleMic} style={micOn?{background: "#e2e2e2"}:null}>{micOn? <AiOutlineAudio/>:<AiOutlineAudioMuted color="white"/>}</button>
-            <button onClick={toggleVideo} style={videoOn?{background: "#e2e2e2"}:null}>{videoOn? <BsCameraVideo/>:<BsCameraVideoOff color="white"/>}</button>
-            <button onClick={requestScreenShare} style={{background: "#e2e2e2"}}><MdOutlineScreenShare color="#1c1c1c"/></button>
+            {micOn && <VoiceDetector onSpeechStart={() => onVoiceDetected("start")} onSpeechEnd={() => onVoiceDetected("end")}/>}
+            <button onClick={toggleMic} className={micOn?"on":null}>
+              {micOn ? <AiOutlineAudio color="white"/> : <AiOutlineAudioMuted color="white"/>}
+              {micOn === undefined && <i>!</i>}
+            </button>
+            <button onClick={toggleVideo} className={videoOn?"on":null}>
+              {videoOn ? <BsCameraVideo color="white"/> : <BsCameraVideoOff color="white"/>}
+              {videoOn === undefined && <i>!</i>}
+            </button>
+            <button onClick={requestScreenShare} className="on"><MdOutlineScreenShare color="white"/></button>
           </div>
           <div className="end-button">
-            <button onClick={() => showChat(prev => !prev)} style={{background: "#e2e2e2", position: "relative"}}>
-              <TbMessage color="#1c1c1c"/>
+            <button onClick={() => showChat(prev => !prev)} className="on" style={{position: "relative"}}>
+              <TbMessage color="white"/>
               {
                 newMsg && <i></i>
               }
@@ -280,28 +391,36 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
               setTimeout(() => {
                 setCopied(false);
               }, 2000);
-            }} style={{background: "#e2e2e2"}}>{copied ? <MdCheck color="green" /> : <MdShare color="#1c1c1c"/>}</button>
+            }} className="on">{copied ? <MdCheck color="lightgreen" /> : <MdShare color="white"/>}</button>
             <button onClick={endCall}><MdLogout color="white"/></button>
           </div>
         </div>
       </div>
       <div className="meet-grid">
-        {members.map((m, index) => {
+        {members.map((m) => {
           if (videoRefs.current[m.peerId] === undefined) {
             videoRefs.current[m.peerId] = {
               ref: null,
               call: null
             }
           }
+          
           return (
             <VideoCard
-              key={index}
-              name={m.peerId === peer.id ? "You" : m.name}
+              key={m.peerId}
+              avatar={m.avatar}
+              name={m.name}
               state={m.state}
               videoRef={videoRefs.current[m.peerId]}
-              border={mainPeerId === m.peerId}
+              muted={peer.current.id === m.peerId}
               onClickCard={() => {
-                if (!sharedScreen.current) setMainVideo(videoRefs.current[m.peerId].ref.current.srcObject, m.peerId === peer.id ? "You" : m.name, m.state, m.peerId);
+                if (!sharedScreen.current) {
+                  mainDisplay.current.srcObject = videoRefs.current[m.peerId].ref.current.srcObject;
+                  setMainAvatar(m.avatar);
+                  setMainUsername(m.name);
+                  setMainState(m.state);
+                  mainPeerId.current = m.peerId;
+                }
               }}
             />
           )
