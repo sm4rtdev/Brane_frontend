@@ -280,6 +280,16 @@ const CoursePage = () => {
                     <span>{currentCourse.cantidadEstudiantes} {dictionary.coursePage[14][language]}</span>
                   </div>
                 </div>
+                  {
+                    currentCourse.conference && (
+                      <div className="technical-details" style={{display: "flex"}}>
+                        <Link className="detail" to={`/conference/join/${currentCourse.conference.ZoomMeetingID}`} target="_blank">
+                          <Videocam />
+                          <span>{dictionary.coursePage[33][language]}</span>
+                        </Link>
+                      </div>
+                    )
+                  }
 
                 <Tabulation tabs={[dictionary.coursePage[15][language], dictionary.coursePage[16][language]]} options={{ type: "bubble", color: "black" }}>
                   <>

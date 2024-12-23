@@ -1663,6 +1663,7 @@ const dictionary = {
     { es: "Compra este curso para ver su contenido", en: "Buy this course to see its content" },
     { es: "Ir al carrito", en: "Go to cart" },
     { es: "Añadir al carrito", en: "Add to cart" },
+    { es: "Haga clic aquí para unirse a la conferencia", en: "Click here to join the conference"}
   ],
   editProfilePage: [
     { es: "Tus datos han sido actualizados exitosamente", en: "Your data has been successfully updated" },
@@ -1809,9 +1810,11 @@ const dictionary = {
     { es: "¿Algún problema con la conferencia?", en: "Any problems with the conference?" },
     { es: "Informar de un problema", en: "Report a problem" },
     { es: "Partida...", en: "Leaving..." },
-    { es: "Cargando reunión de Zoom...", en: "Loading Zoom Meeting..." },
+    { es: "Cargando reunión...", en: "Loading Meeting..." },
     { es: "Descripción", en: "Description" },
     { es: "Reseñas", en: "Reviews" },
+    { es: "Su nombre", en: "Your name" },
+    { es: "¡No puedes acceder a esta reunión!", en: "You can't access this meeting!" },
   ],
   learnPage: [
     { es: "Lección", en: "Lesson" },

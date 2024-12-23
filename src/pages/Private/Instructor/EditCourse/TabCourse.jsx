@@ -641,7 +641,7 @@ const TabCourse = ({ courseID, courseInfo, conference }) => {
                         toggleCategory(cat.id);
                       }}
                     >
-                      {cat.attributes.nombre}
+                      { language === "es" ? cat.attributes.nombre : cat.attributes.descripcion}
                     </button>
                   );
                 })}

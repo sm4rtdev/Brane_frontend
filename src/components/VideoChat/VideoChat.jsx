@@ -8,7 +8,7 @@ import { TbMessage } from "react-icons/tb";
 import Peer from "peerjs";
 import "./VideoChat.scss";
 import { PEERJS_SERVER } from "../../api/settings";
-import { addStream, removeStream, VoiceDetector } from "../../pages/Private/Shared/VideoConferencePage/VideoConference";
+import { addStream, removeStream, VoiceDetector } from "../../pages/Private/Shared/VideoConferencePage/VideoConferenceRoom";
 import { getImageLinkFrom } from "../../helpers/getImageLinkFrom";
 import DummyVideo from "../../assets/media.mp4";
 

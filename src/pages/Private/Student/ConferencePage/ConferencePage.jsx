@@ -131,7 +131,7 @@ function ConferencePage() {
                           window.joinDataTemp = JSON.stringify(joinData);
 
                           let win = window.open(
-                            "/conference/join",
+                            "/conference/join/" + joinData.meetingNumber,
                             "_blank",
                             {
                               popup: true,

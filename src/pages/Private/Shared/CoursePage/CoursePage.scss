@@ -243,6 +243,18 @@
           color: $gray;
         }
       }
+
+      a.detail {
+        text-decoration-color: $gray;
+
+        &:hover {
+          text-decoration-color: $dark-gray;
+
+          span {
+            color: $dark-gray;
+          }
+        }
+      }
     }
 
     .tabulation .content {

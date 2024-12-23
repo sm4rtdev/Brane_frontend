@@ -1,6 +1,7 @@
 export const ORIGIN = "https://api.apenox.com/";
-// export const ORIGIN = "/custom/";
 export const FRONT = "https://apenox.com/";
+// export const ORIGIN = "http://localhost:1337/";
+// export const FRONT = "http://localhost:3000/";
 
 
 // export const PEERJS_SERVER="localhost"

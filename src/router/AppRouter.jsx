@@ -50,9 +50,6 @@ import Policy from "../pages/Public/PolicyTerms/Policy";
 import Terms from "../pages/Public/PolicyTerms/Terms";
 import CreateConferencePage from "../pages/Private/Instructor/CreateConference/CreateConferencePage";
 import ConferencePage from "../pages/Private/Student/ConferencePage/ConferencePage";
-import Meeting from "../pages/Private/Student/ConferencePage/Meeting";
-import Close from "../pages/Private/Student/ConferencePage/Close";
-import VideoConference from "../pages/Private/Shared/VideoConferencePage/VideoConference";
 import VideoConferenceRoom from "../pages/Private/Shared/VideoConferencePage/VideoConferenceRoom";
 
 const AppRouter = () => {
@@ -102,16 +99,13 @@ const AppRouter = () => {
           <Route path="*" element={<Navigate to={"login"} />} />
         </Route>
 
-        
-        <Route path="/conference" element={<VideoConference />} />
-        <Route path="/conference/:roomId" element={<VideoConferenceRoom />} />
-
         {/* Private */}
         {userData.jwt && (
           <>
             {userData.info && (
               <>
                 <Route path="/role" element={userData.instructor ? <RoleSelection /> : <Navigate to={"/"} />} />
+                <Route path="/conference/join/:roomId" element={<VideoConferenceRoom />} />
                 {userData.mode === "instructor" && (
                   <Route path="/" element={<SupraContainer mode={"instructor"} />}>
                     <Route index element={<HomeInstructor />} />
@@ -168,8 +162,8 @@ const AppRouter = () => {
                 ) : (
                   // Student
                   <>
-                    <Route path="conference/join" element={<Meeting />} />
-                    <Route path="conference/exit" element={<Close />} />
+                    {/* <Route path="conference/join" element={<Meeting />} />
+                    <Route path="conference/exit" element={<Close />} /> */}
 
                     <Route path="/" element={<SupraContainer mode={"student"} />}>
                       <Route index element={<DiscoverPage />} />
