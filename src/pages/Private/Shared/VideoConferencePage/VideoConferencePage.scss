@@ -3,7 +3,10 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  gap: 6vw;
+  // gap: 6vw;
+  @media screen  and (max-width: 942px){
+    flex-direction: column;
+  }
 
   .video-container {
     position: relative;
@@ -11,6 +14,16 @@
     background-color: rgb(54, 54, 54);
     width: 640px;
     height: 360px;
+
+    @media screen and (max-width: 1142px) {
+      width: 56vw;
+      height: 31.5vw;
+    }
+
+    @media screen  and (max-width: 942px){
+      width: 528px;
+      height: 287px;
+    }
 
     video {
       width: 640px;
@@ -98,7 +111,7 @@
       outline: none;
       border-radius: 8px;
       padding: 0.8rem;
-      width: 20rem;
+      width: 300px;
       font-size: 1.2rem;
 
       &::placeholder {
@@ -115,7 +128,7 @@
       border-radius: 2rem;
       padding: 1rem;
       cursor: pointer;
-      width: 16rem;
+      width: 240px;
       background-color: #b1b1b1b1;
       transition: 0.25s;
   
@@ -181,6 +194,11 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  position: relative;
+
+  @media screen and (max-width: 942px) {
+    padding: 8px;
+  }
 
   .videos {
     background-color: rgb(54, 54, 54);
@@ -188,13 +206,26 @@
     height: 80vh;
     width: 100%;
     font-size: 0.9rem;
+
+    @media screen and (max-width: 942px) {
+      height: 100%;
+    }
   }
   
   .chat {
-    // position: fixed;
-    // right: 2rem;
     height: 80vh;
     width: 20rem;
     min-width: 18rem;
+
+    @media screen and (max-width: 1120px) {
+      position: absolute;
+      right: 3rem;
+      width: 322px;
+    }
+    @media screen and (max-width: 942px) {
+      right: 8px;
+      height: calc(100% - 96px);
+      transform: translateY(-40px);
+    }
   }
 }

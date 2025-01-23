@@ -352,7 +352,7 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
   }
 
   const endCall = () => {
-    navigate('/conference');
+    navigate('/');
     window.location.reload();
   }
 
@@ -386,7 +386,7 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
               }
             </button>
             <button onClick={() => {
-              navigator.clipboard.writeText(window.location.origin + "/conference/" + roomId);
+              navigator.clipboard.writeText(window.location.origin + "/conference/join/" + roomId);
               setCopied(true);
               setTimeout(() => {
                 setCopied(false);
