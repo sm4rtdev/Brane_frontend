@@ -266,7 +266,7 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
       if (!init) {
         navigator.mediaDevices
         .getUserMedia({video: video === true, audio: mic ? {
-          noiseSuppression: true,
+          noiseSuppression: false,
           echoCancellation: false,
         } : false})
         .then(stream => {
@@ -305,7 +305,7 @@ const Video = ({roomId, user, peer, socket, members, setMembers, showChat, newMs
       } else {
         navigator.mediaDevices
         .getUserMedia({video: false, audio:{
-          noiseSuppression: true,
+          noiseSuppression: false,
           echoCancellation: false,
         }})
         .then(stream => {
