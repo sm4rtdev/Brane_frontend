@@ -124,7 +124,7 @@
     
     @media screen and (max-width: 942px) {
       flex-direction: row-reverse;
-      height: 200px;
+      height: 194px;
       width: 100%;
     }
 
@@ -186,6 +186,7 @@ video {
   width: 304px;
   height: 171px;
   min-height: 171px;
+  min-width: 304px;
   cursor: pointer;
 
   video {
